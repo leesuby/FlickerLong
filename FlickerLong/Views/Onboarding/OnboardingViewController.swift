@@ -16,10 +16,16 @@ class OnboardingViewController: UIViewController {
         
         //Setting View
         onboardingView = OnboardingView(view: self.view)
-        
-        
+        onboardingView.delegate = self
+        onboardingView.initViewConstraint()
     }
+}
 
-
+extension OnboardingViewController : OnboardingViewDelegate{
+    func getStartTapped() {
+        print("asdsadsad")
+    }
+    
+    
 }
 
