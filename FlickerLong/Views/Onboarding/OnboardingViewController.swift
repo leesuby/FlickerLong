@@ -6,10 +6,18 @@
 //
 
 import UIKit
+import OAuthSwift
 
 class OnboardingViewController: UIViewController {
     
     private var onboardingView : OnboardingView!
+    
+    lazy var loginViewController: LoginViewController = {
+        let controller = LoginViewController()
+        controller.delegate = self
+        controller.viewDidLoad()
+        return controller
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,11 +29,37 @@ class OnboardingViewController: UIViewController {
     }
 }
 
+
 extension OnboardingViewController : OnboardingViewDelegate{
     func getStartTapped() {
-        print("asdsadsad")
+        OAuthAuthorization.authorize(baseViewController: self, webViewController: loginViewController )
+    }
+}
+
+extension OnboardingViewController : OAuthWebViewControllerDelegate{
+    func oauthWebViewControllerDidPresent() {
+        
+    }
+    
+    func oauthWebViewControllerDidDismiss() {
+    
+    }
+    
+    func oauthWebViewControllerWillAppear() {
+    
+    }
+    
+    func oauthWebViewControllerDidAppear() {
+    
+    }
+    
+    func oauthWebViewControllerWillDisappear() {
+    
+    }
+    
+    func oauthWebViewControllerDidDisappear() {
+        OAuthAuthorization.oauthswift.cancel()
     }
     
     
 }
-

@@ -7,14 +7,38 @@
 
 import UIKit
 import CoreData
+import OAuthSwift
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
-
-
+    //HANDLE URL
+    class var sharedInstance: AppDelegate {
+        return UIApplication.shared.delegate as! AppDelegate
+    }
+    
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey  : Any] = [:]) -> Bool {
+      if url.host == "oauth-callback" {
+        OAuthSwift.handle(url: url)
+      }
+      return true
+    }
+    
+    //APP
+    var window: UIWindow?
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        if #available(iOS 13, *) {
+            return true
+        } else {
+            let vc = OnboardingViewController()
+            
+            let loginNavigation = UINavigationController(rootViewController:  vc)
+            loginNavigation.modalPresentationStyle = .fullScreen
+            
+            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+            appDelegate.window?.rootViewController = loginNavigation
+            
+        }
         return true
     }
 
@@ -81,3 +105,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 }
 
+
+// MARK: handle callback url
+extension AppDelegate {
+    
+    func applicationHandle(url: URL) {
+        if (url.host == "oauth-callback") {
+            OAuthSwift.handle(url: url)
+        } else {
+            // Google provider is the only one with your.bundle.id url schema.
+            OAuthSwift.handle(url: url)
+        }
+    }
+}
