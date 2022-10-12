@@ -25,7 +25,8 @@ class OnboardingViewController: UIViewController {
         //Setting View
         onboardingView = OnboardingView(view: self.view)
         onboardingView.delegate = self
-        onboardingView.initViewConstraint()
+        onboardingView.initView()
+        onboardingView.initConstraint()
     }
 }
 
@@ -34,10 +35,8 @@ extension OnboardingViewController : OnboardingViewDelegate{
     func getStartTapped() {
         OAuthAuthorization.authorize(baseViewController: self, webViewController: loginViewController) {
             let vc = HomeViewController()
-            
             let navigation = UINavigationController(rootViewController: vc)
             navigation.modalPresentationStyle = .fullScreen
-            
             self.present(navigation, animated: true)
         }
     }
@@ -64,6 +63,7 @@ extension OnboardingViewController : OAuthWebViewControllerDelegate{
     
     }
     
+    //Make sure we OAuth stop when we out WebView
     func oauthWebViewControllerDidDisappear() {
         OAuthAuthorization.oauthswift.cancel()
     }

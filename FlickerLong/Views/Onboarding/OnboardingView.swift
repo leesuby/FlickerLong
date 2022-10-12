@@ -21,46 +21,41 @@ class OnboardingView{
         self.view = view
     }
     
-    private let background : UIImageView = {
-        let image = UIImageView()
-        image.image = UIImage(named: Constant.BackgroundOnboarding.imageName)
-        image.contentMode = .scaleAspectFill
-        return image
-    }()
+    private var background : UIImageView!
+    private var logo : UIImageView!
+    private var description : UILabel!
+    private var getStartButton: UIButton!
     
-    private let logo : UIImageView = {
-        let image = UIImageView()
-        image.image = UIImage(named: Constant.Logo.imageName)
-        image.contentMode = .scaleAspectFit
-        image.transform = image.transform.rotated(by: Constant.Logo.logoRotate)
-        return image
-    }()
+    func initView(){
+        background = UIImageView()
+        background.image = UIImage(named: Constant.BackgroundOnboarding.imageName)
+        background.contentMode = .scaleAspectFill
+        
+        logo = UIImageView()
+        logo.image = UIImage(named: Constant.Logo.imageName)
+        logo.contentMode = .scaleAspectFit
+        logo.transform = logo.transform.rotated(by: Constant.Logo.logoRotate)
+        
+        description = UILabel()
+        description.text = "Find photo you love\nDiscover photographer you like"
+        description.font = Constant.Description.font
+        description.textColor = Constant.Description.color
+        description.textAlignment = Constant.Description.textAlightment
+        description.backgroundColor = .clear
+        description.numberOfLines = 0
+        
+        getStartButton = UIButton()
+        getStartButton.setTitle("Get Started", for: .normal)
+        getStartButton.titleLabel?.font = .NunitoBold(size: 24)
+        getStartButton.setImage(UIImage(named: "ArrowRight"), for: .normal)
+        getStartButton.imageView?.contentMode = .scaleAspectFit
+        getStartButton.backgroundColor = .white80a
+        getStartButton.layer.cornerRadius = 30
+        getStartButton.setTitleColor(.black, for: .normal)
+        getStartButton.textCenterImageRightAlignment()
+    }
     
-    private let description : UILabel = {
-        let label = UILabel()
-        label.text = "Find photo you love\nDiscover photographer you like"
-        label.font = Constant.Description.font
-        label.textColor = Constant.Description.color
-        label.textAlignment = Constant.Description.textAlightment
-        label.backgroundColor = .clear
-        label.numberOfLines = 0
-        return label
-    }()
-    
-    private let getStartButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("Get Started", for: .normal)
-        button.titleLabel?.font = .NunitoBold(size: 24)
-        button.setImage(UIImage(named: "ArrowRight"), for: .normal)
-        button.imageView?.contentMode = .scaleAspectFit
-        button.backgroundColor = .white80a
-        button.layer.cornerRadius = 30
-        button.setTitleColor(.black, for: .normal)
-        button.textCenterImageRightAlignment()
-        return button
-    }()
-    
-    func initViewConstraint(){
+    func initConstraint(){
         
         view.addSubview(background)
         background.translatesAutoresizingMaskIntoConstraints = false

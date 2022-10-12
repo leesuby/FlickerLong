@@ -22,16 +22,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         //Goto Onboarding View
         let vc = OnboardingViewController()
-        
         let loginNavigation = UINavigationController(rootViewController:  vc)
         loginNavigation.modalPresentationStyle = .fullScreen
-        
         let window = UIWindow(windowScene: windowScene)
         window.rootViewController = loginNavigation
         window.makeKeyAndVisible()
         self.window = window
     }
 
+    //HANDLE URL
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
             guard let url = URLContexts.first?.url else {
                 return

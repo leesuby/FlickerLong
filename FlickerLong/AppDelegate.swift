@@ -11,6 +11,7 @@ import OAuthSwift
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
+    
     //HANDLE URL
     class var sharedInstance: AppDelegate {
         return UIApplication.shared.delegate as! AppDelegate
@@ -106,7 +107,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 }
 
 
-// MARK: handle callback url
+//HANDLE CALLBACK URL
 extension AppDelegate {
     
     func applicationHandle(url: URL) {

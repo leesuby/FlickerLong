@@ -182,6 +182,7 @@
 				E7BA749128F6785C00AEEC81 /* Network */,
 				E7708DE928F54D4200E20336 /* Resource */,
 				E7708DE328F5485C00E20336 /* Global */,
+				E7BA74A628F6C90E00AEEC81 /* Generic */,
 				E7708DE228F5484000E20336 /* Database */,
 				E7708DE128F5483700E20336 /* Remote */,
 				E7708DE028F5483100E20336 /* Views */,
@@ -238,7 +239,6 @@
 			children = (
 				E7708DE428F5487100E20336 /* Constant.swift */,
 				E7708DF228F5624600E20336 /* UIHelper.swift */,
-				E7BA74A228F6BA5C00AEEC81 /* GeneCollectionView.swift */,
 			);
 			path = Global;
 			sourceTree = "<group>";
@@ -350,6 +350,14 @@
 				E7BA74A428F6C21400AEEC81 /* PopularCell.swift */,
 			);
 			path = Home;
+			sourceTree = "<group>";
+		};
+		E7BA74A628F6C90E00AEEC81 /* Generic */ = {
+			isa = PBXGroup;
+			children = (
+				E7BA74A228F6BA5C00AEEC81 /* GeneCollectionView.swift */,
+			);
+			path = Generic;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
