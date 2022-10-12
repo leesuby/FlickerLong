@@ -39,6 +39,10 @@
 		E7708E6A28F57B8700E20336 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7708E6928F57B8700E20336 /* LoginViewController.swift */; };
 		E7BA749328F6787800AEEC81 /* OAuthAuthorization.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7BA749228F6787800AEEC81 /* OAuthAuthorization.swift */; };
 		E7BA749528F67D5A00AEEC81 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7BA749428F67D5A00AEEC81 /* LoginView.swift */; };
+		E7BA749F28F6B9A400AEEC81 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7BA749E28F6B9A400AEEC81 /* HomeViewController.swift */; };
+		E7BA74A128F6B9CB00AEEC81 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7BA74A028F6B9CB00AEEC81 /* HomeView.swift */; };
+		E7BA74A328F6BA5C00AEEC81 /* GeneCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7BA74A228F6BA5C00AEEC81 /* GeneCollectionView.swift */; };
+		E7BA74A528F6C21400AEEC81 /* PopularCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7BA74A428F6C21400AEEC81 /* PopularCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -136,6 +140,10 @@
 		E7BA747728F6760800AEEC81 /* OAuthSwift.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OAuthSwift.xcodeproj; path = "../../../../Downloads/OAuthSwift-master-2/OAuthSwift.xcodeproj"; sourceTree = "<group>"; };
 		E7BA749228F6787800AEEC81 /* OAuthAuthorization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthAuthorization.swift; sourceTree = "<group>"; };
 		E7BA749428F67D5A00AEEC81 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		E7BA749E28F6B9A400AEEC81 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		E7BA74A028F6B9CB00AEEC81 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		E7BA74A228F6BA5C00AEEC81 /* GeneCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneCollectionView.swift; sourceTree = "<group>"; };
+		E7BA74A428F6C21400AEEC81 /* PopularCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -169,9 +177,9 @@
 		E7708DC628F543C100E20336 /* FlickerLong */ = {
 			isa = PBXGroup;
 			children = (
-				E7BA749128F6785C00AEEC81 /* Network */,
 				E7708DC728F543C100E20336 /* AppDelegate.swift */,
 				E7708DC928F543C100E20336 /* SceneDelegate.swift */,
+				E7BA749128F6785C00AEEC81 /* Network */,
 				E7708DE928F54D4200E20336 /* Resource */,
 				E7708DE328F5485C00E20336 /* Global */,
 				E7708DE228F5484000E20336 /* Database */,
@@ -204,6 +212,7 @@
 		E7708DE028F5483100E20336 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				E7BA749D28F6B99000AEEC81 /* Home */,
 				E7708E6828F57B2000E20336 /* Login */,
 				E7708DE628F5488A00E20336 /* Onboarding */,
 			);
@@ -229,6 +238,7 @@
 			children = (
 				E7708DE428F5487100E20336 /* Constant.swift */,
 				E7708DF228F5624600E20336 /* UIHelper.swift */,
+				E7BA74A228F6BA5C00AEEC81 /* GeneCollectionView.swift */,
 			);
 			path = Global;
 			sourceTree = "<group>";
@@ -330,6 +340,16 @@
 				E7BA749228F6787800AEEC81 /* OAuthAuthorization.swift */,
 			);
 			path = Network;
+			sourceTree = "<group>";
+		};
+		E7BA749D28F6B99000AEEC81 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				E7BA749E28F6B9A400AEEC81 /* HomeViewController.swift */,
+				E7BA74A028F6B9CB00AEEC81 /* HomeView.swift */,
+				E7BA74A428F6C21400AEEC81 /* PopularCell.swift */,
+			);
+			path = Home;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -487,10 +507,14 @@
 				E7708DE828F548BE00E20336 /* OnboardingView.swift in Sources */,
 				E7BA749328F6787800AEEC81 /* OAuthAuthorization.swift in Sources */,
 				E7708E6A28F57B8700E20336 /* LoginViewController.swift in Sources */,
+				E7BA74A328F6BA5C00AEEC81 /* GeneCollectionView.swift in Sources */,
 				E7708DC828F543C100E20336 /* AppDelegate.swift in Sources */,
+				E7BA749F28F6B9A400AEEC81 /* HomeViewController.swift in Sources */,
 				E7708DCA28F543C100E20336 /* SceneDelegate.swift in Sources */,
+				E7BA74A128F6B9CB00AEEC81 /* HomeView.swift in Sources */,
 				E7BA749528F67D5A00AEEC81 /* LoginView.swift in Sources */,
 				E7708DF328F5624700E20336 /* UIHelper.swift in Sources */,
+				E7BA74A528F6C21400AEEC81 /* PopularCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

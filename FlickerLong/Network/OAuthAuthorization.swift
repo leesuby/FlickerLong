@@ -19,7 +19,7 @@ class OAuthAuthorization {
     )
     
     // authorize
-    static func authorize(baseViewController : UIViewController, webViewController : OAuthWebViewController){
+    static func authorize(baseViewController : UIViewController, webViewController : OAuthWebViewController, completion: @escaping () -> ()){
         
         if(webViewController.parent == nil){
             baseViewController.addChild(webViewController)
@@ -33,6 +33,7 @@ class OAuthAuthorization {
                     print(credential.oauthToken)
                     print(credential.oauthTokenSecret)
                     print(parameters["user_nsid"]!)
+                    completion()
                     // Do your request
                 case .failure(let error):
                     print(error.localizedDescription)
