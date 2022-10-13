@@ -7,12 +7,15 @@
 
 import UIKit
 
-class HomeViewController: UIViewController {
+class HomeViewController: UIViewController, UICollectionViewDelegate {
     
     private var homeView : HomeView!
     var collectionView : UICollectionView!
-    private var controllerCollectionView : GeneCollectionView<PopularCell, String>!
+    private var datasourceCollectionView : GenericCollectionViewDataSource<String>!
+    private var delegateCollectionView : GenericCollectionViewDelegate!
     private var listImage : [String] = ["a","b"]
+    
+//    var datasource: DataSource = HomeDataSource()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,15 +24,39 @@ class HomeViewController: UIViewController {
         homeView.initView()
         homeView.initConstraint()
         
-        controllerCollectionView = GeneCollectionView<PopularCell,String>(cellIdentifier: "popular", items: listImage)
-        controllerCollectionView.configureSizeForItemAt { indexPath in
+        datasourceCollectionView = GenericCollectionViewDataSource<String>(items: listImage)
+        datasourceCollectionView.setConfigureCell { indexPath in
+            var cell = UICollectionViewCell()
+            if let popularCell = self.collectionView.dequeueReusableCell(withReuseIdentifier: "popular", for: indexPath) as? PopularCell{
+                cell = popularCell
+            }
+            return cell
+        }
+        
+        delegateCollectionView = GenericCollectionViewDelegate()
+        delegateCollectionView.setConfigureSizeForItemAt { indexPath in
             return CGSize(width: 50, height: 50)
         }
         
-        collectionView.delegate = controllerCollectionView
-        collectionView.dataSource = controllerCollectionView
+        collectionView.delegate = delegateCollectionView
+        collectionView.dataSource = datasourceCollectionView
         collectionView.register(PopularCell.self, forCellWithReuseIdentifier: "popular")
     }
     
 
+}
+
+
+protocol ViewModel {
+    var model: Model? { get set }
+}
+
+protocol Model {
+    
+}
+
+protocol CellWithViewModel {
+    var viewModel: ViewModel? { get set }
+    
+    func bind(with vm: ViewModel)
 }

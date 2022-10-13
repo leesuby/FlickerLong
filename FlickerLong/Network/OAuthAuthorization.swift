@@ -9,16 +9,16 @@ import Foundation
 import OAuthSwift
 
 
+//MARK: OAuth framework using for Flickr
 class OAuthAuthorization {
     static var oauthswift = OAuth1Swift(
-        consumerKey:    "e3e9d23e495da9bf5c0f1a0a63d5be66",
-        consumerSecret: "bc0b1e9d741c62d4",
+        consumerKey:     ProcessInfo.processInfo.environment["API_KEY"]!,
+        consumerSecret:  ProcessInfo.processInfo.environment["API_SECRET"]!,
         requestTokenUrl: "https://www.flickr.com/services/oauth/request_token",
         authorizeUrl:    "https://www.flickr.com/services/oauth/authorize",
         accessTokenUrl:  "https://www.flickr.com/services/oauth/access_token"
     )
     
-    // authorize
     static func authorize(baseViewController : UIViewController, webViewController : OAuthWebViewController, completion: @escaping () -> ()){
         
         if(webViewController.parent == nil){

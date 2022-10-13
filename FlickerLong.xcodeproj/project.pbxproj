@@ -43,6 +43,11 @@
 		E7BA74A128F6B9CB00AEEC81 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7BA74A028F6B9CB00AEEC81 /* HomeView.swift */; };
 		E7BA74A328F6BA5C00AEEC81 /* GeneCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7BA74A228F6BA5C00AEEC81 /* GeneCollectionView.swift */; };
 		E7BA74A528F6C21400AEEC81 /* PopularCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7BA74A428F6C21400AEEC81 /* PopularCell.swift */; };
+		E7BA74A828F7B74700AEEC81 /* FlickerAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7BA74A728F7B74700AEEC81 /* FlickerAPI.swift */; };
+		E7BA74AA28F7C6A100AEEC81 /* RecentData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7BA74A928F7C6A100AEEC81 /* RecentData.swift */; };
+		E7BA74AC28F7C6AF00AEEC81 /* Photos.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7BA74AB28F7C6AF00AEEC81 /* Photos.swift */; };
+		E7BA74AE28F7C6B800AEEC81 /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7BA74AD28F7C6B800AEEC81 /* Photo.swift */; };
+		E7BA74B028F7C75A00AEEC81 /* JSONSchemaSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7BA74AF28F7C75A00AEEC81 /* JSONSchemaSupport.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -144,6 +149,11 @@
 		E7BA74A028F6B9CB00AEEC81 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		E7BA74A228F6BA5C00AEEC81 /* GeneCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneCollectionView.swift; sourceTree = "<group>"; };
 		E7BA74A428F6C21400AEEC81 /* PopularCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularCell.swift; sourceTree = "<group>"; };
+		E7BA74A728F7B74700AEEC81 /* FlickerAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlickerAPI.swift; sourceTree = "<group>"; };
+		E7BA74A928F7C6A100AEEC81 /* RecentData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentData.swift; sourceTree = "<group>"; };
+		E7BA74AB28F7C6AF00AEEC81 /* Photos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photos.swift; sourceTree = "<group>"; };
+		E7BA74AD28F7C6B800AEEC81 /* Photo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
+		E7BA74AF28F7C75A00AEEC81 /* JSONSchemaSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONSchemaSupport.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -185,9 +195,9 @@
 				E7BA74A628F6C90E00AEEC81 /* Generic */,
 				E7708DE228F5484000E20336 /* Database */,
 				E7708DE128F5483700E20336 /* Remote */,
-				E7708DE028F5483100E20336 /* Views */,
-				E7708DDF28F5480E00E20336 /* ViewModels */,
 				E7708DDE28F5480400E20336 /* Models */,
+				E7708DDF28F5480E00E20336 /* ViewModels */,
+				E7708DE028F5483100E20336 /* Views */,
 				E7708DD328F543C200E20336 /* Assets.xcassets */,
 				E7708DD528F543C200E20336 /* LaunchScreen.storyboard */,
 				E7708DD828F543C200E20336 /* Info.plist */,
@@ -199,6 +209,9 @@
 		E7708DDE28F5480400E20336 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				E7BA74A928F7C6A100AEEC81 /* RecentData.swift */,
+				E7BA74AB28F7C6AF00AEEC81 /* Photos.swift */,
+				E7BA74AD28F7C6B800AEEC81 /* Photo.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -239,6 +252,7 @@
 			children = (
 				E7708DE428F5487100E20336 /* Constant.swift */,
 				E7708DF228F5624600E20336 /* UIHelper.swift */,
+				E7BA74AF28F7C75A00AEEC81 /* JSONSchemaSupport.swift */,
 			);
 			path = Global;
 			sourceTree = "<group>";
@@ -338,6 +352,7 @@
 			isa = PBXGroup;
 			children = (
 				E7BA749228F6787800AEEC81 /* OAuthAuthorization.swift */,
+				E7BA74A728F7B74700AEEC81 /* FlickerAPI.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -515,14 +530,19 @@
 				E7708DE828F548BE00E20336 /* OnboardingView.swift in Sources */,
 				E7BA749328F6787800AEEC81 /* OAuthAuthorization.swift in Sources */,
 				E7708E6A28F57B8700E20336 /* LoginViewController.swift in Sources */,
+				E7BA74AA28F7C6A100AEEC81 /* RecentData.swift in Sources */,
 				E7BA74A328F6BA5C00AEEC81 /* GeneCollectionView.swift in Sources */,
+				E7BA74B028F7C75A00AEEC81 /* JSONSchemaSupport.swift in Sources */,
 				E7708DC828F543C100E20336 /* AppDelegate.swift in Sources */,
 				E7BA749F28F6B9A400AEEC81 /* HomeViewController.swift in Sources */,
 				E7708DCA28F543C100E20336 /* SceneDelegate.swift in Sources */,
 				E7BA74A128F6B9CB00AEEC81 /* HomeView.swift in Sources */,
+				E7BA74AE28F7C6B800AEEC81 /* Photo.swift in Sources */,
+				E7BA74AC28F7C6AF00AEEC81 /* Photos.swift in Sources */,
 				E7BA749528F67D5A00AEEC81 /* LoginView.swift in Sources */,
 				E7708DF328F5624700E20336 /* UIHelper.swift in Sources */,
 				E7BA74A528F6C21400AEEC81 /* PopularCell.swift in Sources */,
+				E7BA74A828F7B74700AEEC81 /* FlickerAPI.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

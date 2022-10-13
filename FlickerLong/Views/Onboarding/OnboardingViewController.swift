@@ -33,12 +33,16 @@ class OnboardingViewController: UIViewController {
 
 extension OnboardingViewController : OnboardingViewDelegate{
     func getStartTapped() {
-        OAuthAuthorization.authorize(baseViewController: self, webViewController: loginViewController) {
-            let vc = HomeViewController()
-            let navigation = UINavigationController(rootViewController: vc)
-            navigation.modalPresentationStyle = .fullScreen
-            self.present(navigation, animated: true)
+        FlickerAPI<RecentData>.getDataFlicker(method: .getRecent) { RecentData in
+            print(RecentData)
         }
+        
+//        OAuthAuthorization.authorize(baseViewController: self, webViewController: loginViewController) {
+//            let vc = HomeViewController()
+//            let navigation = UINavigationController(rootViewController: vc)
+//            navigation.modalPresentationStyle = .fullScreen
+//            self.present(navigation, animated: true)
+//        }
     }
 }
 

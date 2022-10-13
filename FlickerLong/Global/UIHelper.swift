@@ -8,6 +8,8 @@
 import Foundation
 import UIKit
 
+
+//MARK: Font
 extension UIFont {
     static func NunitoMedium(size: CGFloat) -> UIFont?{
         return UIFont(name: "Nunito-Medium", size: size)
@@ -74,6 +76,8 @@ extension UIFont {
     }
 }
 
+
+//MARK: Color
 extension UIColor{
     static func hexStringToUIColor (hex:String , alpha: Float) -> UIColor {
         var cString:String = hex.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
@@ -101,6 +105,7 @@ extension UIColor{
     
 }
 
+//MARK: Button
 extension UIButton{
     func textCenterImageRightAlignment(){
         semanticContentAttribute = .forceRightToLeft

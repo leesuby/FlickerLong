@@ -8,46 +8,47 @@
 import Foundation
 import UIKit
 
-class GeneCollectionView<CELL : UICollectionViewCell,T> : NSObject, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+// MARK: Generic type for datasource UICollectionView
+class GenericCollectionViewDataSource<T> : NSObject, UICollectionViewDataSource{
     
-    private var cellIdentifier : String!
     private var items : [T]!
-    private var configureCell : (CELL, T) -> () = {_,_ in }
-    private var configureSizeForItemAt : ((Int) -> CGSize) = {_ in return CGSize.zero}
+    private var configureCell : (_ indexPath: IndexPath) -> (UICollectionViewCell) = {_ in return UICollectionViewCell()}
     
-    //CONFIG
-    func configureCell(config: @escaping (CELL, T) -> ()){
-        self.configureCell = config
-    }
-    
-    func configureSizeForItemAt(config: @escaping (Int) -> CGSize){
-        self.configureSizeForItemAt = config
-    }
-    
-    init(cellIdentifier : String, items : [T]) {
-        self.cellIdentifier = cellIdentifier
+    init(items : [T]) {
         self.items =  items
     }
     
-    
+    //CONFIG
+    func setConfigureCell(config: @escaping (_ indexPath: IndexPath) -> (UICollectionViewCell)){
+        self.configureCell = config
+    }
+   
     //DATA SOURCE
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return items.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier, for: indexPath) as! CELL
-        let item = self.items[indexPath.row]
-        self.configureCell(cell, item)
+        let cell = self.configureCell(indexPath)
         return cell
+    }
+    
+
+}
+
+// MARK: Generic type for delegate UICollectionView
+class GenericCollectionViewDelegate: NSObject, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+    
+    private var configureSizeForItemAt : ((Int) -> CGSize) = {_ in return CGSize.zero}
+    
+    //CONFIG
+    func setConfigureSizeForItemAt(config: @escaping (Int) -> CGSize){
+        self.configureSizeForItemAt = config
     }
     
     //FLOW LAYOUT
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         configureSizeForItemAt(indexPath.item)
     }
-    
 }
-
-
 

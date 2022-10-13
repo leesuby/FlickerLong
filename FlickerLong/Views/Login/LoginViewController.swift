@@ -17,7 +17,7 @@ class LoginViewController : OAuthWebViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+    
         title = "Loading..."
         self.loginView = LoginView(view: view.self)
         self.loginView.initView()
@@ -28,6 +28,7 @@ class LoginViewController : OAuthWebViewController{
     
     override func handle(_ url: URL) {
         targetURL = url
+        
         super.handle(url)
         self.loadAddressURL()
     }
@@ -36,7 +37,9 @@ class LoginViewController : OAuthWebViewController{
         guard let url = targetURL else {
             return
         }
+        
         let req = URLRequest(url: url)
+        
         DispatchQueue.main.async {
             self.loginView.webView.load(req)
         }
