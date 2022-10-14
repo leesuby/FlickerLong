@@ -19,7 +19,11 @@ class HomeView {
     }
     
     func initView(){
-        viewController.collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout.init())
+        let layout = UICollectionViewFlowLayout()
+        layout.minimumLineSpacing = Constant.DynamicLayout.spacing //as per your requirement
+        layout.minimumInteritemSpacing = 0 //as per your requirement
+        layout.scrollDirection = .vertical
+        viewController.collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView = viewController.collectionView
         
     }

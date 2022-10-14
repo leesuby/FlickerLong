@@ -12,6 +12,7 @@ class OnboardingViewController: UIViewController {
     
     private var onboardingView : OnboardingView!
     
+    //Getfor WebView
     lazy var loginViewController: LoginViewController = {
         let controller = LoginViewController()
         controller.delegate = self
@@ -22,7 +23,7 @@ class OnboardingViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //Setting View
+        //Set VIEW
         onboardingView = OnboardingView(view: self.view)
         onboardingView.delegate = self
         onboardingView.initView()
@@ -33,16 +34,12 @@ class OnboardingViewController: UIViewController {
 
 extension OnboardingViewController : OnboardingViewDelegate{
     func getStartTapped() {
-        FlickerAPI<RecentData>.getDataFlicker(method: .getRecent) { RecentData in
-            print(RecentData)
+        OAuthAuthorization.authorize(baseViewController: self, webViewController: loginViewController) {
+            let vc = HomeViewController()
+            let navigation = UINavigationController(rootViewController: vc)
+            navigation.modalPresentationStyle = .fullScreen
+            self.present(navigation, animated: true)
         }
-        
-//        OAuthAuthorization.authorize(baseViewController: self, webViewController: loginViewController) {
-//            let vc = HomeViewController()
-//            let navigation = UINavigationController(rootViewController: vc)
-//            navigation.modalPresentationStyle = .fullScreen
-//            self.present(navigation, animated: true)
-//        }
     }
 }
 
@@ -67,7 +64,7 @@ extension OnboardingViewController : OAuthWebViewControllerDelegate{
     
     }
     
-    //Make sure we OAuth stop when we out WebView
+    //Make sure OAuth stop when webview disappear
     func oauthWebViewControllerDidDisappear() {
         OAuthAuthorization.oauthswift.cancel()
     }

@@ -11,7 +11,7 @@ import UIKit
 // MARK: Generic type for datasource UICollectionView
 class GenericCollectionViewDataSource<T> : NSObject, UICollectionViewDataSource{
     
-    private var items : [T]!
+    var items : [T]!
     private var configureCell : (_ indexPath: IndexPath) -> (UICollectionViewCell) = {_ in return UICollectionViewCell()}
     
     init(items : [T]) {
@@ -50,5 +50,6 @@ class GenericCollectionViewDelegate: NSObject, UICollectionViewDelegate, UIColle
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         configureSizeForItemAt(indexPath.item)
     }
+
 }
 

@@ -9,7 +9,11 @@ import Foundation
 import UIKit
 
 class Constant{
-    
+    class DynamicLayout{
+        static var heightDynamic: CGFloat = 200
+        static var minimumWidth: CGFloat = 60
+        static var spacing: CGFloat = 6
+    }
     class Logo {
         static var imageName = "LogoNoBackground"
         static var logoRotate : CGFloat = .pi / 42

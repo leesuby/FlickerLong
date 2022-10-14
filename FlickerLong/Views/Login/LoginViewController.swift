@@ -19,6 +19,8 @@ class LoginViewController : OAuthWebViewController{
         super.viewDidLoad()
     
         title = "Loading..."
+        
+        //Set VIEW
         self.loginView = LoginView(view: view.self)
         self.loginView.initView()
         self.loginView.initConstraint()
@@ -50,12 +52,12 @@ class LoginViewController : OAuthWebViewController{
 
 extension LoginViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        //Change title of Screen
+        //CHANGE TITLE OF SCREEN
         title = loginView.webView.title
     }
     
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        //Handle URL
+        //HANDLE URL
         if let url = navigationAction.request.url , url.scheme == "oauth-swift" {
             AppDelegate.sharedInstance.applicationHandle(url: url)
             decisionHandler(.cancel)
@@ -66,7 +68,7 @@ extension LoginViewController: WKNavigationDelegate {
     }
 
     func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
-        //Error when WebView fail
+        //ERROR WHEN WEBVIEW FAIL
         print("\(error)")
         self.dismissWebViewController()
     }
