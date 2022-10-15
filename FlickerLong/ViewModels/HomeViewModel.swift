@@ -24,7 +24,7 @@ class HomeViewModel : ViewModel{
     }
     
     func getRecentImage(){
-        Remote.getPopularData { result in
+        Repository.getPopularData { result in
             self.listPicture = result
         }
     }

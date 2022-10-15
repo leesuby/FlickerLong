@@ -17,11 +17,13 @@ class HomeViewController: UIViewController, View{
     }
     
     private var homeView : HomeView!
-    var collectionView : UICollectionView!
-    private var datasourceCollectionView : GenericCollectionViewDataSource<PhotoView>!
-    private var delegateCollectionView : GenericCollectionViewDelegate!
-    
     private var widthView : CGFloat!
+    var collectionView : UICollectionView!
+    private var listPictures : [PhotoView] = []
+    private var page: Int = 1
+    private var sizeCollectionView : Int = 20
+    private var flagPaging : Bool = false
+    private var flagInit : Bool = true
     override func viewDidLoad() {
         super.viewDidLoad()
         self.viewModel = HomeViewModel()
@@ -33,31 +35,8 @@ class HomeViewController: UIViewController, View{
         homeView.initConstraint()
         
         //Set COLLECTIONVIEW
-        datasourceCollectionView = GenericCollectionViewDataSource<PhotoView>(items: self.viewModel.listPicture)
-        datasourceCollectionView.setConfigureCell { indexPath in
-            
-            var cell = UICollectionViewCell()
-            if let popularCell = self.collectionView.dequeueReusableCell(withReuseIdentifier: "popular", for: indexPath) as? PopularCell{
-                
-                popularCell.config(photo: self.viewModel.listPicture[indexPath.row])
-                cell = popularCell
-            }
-            return cell
-        }
-        
-        delegateCollectionView = GenericCollectionViewDelegate()
-        delegateCollectionView.setConfigureSizeForItemAt { [self] indexPath in
-            let photoWidth = datasourceCollectionView.items[indexPath].scaleWidth
-            if(photoWidth == widthView){
-                return CGSize(width: datasourceCollectionView.items[indexPath].scaleWidth, height: CGFloat(Constant.DynamicLayout.heightDynamic))
-            }
-            else{
-                return CGSize(width: datasourceCollectionView.items[indexPath].scaleWidth - Constant.DynamicLayout.spacing/2, height: CGFloat(Constant.DynamicLayout.heightDynamic))
-            }
-        }
-        
-        collectionView.delegate = delegateCollectionView
-        collectionView.dataSource = datasourceCollectionView
+        collectionView.delegate = self
+        collectionView.dataSource = self
         collectionView.register(PopularCell.self, forCellWithReuseIdentifier: "popular")
         
         //Bind VIEWMODEL
@@ -67,16 +46,20 @@ class HomeViewController: UIViewController, View{
     
     //Reload data when ViewModel changes
     func reloadDataCollectionView(){
-        datasourceCollectionView.items = self.viewModel.listPicture
-        datasourceCollectionView.items = calculateDynamicLayout(data: datasourceCollectionView.items)
+        listPictures = self.viewModel.listPicture
+        listPictures = calculateDynamicLayout(sliceArray: listPictures[..<sizeCollectionView])
         DispatchQueue.main.async { [self] in
             collectionView.reloadData()
+            if(flagPaging == true)
+            {
+                flagPaging = false
+            }
         }
     }
     
-    
-    func calculateDynamicLayout(data : [PhotoView]) -> [PhotoView]{
-        var data: [PhotoView] = data.map {$0}
+    //Function to calculate size for each cell in Dynamic Layout
+    func calculateDynamicLayout(sliceArray : ArraySlice<PhotoView>) -> [PhotoView]{
+        var data: [PhotoView] = Array(sliceArray)
         var result: [PhotoView] = []
         var tmpArray : [PhotoView] = []
         
@@ -134,4 +117,54 @@ class HomeViewController: UIViewController, View{
         return result
     }
     
+}
+
+
+// MARK: Setting for UICollectionView
+extension HomeViewController : UICollectionViewDataSource{
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        var cell = UICollectionViewCell()
+        if let popularCell = self.collectionView.dequeueReusableCell(withReuseIdentifier: "popular", for: indexPath) as? PopularCell{
+            
+            popularCell.config(photo: self.viewModel.listPicture[indexPath.row])
+            cell = popularCell
+        }
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if listPictures.count == 0{
+            flagInit = false
+        }
+        return listPictures.count
+    }
+    
+}
+
+extension HomeViewController : UICollectionViewDelegate , UICollectionViewDelegateFlowLayout{
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        let photoWidth = listPictures[indexPath.item].scaleWidth
+        if(photoWidth == widthView){
+            return CGSize(width: photoWidth!, height: CGFloat(Constant.DynamicLayout.heightDynamic))
+        }
+        else{
+            return CGSize(width: photoWidth! - Constant.DynamicLayout.spacing/2, height: CGFloat(Constant.DynamicLayout.heightDynamic))
+        }
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if(self.flagInit == false){
+            let height = scrollView.frame.size.height
+            let contentYoffset = scrollView.contentOffset.y
+            let distanceFromBottom = scrollView.contentSize.height - contentYoffset
+            if distanceFromBottom < height {
+                if(self.flagPaging == false){
+                    self.flagPaging = true
+                    self.sizeCollectionView = ((self.sizeCollectionView + 20) >= 100) ? 100 : self.sizeCollectionView + 20
+                    self.reloadDataCollectionView()
+                }
+            }
+        }
+    }
 }

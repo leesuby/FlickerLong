@@ -8,7 +8,7 @@
 import UIKit
 
 class PopularCell: UICollectionViewCell {
-    private var imageView : UIImageView!
+    private var imageView : CacheImage!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -17,7 +17,7 @@ class PopularCell: UICollectionViewCell {
     }
     
     func initView(){
-        imageView = UIImageView(frame: .zero)
+        imageView = CacheImage(frame: .zero)
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
     }
@@ -33,7 +33,7 @@ class PopularCell: UICollectionViewCell {
     }
     
     func config(photo : PhotoView){
-        imageView.image = photo.image
+        self.imageView.loadImageWithUrl(photo.url)
     }
     
     required init?(coder: NSCoder) {

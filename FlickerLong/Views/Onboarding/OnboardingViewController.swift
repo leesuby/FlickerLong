@@ -35,10 +35,30 @@ class OnboardingViewController: UIViewController {
 extension OnboardingViewController : OnboardingViewDelegate{
     func getStartTapped() {
         OAuthAuthorization.authorize(baseViewController: self, webViewController: loginViewController) {
-            let vc = HomeViewController()
-            let navigation = UINavigationController(rootViewController: vc)
-            navigation.modalPresentationStyle = .fullScreen
-            self.present(navigation, animated: true)
+            let tabBarVC = UITabBarController()
+            
+            let homeVC = HomeViewController()
+            let uploadVC = UploadViewController()
+            let profileVC = ProfileViewController()
+            
+            homeVC.title = "Home"
+            uploadVC.title = "Upload"
+            profileVC.title = "Profile"
+            
+            tabBarVC.setViewControllers([homeVC, uploadVC, profileVC], animated: true)
+            
+            guard let items = tabBarVC.tabBar.items else{
+                return
+            }
+            
+            let imagesTabBar = ["HomeSymbol","UploadSymbol","ProfileSymbol"]
+            
+            for i in 0..<items.count {
+                items[i].image = UIImage(named: imagesTabBar[i])
+            }
+            
+            tabBarVC.modalPresentationStyle = .fullScreen
+            self.present(tabBarVC, animated: true)
         }
     }
 }
