@@ -16,7 +16,7 @@ class Repository{
         var downloadedPicture : Int = 0
         var dataListPicture : [PhotoView] = []
         
-        FlickerAPI<RecentData>.getDataFlicker(method: .getRecent) { recentData in
+        FlickerAPI<RecentData>.getDataFlicker(on: .recent) { recentData in
             guard let photos = recentData.photos?.photo else{
                 return
             }

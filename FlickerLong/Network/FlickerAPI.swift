@@ -8,23 +8,29 @@
 import Foundation
 
 //MARK: Method for get data from Flickr
-enum FlickerMethod{
-    case getRecent
-    case getInfo
+enum FlickerEndPoint: String{
+    case recent
+    case info
+    
+    func getPath () -> String{
+        switch self{
+        case .recent:
+            return "method=flickr.photos.getRecent&api_key=\(String(describing:ProcessInfo.processInfo.environment["API_KEY"]!))&format=json&nojsoncallback=1"
+        case .info:
+            return ""
+        }
+    }
 }
+
+
 
 //MARK: Class to call API Flickr
 class FlickerAPI<T : Codable>{
-    static func getDataFlicker(method : FlickerMethod, completion :@escaping(T) -> ()){
+    static func getDataFlicker(on endPoint : FlickerEndPoint, completion :@escaping(T) -> ()){
         
         var baseURL : String = "https://www.flickr.com/services/rest/?"
         
-        switch method{
-            case .getRecent:
-                baseURL.append("method=flickr.photos.getRecent&api_key=\(String(describing:ProcessInfo.processInfo.environment["API_KEY"]!))&format=json&nojsoncallback=1")
-            case .getInfo:
-                break
-        }
+        baseURL.append(endPoint.getPath())
         
         URLSession.shared.dataTask(with: URL(string: baseURL)!) { (data, urlResponse, error) in
             if let data = data {

@@ -1,53 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-<dict>
-	<key>UIAppFonts</key>
-	<array>
-		<string>Nunito-Medium.ttf</string>
-		<string>Nunito-ExtraBold.ttf</string>
-		<string>Nunito-ExtraBoldItalic.ttf</string>
-		<string>Nunito-ExtraLightItalic.ttf</string>
-		<string>Nunito-Light.ttf</string>
-		<string>Nunito-Regular.ttf</string>
-		<string>Nunito-SemiBold.ttf</string>
-		<string>Nunito-Bold.ttf</string>
-		<string>Nunito-BoldItalic.ttf</string>
-		<string>Nunito-Black.ttf</string>
-		<string>Nunito-ExtraLight.ttf</string>
-		<string>Nunito-SemiBoldItalic.ttf</string>
-		<string>Nunito-BlackItalic.ttf</string>
-		<string>Nunito-Italic.ttf</string>
-		<string>Nunito-LightItalic.ttf</string>
-		<string>Nunito-MediumItalic.ttf</string>
-	</array>
-	<key>CFBundleURLTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>FlickerLong</string>
-			</array>
-		</dict>
-	</array>
-	<key>UIApplicationSceneManifest</key>
-	<dict>
-		<key>UIApplicationSupportsMultipleScenes</key>
-		<false/>
-		<key>UISceneConfigurations</key>
-		<dict>
-			<key>UIWindowSceneSessionRoleApplication</key>
-			<array>
-				<dict>
-					<key>UISceneConfigurationName</key>
-					<string>Default Configuration</string>
-					<key>UISceneDelegateClassName</key>
-					<string>$(PRODUCT_MODULE_NAME).SceneDelegate</string>
-				</dict>
-			</array>
-		</dict>
-	</dict>
-</dict>
+    <dict>
+        <key>NSPhotoLibraryUsageDescription</key>
+        <string>${PRODUCT_NAME} PhotoLibrary Usage</string>
+        <key>NSPhotoLibraryAddUsageDescription</key>
+        <string>${PRODUCT_NAME} library Usage</string>
+        <key>UIAppFonts</key>
+        <array>
+            <string>Nunito-Medium.ttf</string>
+            <string>Nunito-ExtraBold.ttf</string>
+            <string>Nunito-ExtraBoldItalic.ttf</string>
+            <string>Nunito-ExtraLightItalic.ttf</string>
+            <string>Nunito-Light.ttf</string>
+            <string>Nunito-Regular.ttf</string>
+            <string>Nunito-SemiBold.ttf</string>
+            <string>Nunito-Bold.ttf</string>
+            <string>Nunito-BoldItalic.ttf</string>
+            <string>Nunito-Black.ttf</string>
+            <string>Nunito-ExtraLight.ttf</string>
+            <string>Nunito-SemiBoldItalic.ttf</string>
+            <string>Nunito-BlackItalic.ttf</string>
+            <string>Nunito-Italic.ttf</string>
+            <string>Nunito-LightItalic.ttf</string>
+            <string>Nunito-MediumItalic.ttf</string>
+        </array>
+        <key>CFBundleURLTypes</key>
+        <array>
+            <dict>
+                <key>CFBundleTypeRole</key>
+                <string>Editor</string>
+                <key>CFBundleURLSchemes</key>
+                <array>
+                    <string>FlickerLong</string>
+                </array>
+            </dict>
+        </array>
+        <key>UIApplicationSceneManifest</key>
+        <dict>
+            <key>UIApplicationSupportsMultipleScenes</key>
+            <false/>
+            <key>UISceneConfigurations</key>
+            <dict>
+                <key>UIWindowSceneSessionRoleApplication</key>
+                <array>
+                    <dict>
+                        <key>UISceneConfigurationName</key>
+                        <string>Default Configuration</string>
+                        <key>UISceneDelegateClassName</key>
+                        <string>$(PRODUCT_MODULE_NAME).SceneDelegate</string>
+                    </dict>
+                </array>
+            </dict>
+        </dict>
+    </dict>
 </plist>

@@ -37,6 +37,7 @@ extension OnboardingViewController : OnboardingViewDelegate{
         OAuthAuthorization.authorize(baseViewController: self, webViewController: loginViewController) {
             let tabBarVC = UITabBarController()
             
+            //ViewController
             let homeVC = HomeViewController()
             let uploadVC = UploadViewController()
             let profileVC = ProfileViewController()
@@ -45,7 +46,10 @@ extension OnboardingViewController : OnboardingViewDelegate{
             uploadVC.title = "Upload"
             profileVC.title = "Profile"
             
-            tabBarVC.setViewControllers([homeVC, uploadVC, profileVC], animated: true)
+            //Navigation Controller
+            let navUpload = UINavigationController(rootViewController: uploadVC)
+        
+            tabBarVC.setViewControllers([homeVC, navUpload, profileVC], animated: true)
             
             guard let items = tabBarVC.tabBar.items else{
                 return

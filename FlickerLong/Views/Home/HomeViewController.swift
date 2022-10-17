@@ -34,6 +34,7 @@ class HomeViewController: UIViewController, View{
         homeView.initView()
         homeView.initConstraint()
         
+        
         //Set COLLECTIONVIEW
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -135,6 +136,10 @@ extension HomeViewController : UICollectionViewDataSource{
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if listPictures.count == 0{
             flagInit = false
+            homeView.startLoading()
+        }
+        else{
+            homeView.stopLoading()
         }
         return listPictures.count
     }

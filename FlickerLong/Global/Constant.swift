@@ -28,4 +28,16 @@ class Constant{
         static var color : UIColor = .white
         static var textAlightment : NSTextAlignment = NSTextAlignment.center
     }
+    
+    class Title{
+        static var font : UIFont = .NunitoBold(size: 16)!
+        static var color: UIColor = .darkText
+        static var textAlightment : NSTextAlignment = NSTextAlignment.center
+    }
+    
+    class SubTitle{
+        static var font : UIFont = .NunitoRegular(size: 14)!
+        static var color: UIColor = .darkText
+        static var textAlightment : NSTextAlignment = NSTextAlignment.center
+    }
 }
