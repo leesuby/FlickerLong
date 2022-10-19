@@ -34,7 +34,6 @@ class HomeViewController: UIViewController, View{
         homeView.initView()
         homeView.initConstraint()
         
-        
         //Set COLLECTIONVIEW
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -42,6 +41,13 @@ class HomeViewController: UIViewController, View{
         
         //Bind VIEWMODEL
         bind(with: self.viewModel)
+        
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        //Update Status User
+        Constant.UserStatus.currentTab = .home
     }
     
     

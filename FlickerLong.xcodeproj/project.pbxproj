@@ -42,6 +42,12 @@
 		E77A497628F9457C00925FD0 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77A497528F9457C00925FD0 /* Helper.swift */; };
 		E77A498128FA8A2900925FD0 /* CacheImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77A498028FA8A2900925FD0 /* CacheImage.swift */; };
 		E77A498A28FD310700925FD0 /* InformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77A498928FD310700925FD0 /* InformationView.swift */; };
+		E77A498E28FD5ED300925FD0 /* PhotoPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77A498D28FD5ED300925FD0 /* PhotoPickerViewController.swift */; };
+		E77A499028FD635700925FD0 /* PickerImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77A498F28FD635700925FD0 /* PickerImageCell.swift */; };
+		E77A499328FD657600925FD0 /* PhotoPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77A499228FD657600925FD0 /* PhotoPickerView.swift */; };
+		E77A49A628FFA1C700925FD0 /* PostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77A49A528FFA1C700925FD0 /* PostViewController.swift */; };
+		E77A49A828FFA52B00925FD0 /* PostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77A49A728FFA52B00925FD0 /* PostView.swift */; };
+		E77A49AA28FFABDE00925FD0 /* LimitCharacterTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77A49A928FFABDE00925FD0 /* LimitCharacterTextField.swift */; };
 		E7BA749328F6787800AEEC81 /* OAuthAuthorization.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7BA749228F6787800AEEC81 /* OAuthAuthorization.swift */; };
 		E7BA749528F67D5A00AEEC81 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7BA749428F67D5A00AEEC81 /* LoginView.swift */; };
 		E7BA749F28F6B9A400AEEC81 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7BA749E28F6B9A400AEEC81 /* HomeViewController.swift */; };
@@ -157,6 +163,12 @@
 		E77A497528F9457C00925FD0 /* Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
 		E77A498028FA8A2900925FD0 /* CacheImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheImage.swift; sourceTree = "<group>"; };
 		E77A498928FD310700925FD0 /* InformationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationView.swift; sourceTree = "<group>"; };
+		E77A498D28FD5ED300925FD0 /* PhotoPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoPickerViewController.swift; sourceTree = "<group>"; };
+		E77A498F28FD635700925FD0 /* PickerImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerImageCell.swift; sourceTree = "<group>"; };
+		E77A499228FD657600925FD0 /* PhotoPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoPickerView.swift; sourceTree = "<group>"; };
+		E77A49A528FFA1C700925FD0 /* PostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewController.swift; sourceTree = "<group>"; };
+		E77A49A728FFA52B00925FD0 /* PostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostView.swift; sourceTree = "<group>"; };
+		E77A49A928FFABDE00925FD0 /* LimitCharacterTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LimitCharacterTextField.swift; sourceTree = "<group>"; };
 		E7BA747728F6760800AEEC81 /* OAuthSwift.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OAuthSwift.xcodeproj; path = "../../../../Downloads/OAuthSwift-master-2/OAuthSwift.xcodeproj"; sourceTree = "<group>"; };
 		E7BA749228F6787800AEEC81 /* OAuthAuthorization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthAuthorization.swift; sourceTree = "<group>"; };
 		E7BA749428F67D5A00AEEC81 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
@@ -364,7 +376,10 @@
 		E77A496828F93C6E00925FD0 /* Upload */ = {
 			isa = PBXGroup;
 			children = (
+				E77A499E28FFA09800925FD0 /* Post */,
+				E77A499128FD652F00925FD0 /* PhotoPicker */,
 				E77A497128F93CA100925FD0 /* UploadViewController.swift */,
+				E77A498F28FD635700925FD0 /* PickerImageCell.swift */,
 			);
 			path = Upload;
 			sourceTree = "<group>";
@@ -382,8 +397,27 @@
 			children = (
 				E77A498028FA8A2900925FD0 /* CacheImage.swift */,
 				E77A498928FD310700925FD0 /* InformationView.swift */,
+				E77A49A928FFABDE00925FD0 /* LimitCharacterTextField.swift */,
 			);
 			path = CustomView;
+			sourceTree = "<group>";
+		};
+		E77A499128FD652F00925FD0 /* PhotoPicker */ = {
+			isa = PBXGroup;
+			children = (
+				E77A498D28FD5ED300925FD0 /* PhotoPickerViewController.swift */,
+				E77A499228FD657600925FD0 /* PhotoPickerView.swift */,
+			);
+			path = PhotoPicker;
+			sourceTree = "<group>";
+		};
+		E77A499E28FFA09800925FD0 /* Post */ = {
+			isa = PBXGroup;
+			children = (
+				E77A49A528FFA1C700925FD0 /* PostViewController.swift */,
+				E77A49A728FFA52B00925FD0 /* PostView.swift */,
+			);
+			path = Post;
 			sourceTree = "<group>";
 		};
 		E7BA747828F6760800AEEC81 /* Products */ = {
@@ -596,9 +630,11 @@
 			files = (
 				E7708DD228F543C100E20336 /* FlickerLong.xcdatamodeld in Sources */,
 				E7708DCC28F543C100E20336 /* OnboardingViewController.swift in Sources */,
+				E77A49AA28FFABDE00925FD0 /* LimitCharacterTextField.swift in Sources */,
 				E7708DE528F5487100E20336 /* Constant.swift in Sources */,
 				E7708DE828F548BE00E20336 /* OnboardingView.swift in Sources */,
 				E7BA749328F6787800AEEC81 /* OAuthAuthorization.swift in Sources */,
+				E77A498E28FD5ED300925FD0 /* PhotoPickerViewController.swift in Sources */,
 				E77A497628F9457C00925FD0 /* Helper.swift in Sources */,
 				E7708E6A28F57B8700E20336 /* LoginViewController.swift in Sources */,
 				E7BA74AA28F7C6A100AEEC81 /* RecentData.swift in Sources */,
@@ -612,15 +648,19 @@
 				E77A497228F93CA100925FD0 /* UploadViewController.swift in Sources */,
 				E7BA74BE28F9216600AEEC81 /* Repository.swift in Sources */,
 				E7BA74BC28F7F4AC00AEEC81 /* PhotoView.swift in Sources */,
+				E77A499328FD657600925FD0 /* PhotoPickerView.swift in Sources */,
 				E7BA749F28F6B9A400AEEC81 /* HomeViewController.swift in Sources */,
+				E77A49A628FFA1C700925FD0 /* PostViewController.swift in Sources */,
 				E7708DCA28F543C100E20336 /* SceneDelegate.swift in Sources */,
 				E7BA74A128F6B9CB00AEEC81 /* HomeView.swift in Sources */,
 				E7BA74AE28F7C6B800AEEC81 /* Photo.swift in Sources */,
 				E7BA74AC28F7C6AF00AEEC81 /* Photos.swift in Sources */,
+				E77A49A828FFA52B00925FD0 /* PostView.swift in Sources */,
 				E7BA749528F67D5A00AEEC81 /* LoginView.swift in Sources */,
 				E7708DF328F5624700E20336 /* UIHelper.swift in Sources */,
 				E7BA74B628F7CEA000AEEC81 /* ViewModel.swift in Sources */,
 				E7BA74B428F7CE8600AEEC81 /* HomeViewModel.swift in Sources */,
+				E77A499028FD635700925FD0 /* PickerImageCell.swift in Sources */,
 				E7BA74A528F6C21400AEEC81 /* PopularCell.swift in Sources */,
 				E7BA74A828F7B74700AEEC81 /* FlickerAPI.swift in Sources */,
 			);

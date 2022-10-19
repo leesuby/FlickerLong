@@ -31,6 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if #available(iOS 13, *) {
             return true
         } else {
+            self.window = UIWindow(frame: UIScreen.main.bounds)
             let vc = OnboardingViewController()
             
             let loginNavigation = UINavigationController(rootViewController:  vc)
@@ -38,7 +39,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
             let appDelegate = UIApplication.shared.delegate as! AppDelegate
             appDelegate.window?.rootViewController = loginNavigation
-            
+            appDelegate.window?.makeKeyAndVisible()
         }
         return true
     }

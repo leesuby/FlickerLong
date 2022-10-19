@@ -9,6 +9,15 @@ import Foundation
 import UIKit
 
 class Constant{
+    
+    class UserStatus{
+        enum Tab : Int {
+            case home = 0
+            case upload = 1
+            case profile = 2
+        }
+        static var currentTab : Tab = .home
+    }
     class DynamicLayout{
         static var heightDynamic: CGFloat = 200
         static var minimumWidth: CGFloat = 60
@@ -40,4 +49,11 @@ class Constant{
         static var color: UIColor = .darkText
         static var textAlightment : NSTextAlignment = NSTextAlignment.center
     }
+    
+    class TextBox{
+        static var font : UIFont = .NunitoRegular(size: 14)!
+        static var color: UIColor = .gray
+    }
+    
+    static var padding : CGFloat = 15
 }

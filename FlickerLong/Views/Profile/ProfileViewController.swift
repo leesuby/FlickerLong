@@ -11,10 +11,15 @@ class ProfileViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        view.backgroundColor = .white
+    
+        
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        //Update Status User
+        Constant.UserStatus.currentTab = .profile
+    }
 
     /*
     // MARK: - Navigation

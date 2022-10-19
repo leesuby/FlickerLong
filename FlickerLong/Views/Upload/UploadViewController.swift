@@ -29,6 +29,9 @@ class UploadViewController: UIViewController, InformationViewDelegate {
         informationView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.33).isActive = true
         informationView.isHidden = true
         
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
         // Request permission to access photo library
         if #available(iOS 14, *) {
             PHPhotoLibrary.requestAuthorization(for: .readWrite) { [unowned self] (status) in
@@ -46,15 +49,17 @@ class UploadViewController: UIViewController, InformationViewDelegate {
                     }
                 })
             }
+            else{
+                showPhotoPicker()
+            }
         }
-        // Do any additional setup after loading the view.
     }
     
     func showUI(for status: PHAuthorizationStatus) {
         
         switch status {
         case .authorized:
-            print("1")
+            showPhotoPicker()
             
         case .limited:
             print("2")
@@ -71,6 +76,13 @@ class UploadViewController: UIViewController, InformationViewDelegate {
         @unknown default:
             break
         }
+    }
+    
+    func showPhotoPicker(){
+        let vc = PhotoPickerViewController()
+        vc.modalPresentationStyle = .fullScreen
+        
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     func actionButton() {

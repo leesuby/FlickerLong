@@ -27,4 +27,29 @@ class Helper{
                return nil
            }
        }
+    
+    enum Edge{
+        case top
+        case bottom
+        case left
+        case right
+    }
+    
+    static func getBorderOneCorner(size: CGSize,edge : Edge ) -> CALayer{
+        let line = CALayer()
+        switch edge{
+        case .bottom:
+            line.frame = CGRect(x: 0.0, y: size.height - 1, width: size.width, height: 1.0)
+        case .top:
+            line.frame = CGRect(x: 0.0, y: 0.0, width: size.width, height: 1.0)
+        case .left:
+            line.frame = CGRect(x: 0.0, y: size.height - 1, width: 1.0, height: size.height)
+        case .right:
+            line.frame = CGRect(x: size.width, y: size.height - 1, width: 1.0, height: size.height)
+        }
+        line.backgroundColor = UIColor.darkGray.cgColor
+        line.borderColor = UIColor.darkGray.cgColor
+        return line
+    }
+    
 }
