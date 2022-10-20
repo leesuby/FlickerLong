@@ -31,6 +31,49 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if #available(iOS 13, *) {
             return true
         } else {
+            checkUser()
+            
+        }
+        return true
+    }
+    
+    func checkUser(){
+        if(UserDefaults.standard.value(forKey: "userID")) != nil{
+            Constant.UserSession.userId = UserDefaults.standard.value(forKey: "userID") as! String
+            self.window = UIWindow(frame: UIScreen.main.bounds)
+            
+            let tabBarVC = UITabBarController()
+            //ViewController
+            let homeVC = HomeViewController()
+            let uploadVC = UploadViewController()
+            let profileVC = ProfileViewController()
+            
+            homeVC.title = "Home"
+            uploadVC.title = "Upload"
+            profileVC.title = "Profile"
+            
+            //Navigation Controller
+            let navUpload = UINavigationController(rootViewController: uploadVC)
+        
+            tabBarVC.setViewControllers([homeVC, navUpload, profileVC], animated: true)
+            
+            guard let items = tabBarVC.tabBar.items else{
+                return
+            }
+            
+            let imagesTabBar = ["HomeSymbol","UploadSymbol","ProfileSymbol"]
+            
+            for i in 0..<items.count {
+                items[i].image = UIImage(named: imagesTabBar[i])
+            }
+            
+            tabBarVC.modalPresentationStyle = .fullScreen
+            
+            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+            appDelegate.window?.rootViewController = tabBarVC
+            appDelegate.window?.makeKeyAndVisible()
+            
+        }else{
             self.window = UIWindow(frame: UIScreen.main.bounds)
             let vc = OnboardingViewController()
             
@@ -40,9 +83,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let appDelegate = UIApplication.shared.delegate as! AppDelegate
             appDelegate.window?.rootViewController = loginNavigation
             appDelegate.window?.makeKeyAndVisible()
-        }
-        return true
-    }
+    }}
 
     // MARK: UISceneSession Lifecycle
 

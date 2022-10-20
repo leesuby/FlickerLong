@@ -12,7 +12,7 @@ class OnboardingViewController: UIViewController {
     
     private var onboardingView : OnboardingView!
     
-    //Getfor WebView
+    //Get for WebView
     lazy var loginViewController: LoginViewController = {
         let controller = LoginViewController()
         controller.delegate = self
@@ -28,12 +28,18 @@ class OnboardingViewController: UIViewController {
         onboardingView.delegate = self
         onboardingView.initView()
         onboardingView.initConstraint()
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        navigationController?.isNavigationBarHidden = true
     }
 }
 
 
 extension OnboardingViewController : OnboardingViewDelegate{
     func getStartTapped() {
+        navigationController?.isNavigationBarHidden = false
         OAuthAuthorization.authorize(baseViewController: self, webViewController: loginViewController) {
             let tabBarVC = UITabBarController()
             

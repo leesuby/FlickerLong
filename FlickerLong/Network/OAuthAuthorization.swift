@@ -29,6 +29,11 @@ class OAuthAuthorization {
             withCallbackURL: "oauth-swift://oauth-callback/flickr") { result in
                 switch result {
                 case .success(let (credential, _, parameters)):
+                    guard let userID = parameters["user_nsid"] as? String else{
+                        return
+                    }
+                    UserDefaults.standard.set(userID, forKey: "userID")
+                    Constant.UserSession.userId = userID
                     print(credential.oauthToken)
                     print(credential.oauthTokenSecret)
                     print(parameters["user_nsid"]!)

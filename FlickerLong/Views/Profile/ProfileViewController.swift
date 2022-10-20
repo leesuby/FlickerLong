@@ -9,16 +9,25 @@ import UIKit
 
 class ProfileViewController: UIViewController {
 
+    private var profileView: ProfileView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-    
         
+        profileView = ProfileView(viewController: self)
+        profileView.initView()
+        profileView.initConstraint()
+    
+    }
+    
+    override func viewWillLayoutSubviews() {
+        profileView.layoutSubView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         //Update Status User
-        Constant.UserStatus.currentTab = .profile
+        Constant.UserSession.currentTab = .profile
     }
 
     /*

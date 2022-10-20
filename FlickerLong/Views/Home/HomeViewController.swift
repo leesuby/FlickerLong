@@ -47,14 +47,18 @@ class HomeViewController: UIViewController, View{
     
     override func viewWillAppear(_ animated: Bool) {
         //Update Status User
-        Constant.UserStatus.currentTab = .home
+        Constant.UserSession.currentTab = .home
     }
     
     
     //Reload data when ViewModel changes
     func reloadDataCollectionView(){
         listPictures = self.viewModel.listPicture
-        listPictures = calculateDynamicLayout(sliceArray: listPictures[..<sizeCollectionView])
+        if(listPictures.count != sizeCollectionView && sizeCollectionView == 100){
+            listPictures = calculateDynamicLayout(sliceArray: listPictures[..<listPictures.count])
+        }
+        else{
+            listPictures = calculateDynamicLayout(sliceArray: listPictures[..<sizeCollectionView])}
         DispatchQueue.main.async { [self] in
             collectionView.reloadData()
             if(flagPaging == true)

@@ -15,8 +15,7 @@ class Repository{
     static func getPopularData(completion : @escaping ([PhotoView]) -> ()){
         var downloadedPicture : Int = 0
         var dataListPicture : [PhotoView] = []
-        
-        FlickerAPI<RecentData>.getDataFlicker(on: .recent) { recentData in
+        FlickerAPI<RecentData>.getDataFlicker(on: .recent, with: RequestData()) { recentData in
             guard let photos = recentData.photos?.photo else{
                 return
             }
@@ -27,7 +26,7 @@ class Repository{
                 DispatchQueue.global().async {
                     
                     guard let urlImage = URL( string:"https://live.staticflickr.com/\(String(describing: photo.server!))/\(String(describing: photo.id!))_\(String(describing: photo.secret!))_b.jpg") else{
-
+                        
                         downloadedPicture -= 1
                         print(downloadedPicture)
                         if(downloadedPicture == 0){
@@ -49,7 +48,10 @@ class Repository{
                 }
                 
             }
-            
         }
+        
+       
+        
     }
+    
 }

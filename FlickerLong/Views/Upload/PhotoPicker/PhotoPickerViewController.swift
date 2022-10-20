@@ -62,7 +62,7 @@ class PhotoPickerViewController: UIViewController {
 
         if self.isMovingFromParent {
             self.tabBarController?.tabBar.isHidden = false
-            self.tabBarController?.selectedIndex = Constant.UserStatus.currentTab.rawValue
+            self.tabBarController?.selectedIndex = Constant.UserSession.currentTab.rawValue
         }
     }
 }

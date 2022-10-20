@@ -37,7 +37,6 @@ class CacheImage: UIImageView {
             activityIndicator.stopAnimating()
             return
         }
-
         // image does not available in cache.. so retrieving it from url...
         URLSession.shared.dataTask(with: url, completionHandler: { (data, response, error) in
 
@@ -50,13 +49,12 @@ class CacheImage: UIImageView {
             }
 
             DispatchQueue.main.async(execute: {
-
+                print(self.imageURL == url)
                 if let unwrappedData = data, let imageToCache = UIImage(data: unwrappedData) {
-
                     if self.imageURL == url {
                         self.image = imageToCache
                     }
-
+                
                     imageCache.setObject(imageToCache, forKey: url as AnyObject)
                 }
                 self.activityIndicator.stopAnimating()

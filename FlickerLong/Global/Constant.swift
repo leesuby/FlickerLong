@@ -10,14 +10,17 @@ import UIKit
 
 class Constant{
     
-    class UserStatus{
+    class UserSession{
         enum Tab : Int {
             case home = 0
             case upload = 1
             case profile = 2
         }
         static var currentTab : Tab = .home
+        static var userId : String = ""
     }
+    
+    
     class DynamicLayout{
         static var heightDynamic: CGFloat = 200
         static var minimumWidth: CGFloat = 60
