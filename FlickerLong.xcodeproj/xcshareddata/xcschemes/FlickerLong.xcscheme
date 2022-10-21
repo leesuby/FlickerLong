@@ -58,6 +58,11 @@
             isEnabled = "YES">
          </EnvironmentVariable>
          <EnvironmentVariable
+            key = "API_KEY_UNSPLASH"
+            value = "o_sOLV3yJuJNBFJ9cUIr3ZrBGMzkYmdKwyrO_qVknBg"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+         <EnvironmentVariable
             key = "API_KEY"
             value = "e3e9d23e495da9bf5c0f1a0a63d5be66"
             isEnabled = "YES">

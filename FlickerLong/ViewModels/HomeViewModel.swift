@@ -19,13 +19,16 @@ class HomeViewModel : ViewModel{
     }
     var bindToView :  (() -> ()) = {}
     
-    init(){
-        getRecentImage()
+    init(pageImage: Int){
+        getRecentImage(page: pageImage)
     }
     
-    func getRecentImage(){
-        Repository.getPopularData { result in
-            self.listPicture = result
+    func getRecentImage(page: Int){
+        Repository.getPopularDataUnsplash(page: page) { result in
+            self.listPicture.append(contentsOf: result)
         }
+//        Repository.getPopularData { result in
+//            self.listPicture = result
+//        }
     }
 }

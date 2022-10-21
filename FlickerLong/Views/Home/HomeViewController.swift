@@ -20,13 +20,12 @@ class HomeViewController: UIViewController, View{
     private var widthView : CGFloat!
     var collectionView : UICollectionView!
     private var listPictures : [PhotoView] = []
-    private var page: Int = 1
-    private var sizeCollectionView : Int = 20
     private var flagPaging : Bool = false
     private var flagInit : Bool = true
+    private var pageImage : Int = 1
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.viewModel = HomeViewModel()
+        self.viewModel = HomeViewModel(pageImage: pageImage)
         self.widthView = self.view.frame.size.width
         
         //Set VIEW
@@ -54,11 +53,8 @@ class HomeViewController: UIViewController, View{
     //Reload data when ViewModel changes
     func reloadDataCollectionView(){
         listPictures = self.viewModel.listPicture
-        if(listPictures.count != sizeCollectionView && sizeCollectionView == 100){
-            listPictures = calculateDynamicLayout(sliceArray: listPictures[..<listPictures.count])
-        }
-        else{
-            listPictures = calculateDynamicLayout(sliceArray: listPictures[..<sizeCollectionView])}
+        listPictures = calculateDynamicLayout(sliceArray: listPictures[..<listPictures.count])
+    
         DispatchQueue.main.async { [self] in
             collectionView.reloadData()
             if(flagPaging == true)
@@ -149,6 +145,7 @@ extension HomeViewController : UICollectionViewDataSource{
             homeView.startLoading()
         }
         else{
+            flagInit = false
             homeView.stopLoading()
         }
         return listPictures.count
@@ -176,8 +173,8 @@ extension HomeViewController : UICollectionViewDelegate , UICollectionViewDelega
             if distanceFromBottom < height {
                 if(self.flagPaging == false){
                     self.flagPaging = true
-                    self.sizeCollectionView = ((self.sizeCollectionView + 20) >= 100) ? 100 : self.sizeCollectionView + 20
-                    self.reloadDataCollectionView()
+                    self.pageImage += 1
+                    self.viewModel.getRecentImage(page: self.pageImage)
                 }
             }
         }

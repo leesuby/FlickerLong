@@ -44,14 +44,29 @@ class Repository{
                     if(downloadedPicture == 0){
                         completion(dataListPicture)
                     }
-                    
                 }
-                
             }
         }
+    }
+    
+    // Call to get 100 Popular Images
+    static func getPopularDataUnsplash(page: Int ,completion : @escaping ([PhotoView]) -> ()){
+        var dataListPicture : [PhotoView] = []
         
-       
-        
+        FlickerAPI<ImageElement>.getDataUnsplash(on: .recentUnsplash, with: RequestData(page: page), completion: {
+            imageElement in
+//            
+            for photo in imageElement{
+                
+                guard let url = photo.urls.regular else{
+                    continue
+                }
+                let photoView = PhotoView(url: URL(string: url)!, width: CGFloat(photo.width), height: CGFloat(photo.height))
+                dataListPicture.append(photoView)
+            }
+            
+            completion(dataListPicture)
+        })
     }
     
 }

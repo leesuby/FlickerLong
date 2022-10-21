@@ -49,7 +49,7 @@ class CacheImage: UIImageView {
             }
 
             DispatchQueue.main.async(execute: {
-                print(self.imageURL == url)
+
                 if let unwrappedData = data, let imageToCache = UIImage(data: unwrappedData) {
                     if self.imageURL == url {
                         self.image = imageToCache
