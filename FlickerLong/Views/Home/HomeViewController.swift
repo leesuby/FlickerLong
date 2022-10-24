@@ -87,7 +87,7 @@ class HomeViewController: UIViewController, View{
                 if(j + 1 == tmpArray.count){
                     
                     tmpPhoto.scaleWidth = widthView - totalWidth
-                    if(tmpPhoto.scaleWidth <= Constant.DynamicLayout.minimumWidth || (tmpPhoto.scaleWidth < trueScaleWidth / 1.5 && trueScaleWidth < widthView)){
+                    if(tmpPhoto.scaleWidth <= Constant.DynamicLayout.minimumWidth || (tmpPhoto.scaleWidth < (0.8 * trueScaleWidth) && trueScaleWidth < widthView)){
                         tmpArray.removeLast()
                         tmpArray[tmpArray.count - 1].scaleWidth = widthView - totalWidthPrev
                     }

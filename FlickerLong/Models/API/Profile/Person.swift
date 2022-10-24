@@ -8,15 +8,15 @@
 import Foundation
 // MARK: - Person
 struct Person: Codable {
-    let id, nsid: String
+    let id, nsid: String?
     let ispro, isDeleted: Int
-    let iconserver: String
+    let iconserver: String?
     let iconfarm: Int
-    let pathAlias: String
+    let pathAlias: String?
     let hasStats: Int
     let username, realname, location, personDescription: Description
     let photosurl, profileurl, mobileurl: Description
-    let photos: Photos
+    let photos: Photoss
     let hasAdfree, hasFreeStandardShipping, hasFreeEducationalResources: Int
 
     enum CodingKeys: String, CodingKey {
@@ -68,7 +68,7 @@ extension Person {
         photosurl: Description? = nil,
         profileurl: Description? = nil,
         mobileurl: Description? = nil,
-        photos: Photos? = nil,
+        photos: Photoss? = nil,
         hasAdfree: Int? = nil,
         hasFreeStandardShipping: Int? = nil,
         hasFreeEducationalResources: Int? = nil

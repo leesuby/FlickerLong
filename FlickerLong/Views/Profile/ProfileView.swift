@@ -8,23 +8,29 @@
 import Foundation
 import UIKit
 
-class ProfileView{
-    private var viewController : UIViewController!
-    private var view : UIView!
+class ProfileView : MenuViewDelegate{
+    func scrollTo(item: Int) {
+        viewController.scrollToItem(item: item)
+    }
     
-    init(viewController: UIViewController!) {
+    private var viewController : ProfileViewController!
+    private var view : UIView!
+    private var profileCollectionView: UICollectionView!
+    
+    init(viewController: ProfileViewController!) {
         self.viewController = viewController
         self.view = viewController.view
     }
     
-    private var coverView : UIView!
-    private var coverImage : UIImageView!
-    private var userView : UIView!
-    private var avatarView : UIView!
-    private var avatar : UIImageView!
-    private var userName : UILabel!
-    private var numberOfPhotos : UILabel!
-    private var settingButton : UIButton!
+    var coverView : UIView!
+    var coverImage : UIImageView!
+    var userView : UIView!
+    var avatarView : UIView!
+    var avatar : UIImageView!
+    var userName : UILabel!
+    var numberOfPhotos : UILabel!
+    var settingButton : UIButton!
+    var menuView: MenuView!
     
     
     func initView(){
@@ -47,25 +53,35 @@ class ProfileView{
         avatarView.clipsToBounds = true
         
         avatar = UIImageView()
-        avatar.image = UIImage(named: "Logo")
         avatar.contentMode = .scaleAspectFill
         
         userName = UILabel()
         userName.font = Constant.Title.font
         userName.textColor = .white
         userName.textAlignment = .center
-        userName.text = "Long Nguyen"
-        
+
         numberOfPhotos = UILabel()
         numberOfPhotos.font = Constant.SubTitle.font
         numberOfPhotos.textColor = .white
         numberOfPhotos.textAlignment = .center
-        numberOfPhotos.text = "0 photos uploaded"
         
         settingButton = UIButton()
         settingButton.setImage(UIImage(named: "SettingSymbol")?.withRenderingMode(.alwaysTemplate), for: .normal)
         settingButton.tintColor = .white
         settingButton.backgroundColor = .clear
+        
+        menuView = MenuView()
+        menuView.delegate = self
+        
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        layout.minimumInteritemSpacing = 0
+        layout.minimumLineSpacing = 0
+        
+        viewController.collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        profileCollectionView = viewController.collectionView
+        profileCollectionView.backgroundColor = .clear
+        profileCollectionView.showsHorizontalScrollIndicator = false
     }
     
     func initConstraint(){
@@ -123,6 +139,35 @@ class ProfileView{
         settingButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
         settingButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
+        view.addSubview(menuView)
+        menuView.translatesAutoresizingMaskIntoConstraints = false
+        menuView.topAnchor.constraint(equalTo: coverView.bottomAnchor).isActive = true
+        menuView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        menuView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        menuView.heightAnchor.constraint(equalToConstant: 45).isActive = true
+        menuView.initMenu()
+        
+        view.addSubview(profileCollectionView)
+        profileCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        profileCollectionView.topAnchor.constraint(equalTo: menuView.bottomAnchor).isActive = true
+        profileCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        profileCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        profileCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+    }
+    
+    
+    
+    func setData(urlImage: URL, userName: String, uploadedPhoto: Int){
+        
+        DispatchQueue.global().async {
+            let data = try? Data(contentsOf: URL(string: "https://avatars.githubusercontent.com/u/163410?v=4")!)
+          
+            DispatchQueue.main.async {
+                self.avatar.image = UIImage(data: data!)
+                self.userName.text = userName
+                self.numberOfPhotos.text = "\(uploadedPhoto) photos uploaded"
+            }
+        }
         
     }
     

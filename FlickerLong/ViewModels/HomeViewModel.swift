@@ -27,8 +27,5 @@ class HomeViewModel : ViewModel{
         Repository.getPopularDataUnsplash(page: page) { result in
             self.listPicture.append(contentsOf: result)
         }
-//        Repository.getPopularData { result in
-//            self.listPicture = result
-//        }
     }
 }

@@ -27,7 +27,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     func checkUser(windowScene : UIWindowScene){
         if(UserDefaults.standard.value(forKey: "userID")) != nil{
-            Constant.UserSession.userId = UserDefaults.standard.value(forKey: "userID") as! String
+            
+            Constant.UserSession.userId = (UserDefaults.standard.value(forKey: "userID") as! String).replacingOccurrences(of: "%40", with: "@")
+            print(Constant.UserSession.userId)
             self.window = UIWindow(frame: UIScreen.main.bounds)
             
             let tabBarVC = UITabBarController()

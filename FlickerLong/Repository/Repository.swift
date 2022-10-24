@@ -9,13 +9,12 @@ import Foundation
 import UIKit
 
 class Repository{
-    
-    
+
     // Call to get 100 Popular Images
     static func getPopularData(completion : @escaping ([PhotoView]) -> ()){
         var downloadedPicture : Int = 0
         var dataListPicture : [PhotoView] = []
-        FlickerAPI<RecentData>.getDataFlicker(on: .recent, with: RequestData()) { recentData in
+        FlickerAPI<RecentData>.getDataFlicker(on: .recentFlickr, with: RequestData()) { recentData in
             guard let photos = recentData.photos?.photo else{
                 return
             }
@@ -55,7 +54,7 @@ class Repository{
         
         FlickerAPI<ImageElement>.getDataUnsplash(on: .recentUnsplash, with: RequestData(page: page), completion: {
             imageElement in
-//            
+           
             for photo in imageElement{
                 
                 guard let url = photo.urls.regular else{
@@ -67,6 +66,25 @@ class Repository{
             
             completion(dataListPicture)
         })
+    }
+    
+    static func getProfileUser(completion: @escaping((ProfileModel) -> ())){
+        
+        FlickerAPI<Profile>.getDataFlicker(on: .profileFlickr, with: RequestData()) { result in
+            
+            let info = result.person
+            var urlAvatar : String
+            if(Int(info.iconserver!) == 0){
+                urlAvatar = "https://www.flickr.com/images/buddyicon.gif"
+            }else{
+                urlAvatar = "http://farm\(info.iconfarm).staticflickr.com/\(info.iconserver!)/buddyicons/\(Constant.UserSession.userId).jpg"
+            }
+            print(urlAvatar)
+            
+            let profileModel = ProfileModel(avatarURL: urlAvatar, userName: info.username.content, photosUpload: info.photos.count.content)
+            completion(profileModel)
+        }
+        
     }
     
 }

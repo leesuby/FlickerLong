@@ -11,18 +11,18 @@ import Foundation
 
 enum EndPoint: String{
     
-    case recent
-    case profile
+    case recentFlickr
+    case profileFlickr
     case recentUnsplash
     
     func getPath (request : RequestData) -> String{
-        var apiKey : String = String(describing:ProcessInfo.processInfo.environment["API_KEY"]!)
-        var apiKeyUnplash : String = String(describing:ProcessInfo.processInfo.environment["API_KEY_UNSPLASH"]!)
+        let apiKey : String = String(describing:ProcessInfo.processInfo.environment["API_KEY"]!)
+        let apiKeyUnplash : String = String(describing:ProcessInfo.processInfo.environment["API_KEY_UNSPLASH"]!)
         switch self{
-        case .recent:
+        case .recentFlickr:
             return "https://www.flickr.com/services/rest/?method=flickr.photos.getRecent&api_key=\(apiKey)&format=json&nojsoncallback=1"
-        case .profile:
-            return "https://www.flickr.com/services/rest/?method=flickr.people.getInfo&api_key=\(apiKey)&user_id=\(request.userId)&format=json&nojsoncallback=1"
+        case .profileFlickr:
+            return "https://www.flickr.com/services/rest/?method=flickr.people.getInfo&api_key=\(apiKey)&user_id=\(Constant.UserSession.userId)&format=json&nojsoncallback=1"
         case .recentUnsplash:
             return "https://api.unsplash.com/photos/?client_id=\(apiKeyUnplash)&page=\(request.page)&per_page=20"
         }
@@ -35,7 +35,8 @@ enum EndPoint: String{
 class FlickerAPI<T : Codable>{
     static func getDataFlicker(on endPoint : EndPoint, with request: RequestData, completion :@escaping(T) -> ()){
         
-        var baseURL : String = endPoint.getPath(request: request)
+        let baseURL : String = endPoint.getPath(request: request)
+        print(baseURL)
         
         URLSession.shared.dataTask(with: URL(string: baseURL)!) { (data, urlResponse, error) in
             if let data = data {
@@ -66,7 +67,6 @@ class FlickerAPI<T : Codable>{
     static func getDataUnsplash(on endPoint : EndPoint, with request: RequestData, completion :@escaping([T]) -> ()){
         
         let baseURL : String = endPoint.getPath(request: request)
-        print(baseURL)
         
         URLSession.shared.dataTask(with: URL(string: baseURL)!) { (data, urlResponse, error) in
             if let data = data {
@@ -93,5 +93,6 @@ class FlickerAPI<T : Codable>{
         }.resume()
         
     }
+    
     
 }
