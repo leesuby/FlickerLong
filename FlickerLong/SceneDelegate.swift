@@ -59,6 +59,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             }
             
             tabBarVC.modalPresentationStyle = .fullScreen
+            tabBarVC.tabBar.backgroundColor = .white80a
             
             let window = UIWindow(windowScene: windowScene)
             window.rootViewController = tabBarVC

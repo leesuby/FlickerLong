@@ -54,8 +54,9 @@ extension OnboardingViewController : OnboardingViewDelegate{
             
             //Navigation Controller
             let navUpload = UINavigationController(rootViewController: uploadVC)
+            let navProfile = UINavigationController(rootViewController: profileVC)
         
-            tabBarVC.setViewControllers([homeVC, navUpload, profileVC], animated: true)
+            tabBarVC.setViewControllers([homeVC, navUpload, navProfile], animated: true)
             
             guard let items = tabBarVC.tabBar.items else{
                 return
@@ -68,6 +69,7 @@ extension OnboardingViewController : OnboardingViewDelegate{
             }
             
             tabBarVC.modalPresentationStyle = .fullScreen
+            tabBarVC.tabBar.backgroundColor = .white80a
             self.present(tabBarVC, animated: true)
         }
     }

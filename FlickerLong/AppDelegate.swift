@@ -69,6 +69,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
             
             tabBarVC.modalPresentationStyle = .fullScreen
+            tabBarVC.tabBar.backgroundColor = .white80a
+
             
             let appDelegate = UIApplication.shared.delegate as! AppDelegate
             appDelegate.window?.rootViewController = tabBarVC

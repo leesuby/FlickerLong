@@ -72,9 +72,13 @@ class PostView{
         albumButton.image = UIImage(named: "ForwardSymbol")
         albumButton.backgroundColor = .clear
         albumButton.contentMode = .scaleAspectFit
+        let gesture : UITapGestureRecognizer = UITapGestureRecognizer(target: viewController, action: #selector(viewController.albumDidTapped))
+        gesture.numberOfTapsRequired = 1
+        albumView.isUserInteractionEnabled = true
+        albumView.addGestureRecognizer(gesture)
         
         privacyView = UIView()
-        privacyView.backgroundColor = .clear
+        privacyView.backgroundColor = .lightGray
         privacyView.layer.borderColor = UIColor.darkGray.cgColor
         privacyView.layer.borderWidth = 0.5
         privacyIcon = UIImageView()
@@ -162,4 +166,8 @@ class PostView{
         
     }
     
+    func chooseAlbum(title: String){
+        albumLabel.text = title
+        albumLabel.textColor = .black
+    }
 }

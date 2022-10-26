@@ -36,6 +36,7 @@ class OAuthAuthorization {
                     Constant.UserSession.userId = userID
                     print(credential.oauthToken)
                     print(credential.oauthTokenSecret)
+
                     print(parameters["user_nsid"]!)
                     completion()
         
