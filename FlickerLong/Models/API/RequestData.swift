@@ -10,6 +10,7 @@ import Foundation
 class RequestData{
     var userId : String = ""
     var page: Int = 1
+    var albumId: String = ""
     
     init(userId : String){
         self.userId = userId
@@ -17,6 +18,10 @@ class RequestData{
     
     init(page: Int){
         self.page = page
+    }
+    
+    init(albumId: String){
+        self.albumId = albumId
     }
     
     init(){

@@ -54,8 +54,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
             //Navigation Controller
             let navUpload = UINavigationController(rootViewController: uploadVC)
+            let navProfile = UINavigationController(rootViewController: uploadVC)
         
-            tabBarVC.setViewControllers([homeVC, navUpload, profileVC], animated: true)
+            tabBarVC.setViewControllers([homeVC, navUpload, navProfile], animated: true)
             
             guard let items = tabBarVC.tabBar.items else{
                 return

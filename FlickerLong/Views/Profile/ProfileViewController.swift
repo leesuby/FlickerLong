@@ -7,7 +7,19 @@
 
 import UIKit
 
-class ProfileViewController: UIViewController {
+enum MenuOption : Int {
+    case photos = 0
+    case album = 1
+}
+
+class ProfileViewController: UIViewController, AlbumsCellDelegate {
+    func albumClicked(albumModel: AlbumModel) {
+     
+        let vc = AlbumViewController()
+        vc.albumModel = albumModel
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
     var viewModel : ProfileViewModel!
     func bind(with vm : ProfileViewModel){
         vm.bindtoView = {
@@ -23,6 +35,7 @@ class ProfileViewController: UIViewController {
         view.backgroundColor = .white
         
         viewModel = ProfileViewModel()
+        viewModel.getProfile()
 
         profileView = ProfileView(viewController: self)
         profileView.initView()
@@ -33,6 +46,7 @@ class ProfileViewController: UIViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.register(PhotosCell.self, forCellWithReuseIdentifier: "photosCell")
+        collectionView.register(AlbumsCell.self, forCellWithReuseIdentifier: "albumsCell")
         collectionView.isPagingEnabled = true
     }
     
@@ -69,10 +83,20 @@ extension ProfileViewController : UICollectionViewDataSource{
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         var cell = UICollectionViewCell()
         
-        if let photoCell = collectionView.dequeueReusableCell(withReuseIdentifier: "photosCell", for: indexPath) as? PhotosCell{
-            photoCell.config(color: indexPath.item == 0 ? .blue : .gray)
-            cell = photoCell
+        let menuOption = MenuOption(rawValue: indexPath.item)!
+        switch menuOption{
+        case .album:
+            if let albumCell = collectionView.dequeueReusableCell(withReuseIdentifier: "albumsCell", for: indexPath) as? AlbumsCell{
+                albumCell.delegate = self
+                cell = albumCell
+            }
+        case .photos:
+            if let photoCell = collectionView.dequeueReusableCell(withReuseIdentifier: "photosCell", for: indexPath) as? PhotosCell{
+                photoCell.config(color: indexPath.item == 0 ? .blue : .gray)
+                cell = photoCell
+            }
         }
+        
         return cell
     }
     

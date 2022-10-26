@@ -10,23 +10,23 @@ import UIKit
 
 class Helper{
     static func sizeOfImageAt(url: URL) -> CGSize? {
-           // with CGImageSource we avoid loading the whole image into memory
-           guard let source = CGImageSourceCreateWithURL(url as CFURL, nil) else {
-               return nil
-           }
-
-           let propertiesOptions = [kCGImageSourceShouldCache: false] as CFDictionary
-           guard let properties = CGImageSourceCopyPropertiesAtIndex(source, 0, propertiesOptions) as? [CFString: Any] else {
-               return nil
-           }
-
-           if let width = properties[kCGImagePropertyPixelWidth] as? CGFloat,
-               let height = properties[kCGImagePropertyPixelHeight] as? CGFloat {
-               return CGSize(width: width, height: height)
-           } else {
-               return nil
-           }
-       }
+        // with CGImageSource we avoid loading the whole image into memory
+        guard let source = CGImageSourceCreateWithURL(url as CFURL, nil) else {
+            return nil
+        }
+        
+        let propertiesOptions = [kCGImageSourceShouldCache: false] as CFDictionary
+        guard let properties = CGImageSourceCopyPropertiesAtIndex(source, 0, propertiesOptions) as? [CFString: Any] else {
+            return nil
+        }
+        
+        if let width = properties[kCGImagePropertyPixelWidth] as? CGFloat,
+           let height = properties[kCGImagePropertyPixelHeight] as? CGFloat {
+            return CGSize(width: width, height: height)
+        } else {
+            return nil
+        }
+    }
     
     enum Edge{
         case top
@@ -52,4 +52,75 @@ class Helper{
         return line
     }
     
+    //Function to calculate size for each cell in Dynamic Layout
+    static func calculateDynamicLayout(sliceArray : ArraySlice<PhotoView>, width: CGFloat) -> [PhotoView]{
+        
+        var data: [PhotoView] = Array(sliceArray)
+        
+        var result: [PhotoView] = []
+        var tmpArray : [PhotoView] = []
+        
+        let widthView : CGFloat = width
+        var i : Int = 0
+        while(i < data.count){
+            let photo = data[i]
+            var ratio : CGFloat = 0
+            var totalWidth : CGFloat = 0
+            var totalWidthPrev : CGFloat = 0
+            
+            var j : Int = 0
+            while(j < tmpArray.count){
+                let tmpPhoto = tmpArray[j]
+                ratio += CGFloat(tmpPhoto.width/tmpPhoto.height)
+                
+                let trueScaleWidth = Constant.DynamicLayout.heightDynamic * tmpPhoto.width / tmpPhoto.height
+                if(j + 1 == tmpArray.count){
+                    
+                    tmpPhoto.scaleWidth = widthView - totalWidth
+                    if(tmpPhoto.scaleWidth <= Constant.DynamicLayout.minimumWidth || (tmpPhoto.scaleWidth < (0.8 * trueScaleWidth) && trueScaleWidth < widthView)){
+                        tmpArray.removeLast()
+                        tmpArray[tmpArray.count - 1].scaleWidth = widthView - totalWidthPrev
+                    }
+                }
+                else{
+                    tmpPhoto.scaleWidth = trueScaleWidth
+                    totalWidthPrev = totalWidth
+                    if(tmpPhoto.scaleWidth <= Constant.DynamicLayout.minimumWidth){
+                        tmpPhoto.scaleWidth = Constant.DynamicLayout.minimumWidth
+                        totalWidth = Constant.DynamicLayout.minimumWidth + totalWidth
+                    }
+                    else{
+                        totalWidth = tmpPhoto.scaleWidth + totalWidth}
+                }
+                j+=1
+                
+            }
+            
+            let totalHeight : CGFloat = widthView / (ratio == 0 ? 1 : ratio);
+            
+            if(totalHeight <= CGFloat(Constant.DynamicLayout.heightDynamic)){
+                data.removeFirst(tmpArray.count)
+                result.append(contentsOf: tmpArray)
+                tmpArray = []
+                i = 0
+                
+            }
+            else{
+                tmpArray.append(photo)
+                i+=1
+            }
+        }
+        
+        return result
+    }
+    
+    static func getDateStringFromUTC(time: Int) -> String {
+        let date = Date(timeIntervalSince1970: TimeInterval(time))
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "en_NZ")
+        dateFormatter.dateStyle = .medium
+        
+        return dateFormatter.string(from: date)
+    }
 }
