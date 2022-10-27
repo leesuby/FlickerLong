@@ -27,6 +27,7 @@ class PhotoView {
         self.height = sizeImage.height
     }
     
+    
 
     init(url: URL, width : CGFloat, height: CGFloat){
         self.url = url

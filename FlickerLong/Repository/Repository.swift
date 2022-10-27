@@ -50,10 +50,11 @@ class Repository{
     
     // Call to get 100 Popular Images
     static func getPopularDataUnsplash(page: Int ,completion : @escaping ([PhotoView]) -> ()){
-        var dataListPicture : [PhotoView] = []
+        
         
         FlickerAPI<ImageElement>.getDataUnsplash(on: .recentUnsplash, with: RequestData(page: page), completion: {
             imageElement in
+            var dataListPicture : [PhotoView] = []
             
             for photo in imageElement{
                 

@@ -7,9 +7,16 @@
 
 import Foundation
 import UIKit
+import objectiveflickr
 
 class Constant{
+    static var ObjCContext : OFFlickrAPIContext = OFFlickrAPIContext.init(apiKey: ProcessInfo.processInfo.environment["API_KEY"]!, sharedSecret: ProcessInfo.processInfo.environment["API_SECRET"]!)
     
+    static func setContext(){
+        ObjCContext.oAuthToken = Constant.UserSession.userOAuthToken
+        ObjCContext.oAuthTokenSecret = Constant.UserSession.userOAuthSecret
+    }
+   
     class UserSession{
         enum Tab : Int {
             case home = 0
@@ -18,6 +25,8 @@ class Constant{
         }
         static var currentTab : Tab = .home
         static var userId : String = ""
+        static var userOAuthToken : String = ""
+        static var userOAuthSecret : String = ""
     }
     
     

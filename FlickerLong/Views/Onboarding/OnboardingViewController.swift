@@ -98,7 +98,7 @@ extension OnboardingViewController : OAuthWebViewControllerDelegate{
     
     //Make sure OAuth stop when webview disappear
     func oauthWebViewControllerDidDisappear() {
-        OAuthAuthorization.oauthswift.cancel()
+        OAuthAuthorization.oauthSwift.cancel()
     }
     
     

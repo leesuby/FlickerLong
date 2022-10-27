@@ -1,0 +1,16 @@
+PODS:
+  - objectiveflickr (2.0.4)
+
+DEPENDENCIES:
+  - objectiveflickr
+
+SPEC REPOS:
+  trunk:
+    - objectiveflickr
+
+SPEC CHECKSUMS:
+  objectiveflickr: aed169dae1eb5a5550ca78f7efd7ccde2e4c26e5
+
+PODFILE CHECKSUM: 33536720a809bd86ddafb53d4620dbd812d5297a
+
+COCOAPODS: 1.11.3

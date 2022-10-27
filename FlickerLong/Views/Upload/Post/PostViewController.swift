@@ -6,8 +6,22 @@
 //
 
 import UIKit
+import objectiveflickr
 
-class PostViewController: UIViewController, ListAlbumViewControllerDelegate {
+class PostViewController: UIViewController, ListAlbumViewControllerDelegate, OFFlickrAPIRequestDelegate {
+    let request : OFFlickrAPIRequest = OFFlickrAPIRequest.init(apiContext: Constant.ObjCContext)
+    
+    func flickrAPIRequest(_ inRequest: OFFlickrAPIRequest!, didCompleteWithResponse inResponseDictionary: [AnyHashable : Any]!) {
+        print(inResponseDictionary)
+    }
+    
+    func flickrAPIRequest(_ inRequest: OFFlickrAPIRequest!, didFailWithError inError: Error!) {
+        print(inError)
+    }
+    
+    func flickrAPIRequest(_ inRequest: OFFlickrAPIRequest!, imageUploadSentBytes inSentBytes: UInt, totalBytes inTotalBytes: UInt) {
+        print(inTotalBytes)
+    }
     
     var listImage : [UIImage]!
     var collectionView : UICollectionView!
@@ -26,6 +40,8 @@ class PostViewController: UIViewController, ListAlbumViewControllerDelegate {
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.register(PickerImageCell.self, forCellWithReuseIdentifier: "photoCell")
+        // set the delegate, here we assume it's the controller that's creating the request object
+        request.delegate = self
         
         setUpNavigation()
     }
@@ -36,107 +52,89 @@ class PostViewController: UIViewController, ListAlbumViewControllerDelegate {
     }
     
     @objc func postButton(){
-        let imageData = listImage[0].jpegData(compressionQuality: 0.1) ?? Data()
         
-        let imgStr = imageData.base64EncodedString()
-        //send request to server
-        guard let url = URL(string: "https://up.flickr.com/services/upload/") else{
-            print("Invalid URL Uploading")
-            return
-        }
-        //create parameters
-        let paramStr = "photo=\(imgStr)"
-        let paramData = paramStr.data(using: .utf8) ?? Data()
-        var urlRequest = URLRequest(url: url)
-        urlRequest.httpMethod = "POST"
-        urlRequest.httpBody = paramData
-        urlRequest.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+        let inputStream : InputStream =  InputStream.init(data: listImage[0].jpegData(compressionQuality: 1.0)!)
+        request.uploadImageStream(inputStream, suggestedFilename: "foo.jpg", mimeType: "image/jpeg", arguments: [
+            "is_public" : "1"
+        ])
         
-        //send the request
-        URLSession.shared.dataTask(with: urlRequest) { data, response, error in
-            guard let data = data else{
-                print("Invalid data")
-                return
-            }
-            let responseStr : String = String(data: data, encoding: .utf8) ?? "No response"
-            print(responseStr)
-        }
+    }
     
-//        public func uploadPhotosURLs1(lobjImageToUpload:UIImage)
-//        {
-//          let secret =  FlickrManager.sharedInstance.strAuthSecret
-//          //where secret is 7e5cfde9b0023627
-//          let api_key = FlickrManager.sharedInstance.strApiKey
-//          let auth_token = FlickrManager.sharedInstance.strAuthToken
-//
-//          let imageData = UIImageJPEGRepresentation(lobjImageToUpload, 1)
-//
-//          let uploadSig = "\(secret)_key\(api_key)_token\(auth_token)"
-//          let request = NSMutableURLRequest()
-//          let url = "http://api.flickr.com/services/upload/"
-//          request.url = URL(string: url)!
-//          request.httpMethod = "POST"
-//
-//
-//          let boundary = String("---------------------------7d44e178b0434")
-//          request.addValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-//
-//          let body:NSMutableData = NSMutableData()
-//          body.append("\r\n--\(boundary)\r\n".data(using: String.Encoding.utf8)!)
-//
-//          body.append("Content-Disposition: form-data; name=\"api_key\"\r\n\r\n".data(using: String.Encoding.utf8)!)
-//          body.append("\(api_key)\r\n".data(using: String.Encoding.utf8)!)
-//          body.append("--\(boundary)\r\n".data(using: String.Encoding.utf8)!)
-//          body.append("Content-Disposition: form-data; name=\"auth_token\"\r\n\r\n".data(using: String.Encoding.utf8)!)
-//          body.append("\(auth_token)\r\n".data(using: String.Encoding.utf8)!)
-//
-//          body.append("--\(boundary)\r\n".data(using: String.Encoding.utf8)!)
-//          body.append("Content-Disposition: form-data; name=\"api_sig\"\r\n\r\n".data(using: String.Encoding.utf8)!)
-//          body.append("\(uploadSig)\r\n".data(using: String.Encoding.utf8)!)
-//          body.append("--\(boundary)\r\n".data(using: String.Encoding.utf8)!)
-//          body.append(String("Content-Disposition: form-data; name=\"photo\"; filename=\"photo.jpg\"\r\n").data(using: String.Encoding.utf8)!)
-//          body.append("Content-Type: image/jpeg\r\n\r\n".data(using: String.Encoding.utf8)!)
-//
-//          body.append(imageData!)
-//          body.append("\r\n--\(boundary)--\r\n".data(using: String.Encoding.utf8)!)
-//          request.httpBody = body as Data
-//
-//          let session = URLSession.shared
-//
-//          let task = session.dataTask(with: request as URLRequest,
-//                                    completionHandler: {(data, response, error) in
-//              if let error = error {
-//                print(error)
-//              }
-//              if let data = data{
-//                print("data =\(data)")
-//              }
-//              if let response = response {
-//                print("url = \(response.url!)")
-//                print("response = \(response)")
-//                let httpResponse = response as! HTTPURLResponse
-//                print("response code = \(httpResponse.statusCode)")
-//                print("DATA = \(data)")
-//                //if you response is json do the following
-//                do{
-//                    let resultJSON = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions())
-//                    let arrayJSON = resultJSON as! NSArray
-//                    for value in arrayJSON{
-//                        let dicValue = value as! NSDictionary
-//                        for (key, value) in dicValue {
-//                            print("key = \(key)")
-//                            print("value = \(value)")
-//                        }
-//                    }
-//
-//                }catch _{
-//                    print("Received not-well-formatted JSON")
-//                }
-//            }
-//        })
-//            task.resume()
-//        }
+    public func uploadPhotosURLs1(lobjImageToUpload:UIImage)
+    {
+        let secret =  Constant.UserSession.userOAuthSecret
+        //where secret is 7e5cfde9b0023627
+        let api_key = ProcessInfo.processInfo.environment["API_KEY"]!
+        let auth_token = Constant.UserSession.userOAuthToken
         
+        let imageData = lobjImageToUpload.jpegData(compressionQuality: 1)
+        
+        let uploadSig = "\(secret)_key\(api_key)_token\(auth_token)"
+        let request = NSMutableURLRequest()
+        let url = "https://up.flickr.com/services/upload/"
+        request.url = URL(string: url)!
+        request.httpMethod = "POST"
+        
+        
+        let boundary = String("---------------------------7d44e178b0434")
+        request.addValue(" multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+
+        let body:NSMutableData = NSMutableData()
+        body.append("\r\n--\(boundary)\r\n".data(using: String.Encoding.utf8)!)
+        
+        body.append("Content-Disposition: form-data; name=\"api_key\"\r\n\r\n".data(using: String.Encoding.utf8)!)
+        body.append("\(api_key)\r\n".data(using: String.Encoding.utf8)!)
+        body.append("--\(boundary)\r\n".data(using: String.Encoding.utf8)!)
+        body.append("Content-Disposition: form-data; name=\"auth_token\"\r\n\r\n".data(using: String.Encoding.utf8)!)
+        body.append("\(auth_token)\r\n".data(using: String.Encoding.utf8)!)
+        
+        body.append("--\(boundary)\r\n".data(using: String.Encoding.utf8)!)
+        body.append("Content-Disposition: form-data; name=\"api_sig\"\r\n\r\n".data(using: String.Encoding.utf8)!)
+        body.append("\(uploadSig)\r\n".data(using: String.Encoding.utf8)!)
+        body.append("--\(boundary)\r\n".data(using: String.Encoding.utf8)!)
+        body.append(String("Content-Disposition: form-data; name=\"photo\"; filename=\"photo.jpg\"\r\n").data(using: String.Encoding.utf8)!)
+        body.append("Content-Type: image/jpeg\r\n\r\n".data(using: String.Encoding.utf8)!)
+
+        body.append(imageData!)
+        body.append("\r\n--\(boundary)--\r\n".data(using: String.Encoding.utf8)!)
+        
+        request.httpBody = Data(body.subdata(with: NSRange(location: 0, length: body.length)))
+
+        
+        let session = URLSession.shared
+        
+        let task = session.dataTask(with: request as URLRequest,
+                                    completionHandler: {(data, response, error) in
+            if let error = error {
+                print(error)
+            }
+            if let data = data{
+                print("data =\(data)")
+            }
+            if let response = response {
+                print("url = \(response.url!)")
+                print("response = \(response)")
+                let httpResponse = response as! HTTPURLResponse
+                print("response code = \(httpResponse.statusCode)")
+                print("DATA = \(String(describing: data))")
+                //if you response is json do the following
+                do{
+                    let resultJSON = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions())
+                    let arrayJSON = resultJSON as! NSArray
+                    for value in arrayJSON{
+                        let dicValue = value as! NSDictionary
+                        for (key, value) in dicValue {
+                            print("key = \(key)")
+                            print("value = \(value)")
+                        }
+                    }
+                    
+                }catch _{
+                    print("Received not-well-formatted JSON")
+                }
+            }
+        })
+        task.resume()
     }
     
     @objc func albumDidTapped(){

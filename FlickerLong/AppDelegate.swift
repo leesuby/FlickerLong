@@ -39,7 +39,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func checkUser(){
         if(UserDefaults.standard.value(forKey: "userID")) != nil{
-            Constant.UserSession.userId = UserDefaults.standard.value(forKey: "userID") as! String
+            Constant.UserSession.userId = (UserDefaults.standard.value(forKey: "userID") as! String).replacingOccurrences(of: "%40", with: "@")
+            Constant.UserSession.userOAuthSecret = UserDefaults.standard.value(forKey: "userOAuthSecret") as! String
+            Constant.UserSession.userOAuthToken = UserDefaults.standard.value(forKey: "userOAuthToken") as! String
+            Constant.setContext()
             self.window = UIWindow(frame: UIScreen.main.bounds)
             
             let tabBarVC = UITabBarController()
