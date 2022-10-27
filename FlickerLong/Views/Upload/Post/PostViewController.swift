@@ -9,14 +9,16 @@ import UIKit
 import objectiveflickr
 
 class PostViewController: UIViewController, ListAlbumViewControllerDelegate, OFFlickrAPIRequestDelegate {
-    let request : OFFlickrAPIRequest = OFFlickrAPIRequest.init(apiContext: Constant.ObjCContext)
+    var listRequest : [OFFlickrAPIRequest] = []
+    
     
     func flickrAPIRequest(_ inRequest: OFFlickrAPIRequest!, didCompleteWithResponse inResponseDictionary: [AnyHashable : Any]!) {
-        print(inResponseDictionary)
+        navigationController?.popToRootViewController(animated: true)
+        tabBarController?.selectedIndex = 2
     }
     
     func flickrAPIRequest(_ inRequest: OFFlickrAPIRequest!, didFailWithError inError: Error!) {
-        print(inError)
+        print(inError!)
     }
     
     func flickrAPIRequest(_ inRequest: OFFlickrAPIRequest!, imageUploadSentBytes inSentBytes: UInt, totalBytes inTotalBytes: UInt) {
@@ -41,7 +43,7 @@ class PostViewController: UIViewController, ListAlbumViewControllerDelegate, OFF
         collectionView.delegate = self
         collectionView.register(PickerImageCell.self, forCellWithReuseIdentifier: "photoCell")
         // set the delegate, here we assume it's the controller that's creating the request object
-        request.delegate = self
+        
         
         setUpNavigation()
     }
@@ -52,12 +54,24 @@ class PostViewController: UIViewController, ListAlbumViewControllerDelegate, OFF
     }
     
     @objc func postButton(){
+        self.navigationItem.rightBarButtonItem?.isEnabled = false
         
-        let inputStream : InputStream =  InputStream.init(data: listImage[0].jpegData(compressionQuality: 1.0)!)
-        request.uploadImageStream(inputStream, suggestedFilename: "foo.jpg", mimeType: "image/jpeg", arguments: [
-            "is_public" : "1"
-        ])
+        let title : String = (self.postView.title.text == "" ? "No Title" : self.postView.title.text)!
+        let description : String = (self.postView.description.text == "" ? "No Description" : self.postView.description.text)!
         
+        for image in listImage{
+            let request : OFFlickrAPIRequest = OFFlickrAPIRequest.init(apiContext: Constant.ObjCContext)
+            request.delegate = self
+            
+            let inputStream : InputStream = InputStream.init(data: image.jpegData(compressionQuality: 0.1)!)
+            request.uploadImageStream(inputStream, suggestedFilename: "foo.jpg", mimeType: "image/jpeg", arguments: [
+                "is_public" : "1",
+                "async" : "1",
+                "title" : title,
+                "description" : description
+            ])
+            listRequest.append(request)
+        }
     }
     
     public func uploadPhotosURLs1(lobjImageToUpload:UIImage)
@@ -78,7 +92,7 @@ class PostViewController: UIViewController, ListAlbumViewControllerDelegate, OFF
         
         let boundary = String("---------------------------7d44e178b0434")
         request.addValue(" multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-
+        
         let body:NSMutableData = NSMutableData()
         body.append("\r\n--\(boundary)\r\n".data(using: String.Encoding.utf8)!)
         
@@ -94,12 +108,12 @@ class PostViewController: UIViewController, ListAlbumViewControllerDelegate, OFF
         body.append("--\(boundary)\r\n".data(using: String.Encoding.utf8)!)
         body.append(String("Content-Disposition: form-data; name=\"photo\"; filename=\"photo.jpg\"\r\n").data(using: String.Encoding.utf8)!)
         body.append("Content-Type: image/jpeg\r\n\r\n".data(using: String.Encoding.utf8)!)
-
+        
         body.append(imageData!)
         body.append("\r\n--\(boundary)--\r\n".data(using: String.Encoding.utf8)!)
         
         request.httpBody = Data(body.subdata(with: NSRange(location: 0, length: body.length)))
-
+        
         
         let session = URLSession.shared
         

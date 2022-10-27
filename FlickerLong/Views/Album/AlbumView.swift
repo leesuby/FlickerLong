@@ -24,6 +24,7 @@ class AlbumView{
         layout.minimumInteritemSpacing = 6
         viewController.collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView = viewController.collectionView
+        collectionView.backgroundColor = .white
     }
     
     func initConstraint(){

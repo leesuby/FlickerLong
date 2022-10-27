@@ -14,7 +14,7 @@ class OAuthAuthorization {
     static var oauthSwift : OAuth1Swift!
     
     static func authorize(baseViewController : UIViewController, webViewController : OAuthWebViewController, completion: @escaping () -> ()){
-        var oauthswift = OAuth1Swift(
+        let oauthswift = OAuth1Swift(
             consumerKey:     ProcessInfo.processInfo.environment["API_KEY"]!,
             consumerSecret:  ProcessInfo.processInfo.environment["API_SECRET"]!,
             requestTokenUrl: "https://www.flickr.com/services/oauth/request_token",

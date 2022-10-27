@@ -58,6 +58,7 @@ class PhotosCell: UICollectionViewCell, ModeCollectionViewDelegate {
         modeLayout.minimumLineSpacing = 10
         modeLayout.minimumInteritemSpacing = 10
         modeCollectionView = UICollectionView(frame: .zero, collectionViewLayout: modeLayout)
+        modeCollectionView.backgroundColor = .white
         modeCollectionView.delegate = modeController
         modeCollectionView.dataSource = modeController
         modeCollectionView.register(ModeCell.self, forCellWithReuseIdentifier: "modeCell")
@@ -70,6 +71,7 @@ class PhotosCell: UICollectionViewCell, ModeCollectionViewDelegate {
         photosLayout.minimumLineSpacing = 6
         photosLayout.minimumInteritemSpacing = 0
         photosCollectionView = UICollectionView(frame: .zero, collectionViewLayout: photosLayout)
+        photosCollectionView.backgroundColor = .white
         photosCollectionView.delegate = photosController
         photosCollectionView.dataSource = photosController
         photosCollectionView.register(PopularCell.self, forCellWithReuseIdentifier: "photosCell")

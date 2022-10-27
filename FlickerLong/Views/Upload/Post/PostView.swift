@@ -9,20 +9,20 @@ import Foundation
 import UIKit
 
 class PostView{
-    private var viewController : PostViewController!
-    private var view : UIView!
-    private var collectionView : UICollectionView!
-    private var title: LimitedCharacterTextField!
-    private var description: LimitedCharacterTextField!
+    var viewController : PostViewController!
+    var view : UIView!
+    var collectionView : UICollectionView!
+    var title: LimitedCharacterTextField!
+    var description: LimitedCharacterTextField!
     
-    private var albumView : UIView!
-    private var albumIcon : UIImageView!
-    private var albumLabel: UILabel!
-    private var albumButton: UIImageView!
+    var albumView : UIView!
+    var albumIcon : UIImageView!
+    var albumLabel: UILabel!
+    var albumButton: UIImageView!
 
-    private var privacyView: UIView!
-    private var privacyIcon: UIImageView!
-    private var privacyLabel : UILabel!
+    var privacyView: UIView!
+    var privacyIcon: UIImageView!
+    var privacyLabel : UILabel!
     
     init(viewController: PostViewController){
         self.viewController = viewController
@@ -44,14 +44,14 @@ class PostView{
         title = LimitedCharacterTextField()
         title.placeholder = "Title..."
         title.font = Constant.TextBox.font
-        title.textColor = Constant.TextBox.color
+        title.textColor = .darkGray
         title.layer.borderColor = UIColor.darkGray.cgColor
         title.layer.borderWidth = 0.5
         
         description = LimitedCharacterTextField()
         description.placeholder = "Description..."
         description.font = Constant.TextBox.font
-        description.textColor = Constant.TextBox.color
+        description.textColor = .darkGray
         description.layer.borderColor = UIColor.darkGray.cgColor
         description.layer.borderWidth = 0.5
         

@@ -48,6 +48,7 @@ class ProfileViewController: UIViewController, AlbumsCellDelegate {
         collectionView.register(PhotosCell.self, forCellWithReuseIdentifier: "photosCell")
         collectionView.register(AlbumsCell.self, forCellWithReuseIdentifier: "albumsCell")
         collectionView.isPagingEnabled = true
+        
     }
     
     override func viewWillLayoutSubviews() {
@@ -56,6 +57,9 @@ class ProfileViewController: UIViewController, AlbumsCellDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         Constant.UserSession.currentTab = .profile
+        if(tabBarController?.tabBar.isHidden == true){
+            tabBarController?.tabBar.isHidden = false
+        }
     }
 
 }

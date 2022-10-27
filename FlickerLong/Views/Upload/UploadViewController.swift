@@ -62,7 +62,7 @@ class UploadViewController: UIViewController, InformationViewDelegate {
             showPhotoPicker()
             
         case .limited:
-            print("2")
+            showPhotoPicker()
             
         case .restricted:
             print("3")

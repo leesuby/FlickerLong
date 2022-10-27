@@ -22,7 +22,9 @@ class OnboardingViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        let textAttributes = [NSAttributedString.Key.foregroundColor:UIColor.black]
+        navigationController?.navigationBar.titleTextAttributes = textAttributes
+        navigationController?.navigationBar.backgroundColor = .white
         //Set VIEW
         onboardingView = OnboardingView(view: self.view)
         onboardingView.delegate = self

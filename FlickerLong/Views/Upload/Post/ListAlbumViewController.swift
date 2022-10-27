@@ -23,10 +23,16 @@ class ListAlbumViewController: UIViewController, AlbumsCellDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .white
+        navigationController?.navigationBar.backgroundColor = .white
+        let textAttributes = [NSAttributedString.Key.foregroundColor:UIColor.black]
+        navigationController?.navigationBar.titleTextAttributes = textAttributes
+        
         listAlbumView = ListAlbumView(viewController: self)
         listAlbumView.initView()
         listAlbumView.initConstraint()
         
+        collectionView.backgroundColor = .white
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.register(AlbumsCell.self, forCellWithReuseIdentifier: "albumsCell")

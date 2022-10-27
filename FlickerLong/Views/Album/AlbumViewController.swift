@@ -23,6 +23,10 @@ class AlbumViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .white
+        tabBarController?.tabBar.backgroundColor = .black
+        let textAttributes = [NSAttributedString.Key.foregroundColor:UIColor.black]
+        navigationController?.navigationBar.titleTextAttributes = textAttributes
         
         title = albumModel.title
         albumView = AlbumView(viewController: self)

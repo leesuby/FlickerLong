@@ -47,6 +47,8 @@ class HomeViewController: UIViewController, View{
     override func viewWillAppear(_ animated: Bool) {
         //Update Status User
         Constant.UserSession.currentTab = .home
+       
+        tabBarController?.tabBar.backgroundColor = .white
     }
     
     
