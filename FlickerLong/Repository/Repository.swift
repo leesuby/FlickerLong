@@ -153,11 +153,8 @@ class Repository{
     
     //get detail album
     static func getDetailAlbum(albumId: String, completion: @escaping (([PhotoView]) -> ())){
-        
-        
-        var dataListPicture : [PhotoView] = []
         FlickerAPI<PhotosetData>.getDataFlicker(on: .albumPhotos, with: RequestData(albumId: albumId)) { photosetData in
-            print(photosetData)
+            var dataListPicture : [PhotoView] = []
             guard let photos = photosetData.photoset?.photo else{
                 return
             }
@@ -170,6 +167,12 @@ class Repository{
                 dataListPicture.append(photoView)
             }
             completion(dataListPicture)
+        }
+    }
+    
+    static func getPhotoId(ticketId: String, completion: @escaping ((String) -> ())){
+        FlickerAPI<TicketChecker>.getDataFlicker(on: .checkTicketId, with: RequestData(ticketId: ticketId)) { ticketChecker in
+            completion((ticketChecker.uploader?.ticket![0].photoid)!)
         }
     }
 }

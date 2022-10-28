@@ -10,7 +10,7 @@ import UIKit
 import objectiveflickr
 
 class Constant{
-    static var ObjCContext : OFFlickrAPIContext = OFFlickrAPIContext.init(apiKey: ProcessInfo.processInfo.environment["API_KEY"]!, sharedSecret: ProcessInfo.processInfo.environment["API_SECRET"]!)
+    static var ObjCContext : OFFlickrAPIContext = OFFlickrAPIContext.init(apiKey: ProcessInfo.processInfo.environment["API_KEY"] ?? "e3e9d23e495da9bf5c0f1a0a63d5be66" , sharedSecret: ProcessInfo.processInfo.environment["API_SECRET"] ?? "bc0b1e9d741c62d4")
     
     static func setContext(){
         ObjCContext.oAuthToken = Constant.UserSession.userOAuthToken

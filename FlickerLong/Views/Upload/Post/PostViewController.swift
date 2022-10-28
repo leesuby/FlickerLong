@@ -10,11 +10,19 @@ import objectiveflickr
 
 class PostViewController: UIViewController, ListAlbumViewControllerDelegate, OFFlickrAPIRequestDelegate {
     var listRequest : [OFFlickrAPIRequest] = []
-    
+    var uploadedPicture : Int = 0
+    var listTickerId : [String] = []
     
     func flickrAPIRequest(_ inRequest: OFFlickrAPIRequest!, didCompleteWithResponse inResponseDictionary: [AnyHashable : Any]!) {
-        navigationController?.popToRootViewController(animated: true)
-        tabBarController?.selectedIndex = 2
+        listTickerId.append((inResponseDictionary["ticketid"] as! [AnyHashable : Any])["_text"] as! String)
+        uploadedPicture = uploadedPicture + 1
+        if(uploadedPicture == listImage.count){
+        
+            
+            navigationController?.popToRootViewController(animated: true)
+            tabBarController?.selectedIndex = 2
+        }
+        
     }
     
     func flickrAPIRequest(_ inRequest: OFFlickrAPIRequest!, didFailWithError inError: Error!) {
@@ -22,7 +30,6 @@ class PostViewController: UIViewController, ListAlbumViewControllerDelegate, OFF
     }
     
     func flickrAPIRequest(_ inRequest: OFFlickrAPIRequest!, imageUploadSentBytes inSentBytes: UInt, totalBytes inTotalBytes: UInt) {
-        print(inTotalBytes)
     }
     
     var listImage : [UIImage]!
@@ -72,6 +79,7 @@ class PostViewController: UIViewController, ListAlbumViewControllerDelegate, OFF
             ])
             listRequest.append(request)
         }
+        
     }
     
     public func uploadPhotosURLs1(lobjImageToUpload:UIImage)

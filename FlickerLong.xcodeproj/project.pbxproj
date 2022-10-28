@@ -31,6 +31,9 @@
 		E74542FE290B7F11002CE989 /* Photoset.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74542FD290B7F11002CE989 /* Photoset.swift */; };
 		E7454301290B8579002CE989 /* PhotosetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7454300290B8579002CE989 /* PhotosetData.swift */; };
 		E7454309290B85AF002CE989 /* ListPhotosAlbum.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7454308290B85AF002CE989 /* ListPhotosAlbum.swift */; };
+		E745430B290B9913002CE989 /* TicketChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E745430A290B9913002CE989 /* TicketChecker.swift */; };
+		E745430D290B994C002CE989 /* Uploader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E745430C290B994C002CE989 /* Uploader.swift */; };
+		E745430F290B9997002CE989 /* Ticket.swift in Sources */ = {isa = PBXBuildFile; fileRef = E745430E290B9997002CE989 /* Ticket.swift */; };
 		E7708DC828F543C100E20336 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7708DC728F543C100E20336 /* AppDelegate.swift */; };
 		E7708DCA28F543C100E20336 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7708DC928F543C100E20336 /* SceneDelegate.swift */; };
 		E7708DCC28F543C100E20336 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7708DCB28F543C100E20336 /* OnboardingViewController.swift */; };
@@ -211,6 +214,9 @@
 		E74542FD290B7F11002CE989 /* Photoset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photoset.swift; sourceTree = "<group>"; };
 		E7454300290B8579002CE989 /* PhotosetData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosetData.swift; sourceTree = "<group>"; };
 		E7454308290B85AF002CE989 /* ListPhotosAlbum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListPhotosAlbum.swift; sourceTree = "<group>"; };
+		E745430A290B9913002CE989 /* TicketChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TicketChecker.swift; sourceTree = "<group>"; };
+		E745430C290B994C002CE989 /* Uploader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Uploader.swift; sourceTree = "<group>"; };
+		E745430E290B9997002CE989 /* Ticket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ticket.swift; sourceTree = "<group>"; };
 		E7708DC428F543C100E20336 /* FlickerLong.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlickerLong.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E7708DC728F543C100E20336 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E7708DC928F543C100E20336 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -338,6 +344,9 @@
 				E74542FD290B7F11002CE989 /* Photoset.swift */,
 				E7454300290B8579002CE989 /* PhotosetData.swift */,
 				E7454308290B85AF002CE989 /* ListPhotosAlbum.swift */,
+				E745430A290B9913002CE989 /* TicketChecker.swift */,
+				E745430C290B994C002CE989 /* Uploader.swift */,
+				E745430E290B9997002CE989 /* Ticket.swift */,
 			);
 			path = User;
 			sourceTree = "<group>";
@@ -899,6 +908,7 @@
 				E7BEBC1229024B330026E11B /* UserLink.swift in Sources */,
 				E7BEBC22290253440026E11B /* Data.swift in Sources */,
 				E74542FA290B7E5F002CE989 /* Album.swift in Sources */,
+				E745430F290B9997002CE989 /* Ticket.swift in Sources */,
 				E74542BC2906719A002CE989 /* PhotosCell.swift in Sources */,
 				E7BEBC1C29024BE00026E11B /* TexturePictures.swift in Sources */,
 				E7BA749328F6787800AEEC81 /* OAuthAuthorization.swift in Sources */,
@@ -923,6 +933,7 @@
 				E77A497428F93CAE00925FD0 /* ProfileViewController.swift in Sources */,
 				E7708DC828F543C100E20336 /* AppDelegate.swift in Sources */,
 				E7BEBBFF290149D80026E11B /* Person.swift in Sources */,
+				E745430D290B994C002CE989 /* Uploader.swift in Sources */,
 				E7BEBC2029024C420026E11B /* JsonSupport.swift in Sources */,
 				E77A497228F93CA100925FD0 /* UploadViewController.swift in Sources */,
 				E74542C22906A4DA002CE989 /* AlbumsCell.swift in Sources */,
@@ -931,6 +942,7 @@
 				E7BA74BC28F7F4AC00AEEC81 /* PhotoModel.swift in Sources */,
 				E74542C029069F97002CE989 /* AlbumCell.swift in Sources */,
 				E77A499328FD657600925FD0 /* PhotoPickerView.swift in Sources */,
+				E745430B290B9913002CE989 /* TicketChecker.swift in Sources */,
 				E74542CE2908E872002CE989 /* GalleryData.swift in Sources */,
 				E7BA749F28F6B9A400AEEC81 /* HomeViewController.swift in Sources */,
 				E77A49BB29012FF600925FD0 /* RequestData.swift in Sources */,
