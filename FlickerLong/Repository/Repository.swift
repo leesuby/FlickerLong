@@ -30,7 +30,7 @@ class Repository{
                     guard let urlImage = URL( string:"https://live.staticflickr.com/\(String(describing: photo.server!))/\(String(describing: photo.id!))_\(String(describing: photo.secret!))_b.jpg") else{
                         
                         downloadedPicture -= 1
-                        print(downloadedPicture)
+              
                         if(downloadedPicture == 0){
                             completion(dataListPicture)
                         }
@@ -42,7 +42,7 @@ class Repository{
                     dataListPicture.append(photoView)
                     
                     downloadedPicture -= 1
-                    print(downloadedPicture)
+              
                     if(downloadedPicture == 0){
                         completion(dataListPicture)
                     }
@@ -109,7 +109,7 @@ class Repository{
                     guard let urlImage = URL( string:"https://live.staticflickr.com/\(String(describing: photo.server!))/\(String(describing: photo.id!))_\(String(describing: photo.secret!))_b.jpg") else{
                         
                         downloadedPicture -= 1
-                        print(downloadedPicture)
+                        
                         if(downloadedPicture == 0){
                             completion(dataListPicture)
                         }
@@ -121,7 +121,7 @@ class Repository{
                     dataListPicture.append(photoView)
                     
                     downloadedPicture -= 1
-                    print(downloadedPicture)
+                   
                     if(downloadedPicture == 0){
                         completion(dataListPicture)
                     }
@@ -134,7 +134,7 @@ class Repository{
     static func getAlbum(completion: @escaping(([AlbumModel]) -> ())){
         var listAlbum : [AlbumModel] = []
         FlickerAPI<Album>.getDataFlicker(on: .albumList, with: RequestData()) { albums in
-            print(albums)
+        
             guard let photosets = albums.photosets else{
                 return
             }
@@ -172,7 +172,8 @@ class Repository{
     
     static func getPhotoId(ticketId: String, completion: @escaping ((String) -> ())){
         FlickerAPI<TicketChecker>.getDataFlicker(on: .checkTicketId, with: RequestData(ticketId: ticketId)) { ticketChecker in
-            completion((ticketChecker.uploader?.ticket![0].photoid)!)
+            
+//            completion((ticketChecker.uploader?.ticket![0].photoid)!)
         }
     }
 }

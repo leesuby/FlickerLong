@@ -610,8 +610,7 @@ static NSData *NSDataFromOAuthPreferredWebForm(NSDictionary *formDictionary)
     [multipartBegin appendFormat:@"Content-Type: %@\r\n\r\n", inType];
     
     [multipartEnd appendFormat:@"\r\n--%@--", separator];
-    
-    NSLog(@"%@", multipartBegin);
+
     
     // now we have everything, create a temp file for this purpose; although UUID is inferior to
     [self cleanUpTempFile];

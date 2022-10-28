@@ -146,7 +146,7 @@ class ModeCollectionView : NSObject, UICollectionViewDelegate, UICollectionViewD
     
     //DELEGATE
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        var mode : ModePhotos = ModePhotos(rawValue: indexPath.item)!
+        let mode : ModePhotos = ModePhotos(rawValue: indexPath.item)!
         delegate.changeMode(mode: mode)
     }
     

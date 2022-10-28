@@ -27,11 +27,12 @@ class OAuthAuthorization {
             baseViewController.addChild(webViewController)
         }
 
+        
         oauthswift.authorizeURLHandler = webViewController
         oauthswift.authorize(
             withCallbackURL: "oauth-swift://oauth-callback/flickr") { result in
                 switch result {
-                case .success(let (credential, response, parameters)):
+                case .success(let (credential, _, parameters)):
                     guard let userID = parameters["user_nsid"] as? String else{
                         return
                     }

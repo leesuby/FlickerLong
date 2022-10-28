@@ -11,17 +11,22 @@ import objectiveflickr
 class PostViewController: UIViewController, ListAlbumViewControllerDelegate, OFFlickrAPIRequestDelegate {
     var listRequest : [OFFlickrAPIRequest] = []
     var uploadedPicture : Int = 0
-    var listTickerId : [String] = []
+    var choosenAlbum : AlbumModel? = nil
+    var flagUploadAlbum : Bool = false
     
     func flickrAPIRequest(_ inRequest: OFFlickrAPIRequest!, didCompleteWithResponse inResponseDictionary: [AnyHashable : Any]!) {
-        listTickerId.append((inResponseDictionary["ticketid"] as! [AnyHashable : Any])["_text"] as! String)
-        uploadedPicture = uploadedPicture + 1
-        if(uploadedPicture == listImage.count){
-        
-            
-            navigationController?.popToRootViewController(animated: true)
-            tabBarController?.selectedIndex = 2
+        print(inResponseDictionary)
+        guard let photoId = inResponseDictionary["photoid"] else{
+            return
         }
+        
+        let id : String = (photoId as! [String : String])["_text"]!
+        let request : OFFlickrAPIRequest = OFFlickrAPIRequest.init(apiContext: Constant.ObjCContext)
+        request.delegate = self
+        
+        request.callAPIMethod(withPOST: "flickr.photosets.addPhoto", arguments: ["api_key" : "e3e9d23e495da9bf5c0f1a0a63d5be66", "photoset_id" : "\(choosenAlbum!.id!)", "photo_id" : "\(id)"])
+        listRequest.append(request)
+        
         
     }
     
@@ -57,7 +62,7 @@ class PostViewController: UIViewController, ListAlbumViewControllerDelegate, OFF
     
     func setUpNavigation(){
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Post", style: .plain, target: self, action: #selector(postButton))
-        self.navigationItem.rightBarButtonItem?.isEnabled = true
+        self.navigationItem.rightBarButtonItem?.isEnabled = false
     }
     
     @objc func postButton(){
@@ -73,7 +78,6 @@ class PostViewController: UIViewController, ListAlbumViewControllerDelegate, OFF
             let inputStream : InputStream = InputStream.init(data: image.jpegData(compressionQuality: 0.1)!)
             request.uploadImageStream(inputStream, suggestedFilename: "foo.jpg", mimeType: "image/jpeg", arguments: [
                 "is_public" : "1",
-                "async" : "1",
                 "title" : title,
                 "description" : description
             ])
@@ -167,7 +171,8 @@ class PostViewController: UIViewController, ListAlbumViewControllerDelegate, OFF
     
     func returnChosenAlbum(album: AlbumModel) {
         postView.chooseAlbum(title: album.title)
-        print(album.id)
+        self.choosenAlbum = album
+        self.navigationItem.rightBarButtonItem?.isEnabled = true
     }
 }
 

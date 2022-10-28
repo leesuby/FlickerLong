@@ -20,7 +20,7 @@ enum EndPoint: String{
     case galleryList
     case galleryPhotos
     case checkTicketId
-    case addPhotoAlbum
+
     
     func getPath (request : RequestData) -> String{
         let apiKey : String =  "e3e9d23e495da9bf5c0f1a0a63d5be66"
@@ -44,9 +44,6 @@ enum EndPoint: String{
             return "https://www.flickr.com/services/rest/?method=flickr.photosets.getPhotos&api_key=\(apiKey)&photoset_id=\(request.albumId)&user_id=\(Constant.UserSession.userId)&format=json&nojsoncallback=1"
         case .checkTicketId:
             return "https://www.flickr.com/services/rest/?method=flickr.photos.upload.checkTickets&api_key=\(apiKey)&tickets=\(request.ticketId)&format=json&nojsoncallback=1"
-        case .addPhotoAlbum:
-            return
-            "https://www.flickr.com/services/rest/?method=flickr.photosets.addPhoto&api_key=84b08afb5e301948e1a867b319577d6f&photoset_id=72177720303181474&photo_id=52460131098&format=json&nojsoncallback=1&auth_token=72157720862226288-2efd8837ca546a5f&api_sig=7c8ae5e551e5baabdbc353d856698e00"
         }
     }
 }
