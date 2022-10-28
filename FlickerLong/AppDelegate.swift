@@ -37,7 +37,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
     
-    func checkUser(){
+    func checkUser() {
         if(UserDefaults.standard.value(forKey: "userID")) != nil{
             Constant.UserSession.userId = (UserDefaults.standard.value(forKey: "userID") as! String).replacingOccurrences(of: "%40", with: "@")
             Constant.UserSession.userOAuthSecret = UserDefaults.standard.value(forKey: "userOAuthSecret") as! String

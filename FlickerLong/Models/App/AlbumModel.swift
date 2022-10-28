@@ -22,6 +22,13 @@ class AlbumModel{
         self.numberOfPhotos = numberOfPhotos
     }
     
+    init(id : String, title: String, dateCreated: String, numberOfPhotos: Int) {
+        self.id = id
+        self.title = title
+        self.dateCreated = dateCreated
+        self.numberOfPhotos = numberOfPhotos
+    }
+    
     init(){
         
     }

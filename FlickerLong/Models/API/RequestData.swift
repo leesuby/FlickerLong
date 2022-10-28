@@ -11,6 +11,7 @@ class RequestData{
     var userId : String = ""
     var page: Int = 1
     var albumId: String = ""
+    var galleryId: String = ""
     
     init(userId : String){
         self.userId = userId
@@ -22,6 +23,10 @@ class RequestData{
     
     init(albumId: String){
         self.albumId = albumId
+    }
+    
+    init(galleryId: String){
+        self.galleryId = galleryId
     }
     
     init(){

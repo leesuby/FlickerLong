@@ -1,22 +1,22 @@
 //
-//  File.swift
+//  PhotosetData.swift
 //  FlickerLong
 //
 //  Created by LAP15335 on 28/10/2022.
 //
 
 import Foundation
-// MARK: - Album
-struct Album: Codable {
-    let photosets: Photosets?
+// MARK: - PhotosetData
+struct PhotosetData: Codable {
+    let photoset: ListPhotosAlbum?
     let stat: String?
 }
 
-// MARK: Album convenience initializers and mutators
+// MARK: PhotosetData convenience initializers and mutators
 
-extension Album {
+extension PhotosetData {
     init(data: Data) throws {
-        self = try newJSONDecoder().decode(Album.self, from: data)
+        self = try newJSONDecoder().decode(PhotosetData.self, from: data)
     }
 
     init(_ json: String, using encoding: String.Encoding = .utf8) throws {
@@ -31,11 +31,11 @@ extension Album {
     }
 
     func with(
-        photosets: Photosets?? = nil,
+        photoset: ListPhotosAlbum?? = nil,
         stat: String?? = nil
-    ) -> Album {
-        return Album(
-            photosets: photosets ?? self.photosets,
+    ) -> PhotosetData {
+        return PhotosetData(
+            photoset: photoset ?? self.photoset,
             stat: stat ?? self.stat
         )
     }

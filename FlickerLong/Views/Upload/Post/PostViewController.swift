@@ -159,6 +159,7 @@ class PostViewController: UIViewController, ListAlbumViewControllerDelegate, OFF
     
     func returnChosenAlbum(album: AlbumModel) {
         postView.chooseAlbum(title: album.title)
+        print(album.id)
     }
 }
 

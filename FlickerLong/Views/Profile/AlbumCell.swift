@@ -24,6 +24,7 @@ class AlbumCell: UICollectionViewCell {
     func initView(){
         cover = UIImageView()
         cover.contentMode = .scaleAspectFill
+        cover.image = UIImage(named: "AlbumSymbold")
         
         title = UILabel()
         title.font = Constant.Title.font
@@ -64,18 +65,14 @@ class AlbumCell: UICollectionViewCell {
     }
     
     func config(album : AlbumModel){
-        DispatchQueue.global().async {
-            let data = try? Data(contentsOf: album.coverURL)
-            
+       
             DispatchQueue.main.async {
-                self.cover.image = UIImage(data: data!)
                 self.title.text = album.title
                 self.date.text = Helper.getDateStringFromUTC(time: Int(album.dateCreated)!)
                 self.numberPhotos.text = "\(String(album.numberOfPhotos)) photos"
                 self.albumModel = album
             }
         }
-    }
     
     required init?(coder: NSCoder) {
         fatalError("Error create AlbumCell")

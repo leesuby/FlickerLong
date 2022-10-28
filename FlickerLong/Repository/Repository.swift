@@ -12,12 +12,15 @@ class Repository{
     
     // Call to get 100 Popular Images
     static func getPopularData(completion : @escaping ([PhotoView]) -> ()){
-        var downloadedPicture : Int = 0
-        var dataListPicture : [PhotoView] = []
+        
         FlickerAPI<RecentData>.getDataFlicker(on: .recentFlickr, with: RequestData()) { recentData in
             guard let photos = recentData.photos?.photo else{
+                
                 return
             }
+            
+            var downloadedPicture : Int = 0
+            var dataListPicture : [PhotoView] = []
             
             downloadedPicture = photos.count
             for photo in photos{
@@ -50,8 +53,6 @@ class Repository{
     
     // Call to get 100 Popular Images
     static func getPopularDataUnsplash(page: Int ,completion : @escaping ([PhotoView]) -> ()){
-        
-        
         FlickerAPI<ImageElement>.getDataUnsplash(on: .recentUnsplash, with: RequestData(page: page), completion: {
             imageElement in
             var dataListPicture : [PhotoView] = []
@@ -91,12 +92,14 @@ class Repository{
     
     // Get public photo
     static func getPublicPhoto(completion: @escaping(([PhotoView]) -> ())){
-        var downloadedPicture : Int = 0
-        var dataListPicture : [PhotoView] = []
+       
         FlickerAPI<PublicPhoto>.getDataFlicker(on: .publicPhoto, with: RequestData()) { publicPhoto in
             guard let photos = publicPhoto.photos?.photo else{
                 return
             }
+            
+            var downloadedPicture : Int = 0
+            var dataListPicture : [PhotoView] = []
             
             downloadedPicture = photos.count
             for photo in photos{
@@ -132,17 +135,17 @@ class Repository{
         var listAlbum : [AlbumModel] = []
         FlickerAPI<Album>.getDataFlicker(on: .albumList, with: RequestData()) { albums in
             print(albums)
-            guard let galleries = albums.galleries else{
+            guard let photosets = albums.photosets else{
                 return
             }
-            for gallery in galleries.gallery{
-                let id = gallery.gallery_id
-                let coverURL = URL(string: (gallery.cover_photos!.photo?[0].url)!)!
-                let title = gallery.title?.content
-                let dateCreated = gallery.date_create!
-                let numOfPhotos = gallery.count_photos
-                let model = AlbumModel(id: id!, coverURL: coverURL, title: title!, dateCreated: dateCreated, numberOfPhotos: numOfPhotos!)
+            for photoset in photosets.photoset!{
+                let id = photoset.id
+                let title = photoset.title?.content
+                let dateCreated = photoset.date_create
+                let numOfPhotos = photoset.count_photos
+                let model = AlbumModel(id: id!, title: title!, dateCreated: dateCreated!, numberOfPhotos: Int(exactly: numOfPhotos!)!)
                 listAlbum.append(model)
+            
             }
             completion(listAlbum)
         }
@@ -151,9 +154,11 @@ class Repository{
     //get detail album
     static func getDetailAlbum(albumId: String, completion: @escaping (([PhotoView]) -> ())){
         
+        
         var dataListPicture : [PhotoView] = []
-        FlickerAPI<PublicPhoto>.getDataFlicker(on: .albumPhotos, with: RequestData(albumId: albumId)) { publicPhoto in
-            guard let photos = publicPhoto.photos?.photo else{
+        FlickerAPI<PhotosetData>.getDataFlicker(on: .albumPhotos, with: RequestData(albumId: albumId)) { photosetData in
+            print(photosetData)
+            guard let photos = photosetData.photoset?.photo else{
                 return
             }
             

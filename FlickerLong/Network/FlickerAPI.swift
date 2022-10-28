@@ -17,6 +17,8 @@ enum EndPoint: String{
     case publicPhoto
     case albumList
     case albumPhotos
+    case galleryList
+    case galleryPhotos
     
     func getPath (request : RequestData) -> String{
         let apiKey : String = String(describing:ProcessInfo.processInfo.environment["API_KEY"]!)
@@ -30,10 +32,14 @@ enum EndPoint: String{
             return "https://api.unsplash.com/photos/?client_id=\(apiKeyUnplash)&page=\(request.page)&per_page=20"
         case .publicPhoto:
             return "https://www.flickr.com/services/rest/?method=flickr.people.getPublicPhotos&api_key=\(apiKey)&user_id=\(Constant.UserSession.userId)&format=json&nojsoncallback=1"
-        case .albumList:
+        case .galleryList:
             return "https://www.flickr.com/services/rest/?method=flickr.galleries.getList&api_key=\(apiKey)&user_id=\(Constant.UserSession.userId)&cover_photos=1&format=json&nojsoncallback=1"
-        case .albumPhotos:
+        case .galleryPhotos:
             return "https://www.flickr.com/services/rest/?method=flickr.galleries.getPhotos&api_key=\(apiKey)&gallery_id=\(request.albumId)&format=json&nojsoncallback=1"
+        case .albumList:
+            return "https://www.flickr.com/services/rest/?method=flickr.photosets.getList&api_key=\(apiKey)&user_id=\(Constant.UserSession.userId)&format=json&nojsoncallback=1"
+        case .albumPhotos:
+            return "https://www.flickr.com/services/rest/?method=flickr.photosets.getPhotos&api_key=\(apiKey)&photoset_id=\(request.albumId)&user_id=\(Constant.UserSession.userId)&format=json&nojsoncallback=1"
         }
     }
 }
