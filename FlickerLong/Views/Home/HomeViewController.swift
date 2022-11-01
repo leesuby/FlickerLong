@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CoreData
 
 class HomeViewController: UIViewController, View{
     typealias viewModel = HomeViewModel
@@ -20,6 +21,7 @@ class HomeViewController: UIViewController, View{
     private var widthView : CGFloat!
     var collectionView : UICollectionView!
     private var listPictures : [PhotoView] = []
+    private var listCorePicture : [PhotoCore] = []
     private var flagPaging : Bool = false
     private var flagInit : Bool = true
     private var pageImage : Int = 1
@@ -38,8 +40,14 @@ class HomeViewController: UIViewController, View{
         collectionView.dataSource = self
         collectionView.register(PopularCell.self, forCellWithReuseIdentifier: "popular")
         
-        //Bind VIEWMODEL
-        bind(with: self.viewModel)
+        if(NetworkStatus.shared.isConnected){
+            
+            //Bind VIEWMODEL
+            bind(with: self.viewModel)}
+        else{
+            print("asdasdsad")
+            fetchData()
+        }
         
         
     }
@@ -47,22 +55,85 @@ class HomeViewController: UIViewController, View{
     override func viewWillAppear(_ animated: Bool) {
         //Update Status User
         Constant.UserSession.currentTab = .home
-       
+        
         tabBarController?.tabBar.backgroundColor = .white
     }
     
     
     //Reload data when ViewModel changes
     func reloadDataCollectionView(){
-        listPictures = self.viewModel.listPicture
-        listPictures = Helper.calculateDynamicLayout(sliceArray: listPictures[..<listPictures.count],width: self.widthView)
-    
-        DispatchQueue.main.async { [self] in
-            collectionView.reloadData()
-            if(flagPaging == true)
-            {
-                flagPaging = false
+        DispatchQueue.global().async { [self] in
+            listPictures = self.viewModel.listPicture
+            listPictures = Helper.calculateDynamicLayout(sliceArray: listPictures[..<listPictures.count], width: widthView)
+            
+            listCorePicture = convertToCoreData()
+            
+            
+            DispatchQueue.main.async { [self] in
+                collectionView.reloadData()
+                if(flagPaging == true)
+                {
+                    flagPaging = false
+                }
             }
+        }
+    }
+    func convertToCoreData() -> [PhotoCore]{
+        if( listPictures.count <= 20){
+            deleteData()}
+        var tmpArray : [PhotoCore] = []
+        for picture in listPictures{
+            let photo = PhotoCore(context: CoreDatabase.context)
+            
+            photo.url = picture.url.string
+            photo.scaleWidth = picture.scaleWidth
+            photo.scaleHeight = picture.scaleWidth
+            photo.field = "Popular"
+            
+            if( listPictures.count <= 20){
+                do {
+                    photo.data = try Data(contentsOf: picture.url)}
+                catch{
+                    photo.data = Data()
+                }}
+            
+            tmpArray.append(photo)
+            
+        }
+        if( listPictures.count <= 20){
+            do{
+                try CoreDatabase.context.save()}
+            catch{
+                print("Can't save")
+            }}
+        return tmpArray
+        
+    }
+    
+    
+    func fetchData(){
+        let fetchRequest : NSFetchRequest<PhotoCore> = PhotoCore.fetchRequest()
+        
+        do {
+            let result = try CoreDatabase.context.fetch(fetchRequest)
+            listCorePicture = result
+            print(listCorePicture.count)
+            self.collectionView.reloadData()
+            
+        } catch {
+            let fetchError = error as NSError
+            print(fetchError)
+        }
+    }
+    
+    func deleteData(){
+        let fetchRequest : NSFetchRequest<PhotoCore> = PhotoCore.fetchRequest()
+        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest as! NSFetchRequest<any NSFetchRequestResult>)
+        
+        do {
+            try CoreDatabase.persistentStoreCoordinator.execute(deleteRequest, with: CoreDatabase.context)
+        } catch _ as NSError {
+            // TODO: handle the error
         }
     }
     
@@ -75,22 +146,21 @@ extension HomeViewController : UICollectionViewDataSource{
         var cell = UICollectionViewCell()
         if let popularCell = self.collectionView.dequeueReusableCell(withReuseIdentifier: "popular", for: indexPath) as? PopularCell{
             
-            popularCell.config(photo: self.viewModel.listPicture[indexPath.row])
+            popularCell.config(photo: self.listCorePicture[indexPath.row])
             cell = popularCell
         }
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if listPictures.count == 0{
-            flagInit = false
+        if listCorePicture.count == 0{
             homeView.startLoading()
         }
         else{
-            flagInit = false
             homeView.stopLoading()
         }
-        return listPictures.count
+        flagInit = false
+        return listCorePicture.count
     }
     
 }
@@ -98,12 +168,12 @@ extension HomeViewController : UICollectionViewDataSource{
 extension HomeViewController : UICollectionViewDelegate , UICollectionViewDelegateFlowLayout{
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        let photoWidth = listPictures[indexPath.item].scaleWidth
+        let photoWidth = listCorePicture[indexPath.item].scaleWidth
         if(photoWidth == widthView){
-            return CGSize(width: photoWidth!, height: CGFloat(Constant.DynamicLayout.heightDynamic))
+            return CGSize(width: photoWidth, height: CGFloat(Constant.DynamicLayout.heightDynamic))
         }
         else{
-            return CGSize(width: photoWidth! - Constant.DynamicLayout.spacing/2, height: CGFloat(Constant.DynamicLayout.heightDynamic))
+            return CGSize(width: photoWidth - Constant.DynamicLayout.spacing/2, height: CGFloat(Constant.DynamicLayout.heightDynamic))
         }
     }
     

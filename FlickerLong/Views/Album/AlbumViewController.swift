@@ -58,7 +58,7 @@ extension AlbumViewController : UICollectionViewDelegate, UICollectionViewDelega
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         var cell = UICollectionViewCell()
         if let photoCell = collectionView.dequeueReusableCell(withReuseIdentifier: "photoCell", for: indexPath) as? PopularCell{
-            photoCell.config(photo: listPhoto[indexPath.item])
+            //photoCell.config(photo: listPhoto[indexPath.item])
             cell = photoCell
         }
         

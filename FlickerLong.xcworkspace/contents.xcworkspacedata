@@ -2,6 +2,24 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:FlickerLong/Models/App/Database/CoreDataClass/PhotoCore+CoreDataClass.swift">
+   </FileRef>
+   <FileRef
+      location = "group:FlickerLong/Models/App/Database/CoreDataClass/PhotoCore+CoreDataProperties.swift">
+   </FileRef>
+   <FileRef
+      location = "group:FlickerLong/Models/App/Database/CoreDataClass/AlbumCore+CoreDataClass.swift">
+   </FileRef>
+   <FileRef
+      location = "group:FlickerLong/Models/App/Database/CoreDataClass/AlbumCore+CoreDataProperties.swift">
+   </FileRef>
+   <FileRef
+      location = "group:FlickerLong/Models/App/Database/CoreDataClass/ProfileCore+CoreDataClass.swift">
+   </FileRef>
+   <FileRef
+      location = "group:FlickerLong/Models/App/Database/CoreDataClass/ProfileCore+CoreDataProperties.swift">
+   </FileRef>
+   <FileRef
       location = "group:FlickerLong.xcodeproj">
    </FileRef>
    <FileRef

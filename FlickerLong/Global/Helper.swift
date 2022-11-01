@@ -92,6 +92,7 @@ class Helper{
                     else{
                         totalWidth = tmpPhoto.scaleWidth + totalWidth}
                 }
+                tmpPhoto.scaleHeight = Constant.DynamicLayout.heightDynamic
                 j+=1
                 
             }

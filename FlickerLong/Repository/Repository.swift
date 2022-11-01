@@ -8,50 +8,10 @@
 import Foundation
 import UIKit
 import objectiveflickr
+import Network
 
 class Repository : NSObject, OFFlickrAPIRequestDelegate {
     //MARK: GET
-    // Call to get 100 Popular Images
-    static func getPopularData(completion : @escaping ([PhotoView]) -> ()){
-        
-        FlickerAPI<RecentData>.getDataFlicker(on: .recentFlickr, with: RequestData()) { recentData in
-            guard let photos = recentData.photos?.photo else{
-                
-                return
-            }
-            
-            var downloadedPicture : Int = 0
-            var dataListPicture : [PhotoView] = []
-            
-            downloadedPicture = photos.count
-            for photo in photos{
-                
-                DispatchQueue.global().async {
-                    
-                    guard let urlImage = URL( string:"https://live.staticflickr.com/\(String(describing: photo.server!))/\(String(describing: photo.id!))_\(String(describing: photo.secret!))_b.jpg") else{
-                        
-                        downloadedPicture -= 1
-              
-                        if(downloadedPicture == 0){
-                            completion(dataListPicture)
-                        }
-                        return
-                    }
-                    
-                    let photoView = PhotoView(url: urlImage)
-                    
-                    dataListPicture.append(photoView)
-                    
-                    downloadedPicture -= 1
-              
-                    if(downloadedPicture == 0){
-                        completion(dataListPicture)
-                    }
-                }
-            }
-        }
-    }
-    
     // Call to get 100 Popular Images
     static func getPopularDataUnsplash(page: Int ,completion : @escaping ([PhotoView]) -> ()){
         FlickerAPI<ImageElement>.getDataUnsplash(on: .recentUnsplash, with: RequestData(page: page), completion: {
