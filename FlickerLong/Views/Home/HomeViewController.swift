@@ -25,6 +25,8 @@ class HomeViewController: UIViewController, View{
     private var flagPaging : Bool = false
     private var flagInit : Bool = true
     private var pageImage : Int = 1
+    let refreshControl = UIRefreshControl()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.viewModel = HomeViewModel(pageImage: pageImage)
@@ -40,16 +42,25 @@ class HomeViewController: UIViewController, View{
         collectionView.dataSource = self
         collectionView.register(PopularCell.self, forCellWithReuseIdentifier: "popular")
         
-        if(NetworkStatus.shared.isConnected){
-            
-            //Bind VIEWMODEL
-            bind(with: self.viewModel)}
-        else{
-            print("asdasdsad")
+        //Bind VIEWMODEL
+        bind(with: self.viewModel)
+        if(!NetworkStatus.shared.isConnected){
             fetchData()
         }
         
-        
+        refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
+        refreshControl.addTarget(self, action: #selector(self.refresh(_:)), for: .valueChanged)
+        collectionView.addSubview(refreshControl)
+    }
+    
+    @objc func refresh(_ sender: AnyObject) {
+       // Code to refresh table view
+        flagPaging = false
+        flagInit = true
+        pageImage = 1
+        self.viewModel = HomeViewModel(pageImage: pageImage)
+        bind(with: self.viewModel)
+        refreshControl.endRefreshing()
     }
     
     override func viewWillAppear(_ animated: Bool) {

@@ -9,7 +9,7 @@ import Foundation
 // MARK: - User
 struct User: Codable {
     let id: String
-    let updated_at: String
+    let updated_at: String?
     let username, name, first_name: String
     let last_name, twitter_username: String?
     let portfolio_url: String?

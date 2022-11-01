@@ -164,7 +164,7 @@ class PhotoCollectionView : NSObject, UICollectionViewDelegate, UICollectionView
         var cell = UICollectionViewCell()
         
         if let photosCell = collectionView.dequeueReusableCell(withReuseIdentifier: "photosCell", for: indexPath) as? PopularCell {
-            //photosCell.config(photo: datasource[indexPath.row])
+            photosCell.config(photo: datasource[indexPath.row])
             cell = photosCell
         }
         return cell

@@ -9,15 +9,15 @@ import Foundation
 
 // MARK: - ImageElement
 struct ImageElement: Codable {
-    let id: String
-    let created_at, updated_at: String
+    let id: String?
+    let created_at, updated_at: String?
     let promoted_at: String?
-    let width, height: Int
-    let color, blur_hash: String
+    let width, height: Int?
+    let color, blur_hash: String?
     let description: String?
     let urls: Urls
     let links: ImageLinks
-    let likes: Int
+    let likes: Int?
     let liked_by_user: Bool?
     let current_user_collections: [JSONAny]?
     let sponsorship: Sponsorship?

@@ -23,7 +23,7 @@ class Repository : NSObject, OFFlickrAPIRequestDelegate {
                 guard let url = photo.urls.regular else{
                     continue
                 }
-                let photoView = PhotoView(url: URL(string: url)!, width: CGFloat(photo.width), height: CGFloat(photo.height))
+                let photoView = PhotoView(url: URL(string: url)!, width: CGFloat(photo.width!), height: CGFloat(photo.height!))
                 dataListPicture.append(photoView)
             }
             
