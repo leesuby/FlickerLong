@@ -42,6 +42,9 @@
 		E74543542910FBDF002CE989 /* ProfileCore+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = E745434E2910FBDF002CE989 /* ProfileCore+CoreDataProperties.swift */; };
 		E74543552910FBDF002CE989 /* PhotoCore+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = E745434F2910FBDF002CE989 /* PhotoCore+CoreDataClass.swift */; };
 		E745435829111493002CE989 /* NetworkStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = E745435729111493002CE989 /* NetworkStatus.swift */; };
+		E76C91A02913719E00DAC8BB /* PhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76C919F2913719E00DAC8BB /* PhotoViewController.swift */; };
+		E76C91A82913748E00DAC8BB /* PhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76C91A72913748E00DAC8BB /* PhotoView.swift */; };
+		E76C91AB291399E900DAC8BB /* ZoomTransitionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76C91AA291399E900DAC8BB /* ZoomTransitionDelegate.swift */; };
 		E7708DC828F543C100E20336 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7708DC728F543C100E20336 /* AppDelegate.swift */; };
 		E7708DCA28F543C100E20336 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7708DC928F543C100E20336 /* SceneDelegate.swift */; };
 		E7708DCC28F543C100E20336 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7708DCB28F543C100E20336 /* OnboardingViewController.swift */; };
@@ -233,6 +236,9 @@
 		E745434E2910FBDF002CE989 /* ProfileCore+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ProfileCore+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		E745434F2910FBDF002CE989 /* PhotoCore+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PhotoCore+CoreDataClass.swift"; sourceTree = "<group>"; };
 		E745435729111493002CE989 /* NetworkStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkStatus.swift; sourceTree = "<group>"; };
+		E76C919F2913719E00DAC8BB /* PhotoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoViewController.swift; sourceTree = "<group>"; };
+		E76C91A72913748E00DAC8BB /* PhotoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoView.swift; sourceTree = "<group>"; };
+		E76C91AA291399E900DAC8BB /* ZoomTransitionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomTransitionDelegate.swift; sourceTree = "<group>"; };
 		E7708DC428F543C100E20336 /* FlickerLong.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlickerLong.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E7708DC728F543C100E20336 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E7708DC928F543C100E20336 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -389,6 +395,23 @@
 			path = CoreDataClass;
 			sourceTree = "<group>";
 		};
+		E745436029136F0D002CE989 /* Photo */ = {
+			isa = PBXGroup;
+			children = (
+				E76C919F2913719E00DAC8BB /* PhotoViewController.swift */,
+				E76C91A72913748E00DAC8BB /* PhotoView.swift */,
+			);
+			path = Photo;
+			sourceTree = "<group>";
+		};
+		E76C91A9291399D900DAC8BB /* Animation */ = {
+			isa = PBXGroup;
+			children = (
+				E76C91AA291399E900DAC8BB /* ZoomTransitionDelegate.swift */,
+			);
+			path = Animation;
+			sourceTree = "<group>";
+		};
 		E7708DBB28F543C100E20336 = {
 			isa = PBXGroup;
 			children = (
@@ -451,6 +474,8 @@
 		E7708DE028F5483100E20336 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				E76C91A9291399D900DAC8BB /* Animation */,
+				E745436029136F0D002CE989 /* Photo */,
 				E74542D729091528002CE989 /* Album */,
 				E77A497928FA8A0E00925FD0 /* CustomView */,
 				E77A496F28F93C7300925FD0 /* Profile */,
@@ -986,6 +1011,7 @@
 				E77A49A628FFA1C700925FD0 /* PostViewController.swift in Sources */,
 				E7708DCA28F543C100E20336 /* SceneDelegate.swift in Sources */,
 				E7BEBBF0290133770026E11B /* ProfileViewModel.swift in Sources */,
+				E76C91A02913719E00DAC8BB /* PhotoViewController.swift in Sources */,
 				E7BA74A128F6B9CB00AEEC81 /* HomeView.swift in Sources */,
 				E74542BE29068AC0002CE989 /* ModeCell.swift in Sources */,
 				E7BEBBFD290149D80026E11B /* Photoss.swift in Sources */,
@@ -1005,6 +1031,7 @@
 				E745432A290FD4EE002CE989 /* CoreDatabase.swift in Sources */,
 				E74543542910FBDF002CE989 /* ProfileCore+CoreDataProperties.swift in Sources */,
 				E7454309290B85AF002CE989 /* ListPhotosAlbum.swift in Sources */,
+				E76C91A82913748E00DAC8BB /* PhotoView.swift in Sources */,
 				E7454301290B8579002CE989 /* PhotosetData.swift in Sources */,
 				E7BA74B628F7CEA000AEEC81 /* ViewModel.swift in Sources */,
 				E7BEBC1829024BB80026E11B /* TopicSubmissions.swift in Sources */,
@@ -1015,6 +1042,7 @@
 				E7BA74A528F6C21400AEEC81 /* PopularCell.swift in Sources */,
 				E74542BA29064902002CE989 /* MenuCell.swift in Sources */,
 				E7BEBC0A29024A730026E11B /* ImageElement.swift in Sources */,
+				E76C91AB291399E900DAC8BB /* ZoomTransitionDelegate.swift in Sources */,
 				E7BA74A828F7B74700AEEC81 /* FlickerAPI.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1167,10 +1195,11 @@
 				DEVELOPMENT_TEAM = TQDRD368XZ;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = FlickerLong/Info.plist;
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "This app require access to photo library to work!";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIStatusBarStyle = "";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1199,10 +1228,11 @@
 				DEVELOPMENT_TEAM = TQDRD368XZ;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = FlickerLong/Info.plist;
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "This app require access to photo library to work!";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIStatusBarStyle = "";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

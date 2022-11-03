@@ -12,6 +12,13 @@ import OAuthSwift
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
+    //Lock orientation
+    var orientationLock = UIInterfaceOrientationMask.all
+
+    func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
+            return self.orientationLock
+    }
+    
     //HANDLE URL
     class var sharedInstance: AppDelegate {
         return UIApplication.shared.delegate as! AppDelegate
@@ -63,10 +70,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             profileVC.title = "Profile"
             
             //Navigation Controller
+            let navHome = UINavigationController(rootViewController: homeVC)
             let navUpload = UINavigationController(rootViewController: uploadVC)
             let navProfile = UINavigationController(rootViewController: uploadVC)
         
-            tabBarVC.setViewControllers([homeVC, navUpload, navProfile], animated: true)
+            tabBarVC.setViewControllers([navHome, navUpload, navProfile], animated: true)
             
             guard let items = tabBarVC.tabBar.items else{
                 return

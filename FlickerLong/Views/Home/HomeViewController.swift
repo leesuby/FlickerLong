@@ -20,6 +20,8 @@ class HomeViewController: UIViewController, View{
     private var homeView : HomeView!
     private var widthView : CGFloat!
     var collectionView : UICollectionView!
+    private var selectedIndex : IndexPath?
+    private var delegateNav : ZoomTransitioningDelgate = ZoomTransitioningDelgate()
     private var listPictures : [PhotoView] = []
     private var listCorePicture : [PhotoCore] = []
     private var flagPaging : Bool = false
@@ -68,6 +70,8 @@ class HomeViewController: UIViewController, View{
         Constant.UserSession.currentTab = .home
         
         tabBarController?.tabBar.backgroundColor = .white
+        navigationController?.delegate = delegateNav
+        
     }
     
     
@@ -76,9 +80,9 @@ class HomeViewController: UIViewController, View{
         DispatchQueue.global().async { [self] in
             listPictures = self.viewModel.listPicture
             listPictures = Helper.calculateDynamicLayout(sliceArray: listPictures[..<listPictures.count], width: widthView)
-            
-            listCorePicture = convertToCoreData()
-            
+            if(NetworkStatus.shared.isConnected){
+                listCorePicture = convertToCoreData()
+            }
             
             DispatchQueue.main.async { [self] in
                 collectionView.reloadData()
@@ -92,6 +96,7 @@ class HomeViewController: UIViewController, View{
     func convertToCoreData() -> [PhotoCore]{
         if( listPictures.count <= 20){
             deleteData()}
+        
         var tmpArray : [PhotoCore] = []
         for picture in listPictures{
             let photo = PhotoCore(context: CoreDatabase.context)
@@ -150,6 +155,17 @@ class HomeViewController: UIViewController, View{
     
 }
 
+// MARK: Setting animation
+extension HomeViewController : ZoomingViewController{
+    func zoomingImageView(for transition: ZoomTransitioningDelgate) -> UIImageView? {
+        if let indexPath = selectedIndex {
+            let cell = self.collectionView.cellForItem(at: indexPath) as! PopularCell
+            return cell.imageView
+        }
+        return nil
+    }
+}
+
 
 // MARK: Setting for UICollectionView
 extension HomeViewController : UICollectionViewDataSource{
@@ -177,6 +193,15 @@ extension HomeViewController : UICollectionViewDataSource{
 }
 
 extension HomeViewController : UICollectionViewDelegate , UICollectionViewDelegateFlowLayout{
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        self.selectedIndex = indexPath
+        let cell : PopularCell = collectionView.cellForItem(at: indexPath)! as! PopularCell
+        let vc = PhotoViewController()
+        vc.image = cell.imageView.image
+        print(navigationController?.delegate)
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         let photoWidth = listCorePicture[indexPath.item].scaleWidth

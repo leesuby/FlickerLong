@@ -7,8 +7,9 @@
 
 import UIKit
 
+
 class PopularCell: UICollectionViewCell {
-    private var imageView : CacheImage!
+    var imageView : CacheImage!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
