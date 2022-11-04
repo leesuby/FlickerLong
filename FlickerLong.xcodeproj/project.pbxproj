@@ -45,6 +45,8 @@
 		E76C91A02913719E00DAC8BB /* PhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76C919F2913719E00DAC8BB /* PhotoViewController.swift */; };
 		E76C91A82913748E00DAC8BB /* PhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76C91A72913748E00DAC8BB /* PhotoView.swift */; };
 		E76C91AB291399E900DAC8BB /* ZoomTransitionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76C91AA291399E900DAC8BB /* ZoomTransitionDelegate.swift */; };
+		E76C91AE2914F09200DAC8BB /* InteractiveDismissTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76C91AD2914F09200DAC8BB /* InteractiveDismissTransition.swift */; };
+		E76C91B62915052600DAC8BB /* PhotoDetailInteractiveTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76C91B52915052600DAC8BB /* PhotoDetailInteractiveTransition.swift */; };
 		E7708DC828F543C100E20336 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7708DC728F543C100E20336 /* AppDelegate.swift */; };
 		E7708DCA28F543C100E20336 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7708DC928F543C100E20336 /* SceneDelegate.swift */; };
 		E7708DCC28F543C100E20336 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7708DCB28F543C100E20336 /* OnboardingViewController.swift */; };
@@ -239,6 +241,8 @@
 		E76C919F2913719E00DAC8BB /* PhotoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoViewController.swift; sourceTree = "<group>"; };
 		E76C91A72913748E00DAC8BB /* PhotoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoView.swift; sourceTree = "<group>"; };
 		E76C91AA291399E900DAC8BB /* ZoomTransitionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomTransitionDelegate.swift; sourceTree = "<group>"; };
+		E76C91AD2914F09200DAC8BB /* InteractiveDismissTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractiveDismissTransition.swift; sourceTree = "<group>"; };
+		E76C91B52915052600DAC8BB /* PhotoDetailInteractiveTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoDetailInteractiveTransition.swift; sourceTree = "<group>"; };
 		E7708DC428F543C100E20336 /* FlickerLong.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlickerLong.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E7708DC728F543C100E20336 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E7708DC928F543C100E20336 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -408,6 +412,8 @@
 			isa = PBXGroup;
 			children = (
 				E76C91AA291399E900DAC8BB /* ZoomTransitionDelegate.swift */,
+				E76C91AD2914F09200DAC8BB /* InteractiveDismissTransition.swift */,
+				E76C91B52915052600DAC8BB /* PhotoDetailInteractiveTransition.swift */,
 			);
 			path = Animation;
 			sourceTree = "<group>";
@@ -957,6 +963,7 @@
 				E7BEBC1029024B160026E11B /* User.swift in Sources */,
 				E77A49AA28FFABDE00925FD0 /* LimitCharacterTextField.swift in Sources */,
 				E74542FC290B7E86002CE989 /* Photosets.swift in Sources */,
+				E76C91B62915052600DAC8BB /* PhotoDetailInteractiveTransition.swift in Sources */,
 				E74542DD29092DF0002CE989 /* ListAlbumViewController.swift in Sources */,
 				E7708DE528F5487100E20336 /* Constant.swift in Sources */,
 				E7708DE828F548BE00E20336 /* OnboardingView.swift in Sources */,
@@ -1024,6 +1031,7 @@
 				E77A49AC2900096A00925FD0 /* ProfileView.swift in Sources */,
 				E7BA749528F67D5A00AEEC81 /* LoginView.swift in Sources */,
 				E74542D62908EB03002CE989 /* CoverPhotos.swift in Sources */,
+				E76C91AE2914F09200DAC8BB /* InteractiveDismissTransition.swift in Sources */,
 				E74543522910FBDF002CE989 /* AlbumCore+CoreDataProperties.swift in Sources */,
 				E74542FE290B7F11002CE989 /* Photoset.swift in Sources */,
 				E7BEBBFE290149D80026E11B /* Count.swift in Sources */,

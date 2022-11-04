@@ -157,6 +157,14 @@ class HomeViewController: UIViewController, View{
 
 // MARK: Setting animation
 extension HomeViewController : ZoomingViewController{
+    func getImageView() -> UIImageView? {
+        if let indexPath = selectedIndex {
+            let cell = self.collectionView.cellForItem(at: indexPath) as! PopularCell
+            return cell.imageView
+        }
+        return nil
+    }
+    
     func zoomingImageView(for transition: ZoomTransitioningDelgate) -> UIImageView? {
         if let indexPath = selectedIndex {
             let cell = self.collectionView.cellForItem(at: indexPath) as! PopularCell
@@ -198,7 +206,6 @@ extension HomeViewController : UICollectionViewDelegate , UICollectionViewDelega
         let cell : PopularCell = collectionView.cellForItem(at: indexPath)! as! PopularCell
         let vc = PhotoViewController()
         vc.image = cell.imageView.image
-        print(navigationController?.delegate)
         navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -226,5 +233,40 @@ extension HomeViewController : UICollectionViewDelegate , UICollectionViewDelega
                 }
             }
         }
+    }
+}
+
+
+extension HomeViewController: PhotoDetailTransitionAnimatorDelegate {
+    func transitionWillStart() {
+        guard let lastSelected = self.selectedIndex else { return }
+        self.collectionView.cellForItem(at: lastSelected)?.isHidden = true
+    }
+
+    func transitionDidEnd() {
+        guard let lastSelected = self.selectedIndex else { return }
+        self.collectionView.cellForItem(at: lastSelected)?.isHidden = false
+    }
+
+    func referenceImage() -> UIImage? {
+        guard
+            let lastSelected = self.selectedIndex,
+            let cell = self.collectionView.cellForItem(at: lastSelected) as? PopularCell
+        else {
+            return nil
+        }
+
+        return cell.imageView.image
+    }
+
+    func imageFrame() -> CGRect? {
+        guard
+            let lastSelected = self.selectedIndex,
+            let cell = self.collectionView.cellForItem(at: lastSelected)
+        else {
+            return nil
+        }
+
+        return self.collectionView.convert(cell.frame, to: self.view)
     }
 }

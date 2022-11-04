@@ -11,6 +11,7 @@ import UIKit
 @objc
 protocol ZoomingViewController {
     func zoomingImageView(for transition : ZoomTransitioningDelgate) -> UIImageView?
+    func getImageView() -> UIImageView?
 }
 
 enum TransitionState{
@@ -19,6 +20,7 @@ enum TransitionState{
 }
 
 class ZoomTransitioningDelgate : NSObject{
+    fileprivate var currentAnimationTransition: UIViewControllerAnimatedTransitioning? = nil
     var transitionDuration = 0.7
     var operation : UINavigationController.Operation = .none
     private let zoomScale = CGFloat(15)
@@ -130,10 +132,34 @@ extension ZoomTransitioningDelgate : UINavigationControllerDelegate{
     
     func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationController.Operation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         if fromVC is ZoomingViewController && toVC is ZoomingViewController{
+           
+            if let photoDetailVC = fromVC as? PhotoViewController,
+               operation == .pop{
+                if photoDetailVC.isInteractivelyDismissing {
+                    let result: UIViewControllerAnimatedTransitioning? = PhotoDetailInteractiveDismissTransition(fromDelegate: photoDetailVC, toDelegate: toVC)
+                    self.currentAnimationTransition = result
+                    photoDetailVC.isInteractivelyDismissing = false
+                    return result
+                }
+                
+            }
             self.operation = operation
             return self
         }else{
             return nil
         }
     }
+    
+    func navigationController(_ navigationController: UINavigationController, interactionControllerFor animationController: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
+        return self.currentAnimationTransition as? UIViewControllerInteractiveTransitioning
+    }
+    
+    public func navigationController(
+        _ navigationController: UINavigationController,
+        didShow viewController: UIViewController,
+        animated: Bool
+    ) {
+        self.currentAnimationTransition = nil
+    }
+    
 }
