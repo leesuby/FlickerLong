@@ -33,7 +33,7 @@ class PopularCell: UICollectionViewCell {
         
     }
     
-    func config(photo : PhotoView){
+    func config(photo : PhotoSizeInfo){
         self.imageView.loadImageWithUrl(photo.url)
     }
     

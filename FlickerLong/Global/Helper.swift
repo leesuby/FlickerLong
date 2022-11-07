@@ -53,12 +53,12 @@ class Helper{
     }
     
     //Function to calculate size for each cell in Dynamic Layout
-    static func calculateDynamicLayout(sliceArray : ArraySlice<PhotoView>, width: CGFloat) -> [PhotoView]{
+    static func calculateDynamicLayout(sliceArray : ArraySlice<PhotoSizeInfo>, width: CGFloat) -> [PhotoSizeInfo]{
         
-        var data: [PhotoView] = Array(sliceArray)
+        var data: [PhotoSizeInfo] = Array(sliceArray)
         
-        var result: [PhotoView] = []
-        var tmpArray : [PhotoView] = []
+        var result: [PhotoSizeInfo] = []
+        var tmpArray : [PhotoSizeInfo] = []
         
         let widthView : CGFloat = width
         var i : Int = 0

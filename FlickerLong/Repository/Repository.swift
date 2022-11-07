@@ -9,21 +9,59 @@ import Foundation
 import UIKit
 import objectiveflickr
 import Network
+import CoreData
+
+enum CRUDCoreData{
+    case fetch
+    case delete
+    case save
+}
 
 class Repository : NSObject, OFFlickrAPIRequestDelegate {
+    
+    //MARK: CoreData
+    static func coreDataManipulation<T: NSManagedObject>(operation: CRUDCoreData, _ type: T.Type, completion: ((_ data: Any) -> ())? = nil){
+        let fetchRequest : NSFetchRequest = T.fetchRequest()
+        switch operation{
+        case .fetch:
+            do {
+                let result = try CoreDatabase.context.fetch(fetchRequest)
+                completion!(result)
+            } catch let e{
+                print(e.localizedDescription)
+            }
+            
+        case .delete:
+            let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+            do {
+                try CoreDatabase.persistentStoreCoordinator.execute(deleteRequest, with: CoreDatabase.context)
+            } catch let e {
+                print(e.localizedDescription)
+            }
+            
+        case .save:
+            do{
+                try CoreDatabase.context.save()}
+            catch let e {
+                print(e.localizedDescription)
+            }
+        }
+    }
+
+    
     //MARK: GET
     // Call to get 100 Popular Images
-    static func getPopularDataUnsplash(page: Int ,completion : @escaping ([PhotoView]) -> ()){
+    static func getPopularDataUnsplash(page: Int ,completion : @escaping ([PhotoSizeInfo]) -> ()){
         FlickerAPI<ImageElement>.getDataUnsplash(on: .recentUnsplash, with: RequestData(page: page), completion: {
             imageElement in
-            var dataListPicture : [PhotoView] = []
+            var dataListPicture : [PhotoSizeInfo] = []
             
             for photo in imageElement{
                 
                 guard let url = photo.urls.regular else{
                     continue
                 }
-                let photoView = PhotoView(url: URL(string: url)!, width: CGFloat(photo.width!), height: CGFloat(photo.height!))
+                let photoView = PhotoSizeInfo(url: URL(string: url)!, width: CGFloat(photo.width!), height: CGFloat(photo.height!))
                 dataListPicture.append(photoView)
             }
             
@@ -52,7 +90,7 @@ class Repository : NSObject, OFFlickrAPIRequestDelegate {
     }
     
     // Get public photo
-    static func getPublicPhoto(completion: @escaping(([PhotoView]) -> ())){
+    static func getPublicPhoto(completion: @escaping(([PhotoSizeInfo]) -> ())){
        
         FlickerAPI<PublicPhoto>.getDataFlicker(on: .publicPhoto, with: RequestData()) { publicPhoto in
             guard let photos = publicPhoto.photos?.photo else{
@@ -60,7 +98,7 @@ class Repository : NSObject, OFFlickrAPIRequestDelegate {
             }
             
             var downloadedPicture : Int = 0
-            var dataListPicture : [PhotoView] = []
+            var dataListPicture : [PhotoSizeInfo] = []
             
             downloadedPicture = photos.count
             for photo in photos{
@@ -77,7 +115,7 @@ class Repository : NSObject, OFFlickrAPIRequestDelegate {
                         return
                     }
                     
-                    let photoView = PhotoView(url: urlImage)
+                    let photoView = PhotoSizeInfo(url: urlImage)
                     
                     dataListPicture.append(photoView)
                     
@@ -113,9 +151,9 @@ class Repository : NSObject, OFFlickrAPIRequestDelegate {
     }
     
     //get detail album
-    static func getDetailAlbum(albumId: String, completion: @escaping (([PhotoView]) -> ())){
+    static func getDetailAlbum(albumId: String, completion: @escaping (([PhotoSizeInfo]) -> ())){
         FlickerAPI<PhotosetData>.getDataFlicker(on: .albumPhotos, with: RequestData(albumId: albumId)) { photosetData in
-            var dataListPicture : [PhotoView] = []
+            var dataListPicture : [PhotoSizeInfo] = []
             guard let photos = photosetData.photoset?.photo else{
                 return
             }
@@ -124,7 +162,7 @@ class Repository : NSObject, OFFlickrAPIRequestDelegate {
                 guard let urlImage = URL( string:"https://live.staticflickr.com/\(String(describing: photo.server!))/\(String(describing: photo.id!))_\(String(describing: photo.secret!))_b.jpg") else{
                     return
                 }
-                let photoView = PhotoView(url: urlImage, width: 0, height: 0)
+                let photoView = PhotoSizeInfo(url: urlImage, width: 0, height: 0)
                 dataListPicture.append(photoView)
             }
             completion(dataListPicture)
@@ -134,7 +172,6 @@ class Repository : NSObject, OFFlickrAPIRequestDelegate {
     static func getPhotoId(ticketId: String, completion: @escaping ((String) -> ())){
         FlickerAPI<TicketChecker>.getDataFlicker(on: .checkTicketId, with: RequestData(ticketId: ticketId)) { ticketChecker in
             
-//            completion((ticketChecker.uploader?.ticket![0].photoid)!)
         }
     }
     

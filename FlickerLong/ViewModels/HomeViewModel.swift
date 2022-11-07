@@ -12,20 +12,11 @@ class HomeViewModel : ViewModel{
     typealias Item = RecentData
     var model: RecentData?
     
-    var listPicture : [PhotoView]! = [] {
+    var listPicture : [PhotoSizeInfo]! = [] {
         didSet{
             self.bindToView()
         }
     }
     var bindToView :  (() -> ()) = {}
-    
-    init(pageImage: Int){
-        getRecentImage(page: pageImage)
-    }
-    
-    func getRecentImage(page: Int){
-        Repository.getPopularDataUnsplash(page: page) { result in
-            self.listPicture.append(contentsOf: result)
-        }
-    }
+
 }

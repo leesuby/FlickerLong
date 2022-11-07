@@ -9,6 +9,7 @@ import UIKit
 import CoreData
 
 class HomeViewController: UIViewController, View{
+    private let NUMBER_IMAGES_PER_PAGE = 20
     typealias viewModel = HomeViewModel
     var viewModel: HomeViewModel!
     func bind(with vm: HomeViewModel) {
@@ -22,7 +23,7 @@ class HomeViewController: UIViewController, View{
     var collectionView : UICollectionView!
     private var selectedIndex : IndexPath?
     private var delegateNav : ZoomTransitioningDelgate = ZoomTransitioningDelgate()
-    private var listPictures : [PhotoView] = []
+    private var listPictures : [PhotoSizeInfo] = []
     private var listCorePicture : [PhotoCore] = []
     private var flagPaging : Bool = false
     private var flagInit : Bool = true
@@ -31,7 +32,7 @@ class HomeViewController: UIViewController, View{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.viewModel = HomeViewModel(pageImage: pageImage)
+        self.viewModel = HomeViewModel()
         self.widthView = self.view.frame.size.width
         
         //Set VIEW
@@ -46,23 +47,11 @@ class HomeViewController: UIViewController, View{
         
         //Bind VIEWMODEL
         bind(with: self.viewModel)
-        if(!NetworkStatus.shared.isConnected){
-            fetchData()
-        }
+        getData()
         
         refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
         refreshControl.addTarget(self, action: #selector(self.refresh(_:)), for: .valueChanged)
         collectionView.addSubview(refreshControl)
-    }
-    
-    @objc func refresh(_ sender: AnyObject) {
-       // Code to refresh table view
-        flagPaging = false
-        flagInit = true
-        pageImage = 1
-        self.viewModel = HomeViewModel(pageImage: pageImage)
-        bind(with: self.viewModel)
-        refreshControl.endRefreshing()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -74,18 +63,36 @@ class HomeViewController: UIViewController, View{
         
     }
     
+    //Pull to refresh
+    @objc func refresh(_ sender: AnyObject) {
+        flagPaging = false
+        flagInit = true
+        pageImage = 1
+        self.viewModel = HomeViewModel()
+        bind(with: self.viewModel)
+        getData()
+       
+    }
     
     //Reload data when ViewModel changes
     func reloadDataCollectionView(){
         DispatchQueue.global().async { [self] in
             listPictures = self.viewModel.listPicture
             listPictures = Helper.calculateDynamicLayout(sliceArray: listPictures[..<listPictures.count], width: widthView)
+
+            listCorePicture = convertToCoreData()
+            
             if(NetworkStatus.shared.isConnected){
-                listCorePicture = convertToCoreData()
+                deleteData()
+                saveData()
             }
             
             DispatchQueue.main.async { [self] in
                 collectionView.reloadData()
+                
+                if(refreshControl.isRefreshing){
+                    refreshControl.endRefreshing()
+                }
                 if(flagPaging == true)
                 {
                     flagPaging = false
@@ -93,10 +100,19 @@ class HomeViewController: UIViewController, View{
             }
         }
     }
+    
+    func getData(){
+        if(!NetworkStatus.shared.isConnected){
+            fetchData()
+        }
+        else{
+            Repository.getPopularDataUnsplash(page: pageImage) { result in
+                self.viewModel.listPicture.append(contentsOf: result)
+            }
+        }
+    }
+    
     func convertToCoreData() -> [PhotoCore]{
-        if( listPictures.count <= 20){
-            deleteData()}
-        
         var tmpArray : [PhotoCore] = []
         for picture in listPictures{
             let photo = PhotoCore(context: CoreDatabase.context)
@@ -106,7 +122,7 @@ class HomeViewController: UIViewController, View{
             photo.scaleHeight = picture.scaleWidth
             photo.field = "Popular"
             
-            if( listPictures.count <= 20){
+            if(listPictures.count <= NUMBER_IMAGES_PER_PAGE){
                 do {
                     photo.data = try Data(contentsOf: picture.url)}
                 catch{
@@ -116,40 +132,27 @@ class HomeViewController: UIViewController, View{
             tmpArray.append(photo)
             
         }
-        if( listPictures.count <= 20){
-            do{
-                try CoreDatabase.context.save()}
-            catch{
-                print("Can't save")
-            }}
         return tmpArray
-        
     }
     
     
     func fetchData(){
-        let fetchRequest : NSFetchRequest<PhotoCore> = PhotoCore.fetchRequest()
-        
-        do {
-            let result = try CoreDatabase.context.fetch(fetchRequest)
-            listCorePicture = result
-            print(listCorePicture.count)
+        Repository.coreDataManipulation(operation: .fetch, PhotoCore.self) { data in
+            self.listCorePicture = data as! [PhotoCore]
             self.collectionView.reloadData()
-            
-        } catch {
-            let fetchError = error as NSError
-            print(fetchError)
         }
     }
     
     func deleteData(){
-        let fetchRequest : NSFetchRequest<PhotoCore> = PhotoCore.fetchRequest()
-        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest as! NSFetchRequest<any NSFetchRequestResult>)
-        
-        do {
-            try CoreDatabase.persistentStoreCoordinator.execute(deleteRequest, with: CoreDatabase.context)
-        } catch _ as NSError {
-            // TODO: handle the error
+        if(listPictures.count <= NUMBER_IMAGES_PER_PAGE){
+            Repository.coreDataManipulation(operation: .delete, PhotoCore.self)
+        }
+       
+    }
+    
+    func saveData(){
+        if(listPictures.count <= NUMBER_IMAGES_PER_PAGE){
+            Repository.coreDataManipulation(operation: .save, PhotoCore.self)
         }
     }
     
@@ -229,7 +232,7 @@ extension HomeViewController : UICollectionViewDelegate , UICollectionViewDelega
                 if(self.flagPaging == false){
                     self.flagPaging = true
                     self.pageImage += 1
-                    self.viewModel.getRecentImage(page: self.pageImage)
+                    getData()
                 }
             }
         }

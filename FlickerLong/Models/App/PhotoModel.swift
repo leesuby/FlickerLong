@@ -8,10 +8,10 @@
 import Foundation
 import UIKit
 
-class PhotoView {
+class PhotoSizeInfo {
     var url : URL
-    var width : CGFloat!
-    var height: CGFloat!
+    var width : CGFloat
+    var height: CGFloat
     var scaleWidth: CGFloat!
     var scaleHeight: CGFloat!
     
@@ -26,8 +26,7 @@ class PhotoView {
         self.width = sizeImage.width
         self.height = sizeImage.height
     }
-    
-    
+
 
     init(url: URL, width : CGFloat, height: CGFloat){
         self.url = url

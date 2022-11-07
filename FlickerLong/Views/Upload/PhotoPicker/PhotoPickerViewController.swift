@@ -29,7 +29,6 @@ class PhotoPickerViewController: UIViewController {
         collectionView.register(PickerImageCell.self, forCellWithReuseIdentifier: "pickerCell")
         
         getImageFromLibrary()
-        
         setUpNavigation()
     }
     
@@ -105,13 +104,11 @@ extension PhotoPickerViewController : UICollectionViewDataSource{
             PHImageManager.default().requestImage(for: listImages[indexPath.item], targetSize: PHImageManagerMaximumSize, contentMode: .aspectFill, options: nil) { image, _ in
                 DispatchQueue.main.async {
                     pickerCell.config(image: image!)
-                    
                 }
             }
             cell = pickerCell
            
         }
-        
         return cell
     }
     

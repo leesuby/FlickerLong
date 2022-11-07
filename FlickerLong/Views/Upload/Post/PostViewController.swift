@@ -28,9 +28,7 @@ class PostViewController: UIViewController, ListAlbumViewControllerDelegate, OFF
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.register(PickerImageCell.self, forCellWithReuseIdentifier: "photoCell")
-        // set the delegate, here we assume it's the controller that's creating the request object
-        
-        
+
         setUpNavigation()
     }
     

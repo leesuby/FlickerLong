@@ -26,69 +26,21 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     
     func checkUser(windowScene : UIWindowScene){
+        self.window = UIWindow(frame: UIScreen.main.bounds)
         if(UserDefaults.standard.value(forKey: "userID")) != nil{
-            
             Constant.UserSession.userId = (UserDefaults.standard.value(forKey: "userID") as! String).replacingOccurrences(of: "%40", with: "@")
             Constant.UserSession.userOAuthSecret = UserDefaults.standard.value(forKey: "userOAuthSecret") as! String
             Constant.UserSession.userOAuthToken = UserDefaults.standard.value(forKey: "userOAuthToken") as! String
             Constant.setContext()
-            self.window = UIWindow(frame: UIScreen.main.bounds)
-            
-            let tabBarVC = UITabBarController()
-            //ViewController
-            if #available(iOS 13.0, *) {
-                let tabBarAppearance: UITabBarAppearance = UITabBarAppearance()
-                tabBarAppearance.configureWithDefaultBackground()
-                tabBarAppearance.backgroundColor = UIColor.white
-                UITabBar.appearance().standardAppearance = tabBarAppearance
-
-                if #available(iOS 15.0, *) {
-                    UITabBar.appearance().scrollEdgeAppearance = tabBarAppearance
-                }
-            }
-            
-            let homeVC = HomeViewController()
-            let uploadVC = UploadViewController()
-            let profileVC = ProfileViewController()
-            
-            homeVC.title = "Home"
-            uploadVC.title = "Upload"
-            profileVC.title = "Profile"
-            
-            //Navigation Controller
-            let navHome = UINavigationController(rootViewController: homeVC)
-            let navUpload = UINavigationController(rootViewController: uploadVC)
-            let navProfile = UINavigationController(rootViewController: profileVC)
-            
-            tabBarVC.setViewControllers([navHome, navUpload, navProfile], animated: true)
-            
-            guard let items = tabBarVC.tabBar.items else{
-                return
-            }
-            
-            let imagesTabBar = ["HomeSymbol","UploadSymbol","ProfileSymbol"]
-            
-            for i in 0..<items.count {
-                items[i].image = UIImage(named: imagesTabBar[i])
-            }
-            
-            tabBarVC.modalPresentationStyle = .fullScreen
-            tabBarVC.tabBar.backgroundColor = .white80a
             
             let window = UIWindow(windowScene: windowScene)
-            window.rootViewController = tabBarVC
+            window.rootViewController = Holder.create(type: .tab) as! UITabBarController
             window.makeKeyAndVisible()
             self.window = window
             
         }else{
-            self.window = UIWindow(frame: UIScreen.main.bounds)
-            let vc = OnboardingViewController()
-            
-            let loginNavigation = UINavigationController(rootViewController:  vc)
-            loginNavigation.modalPresentationStyle = .fullScreen
-            
             let window = UIWindow(windowScene: windowScene)
-            window.rootViewController = loginNavigation
+            window.rootViewController = Holder.create(type: .navigation) as! UINavigationController
             window.makeKeyAndVisible()
             self.window = window
         }

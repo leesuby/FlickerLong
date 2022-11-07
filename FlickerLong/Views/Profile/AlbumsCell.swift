@@ -40,10 +40,10 @@ class AlbumsCell: UICollectionViewCell {
         albumCollectionView.register(AlbumCell.self, forCellWithReuseIdentifier: "albumCell")
         
         viewModel = ProfileViewModel()
-        viewModel.getAlbumList()
+        getData()
         bind(with: viewModel)
     }
-    
+
     func initConstraint(){
         addSubview(albumCollectionView)
         albumCollectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -51,7 +51,12 @@ class AlbumsCell: UICollectionViewCell {
         albumCollectionView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
         albumCollectionView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
         albumCollectionView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
-        
+    }
+    
+    func getData(){
+        Repository.getAlbum { result in
+            self.viewModel.albumList = result
+        }
     }
     
     func reloadDataCollectionView(){
@@ -59,7 +64,7 @@ class AlbumsCell: UICollectionViewCell {
         DispatchQueue.main.async {
             self.albumCollectionView.reloadData()
         }
-       
+        
     }
     
     required init?(coder: NSCoder) {
@@ -76,7 +81,7 @@ extension AlbumsCell : UICollectionViewDataSource, UICollectionViewDelegate, UIC
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         var cell = UICollectionViewCell()
-    
+        
         if let albumCell = collectionView.dequeueReusableCell(withReuseIdentifier: "albumCell", for: indexPath) as? AlbumCell{
             albumCell.config(album: albumList[indexPath.item])
             cell = albumCell

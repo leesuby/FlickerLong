@@ -45,64 +45,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if #available(iOS 13, *) {
             return true
         } else {
-            checkUser()
-            
+            checkUserAndSetScreen()
         }
         return true
     }
     
-    func checkUser() {
+    func checkUserAndSetScreen(){
         if(UserDefaults.standard.value(forKey: "userID")) != nil{
             Constant.UserSession.userId = (UserDefaults.standard.value(forKey: "userID") as! String).replacingOccurrences(of: "%40", with: "@")
             Constant.UserSession.userOAuthSecret = UserDefaults.standard.value(forKey: "userOAuthSecret") as! String
             Constant.UserSession.userOAuthToken = UserDefaults.standard.value(forKey: "userOAuthToken") as! String
             Constant.setContext()
+            
             self.window = UIWindow(frame: UIScreen.main.bounds)
-            
-            let tabBarVC = UITabBarController()
-            //ViewController
-            let homeVC = HomeViewController()
-            let uploadVC = UploadViewController()
-            let profileVC = ProfileViewController()
-            
-            homeVC.title = "Home"
-            uploadVC.title = "Upload"
-            profileVC.title = "Profile"
-            
-            //Navigation Controller
-            let navHome = UINavigationController(rootViewController: homeVC)
-            let navUpload = UINavigationController(rootViewController: uploadVC)
-            let navProfile = UINavigationController(rootViewController: uploadVC)
-        
-            tabBarVC.setViewControllers([navHome, navUpload, navProfile], animated: true)
-            
-            guard let items = tabBarVC.tabBar.items else{
-                return
-            }
-            
-            let imagesTabBar = ["HomeSymbol","UploadSymbol","ProfileSymbol"]
-            
-            for i in 0..<items.count {
-                items[i].image = UIImage(named: imagesTabBar[i])
-            }
-            
-            tabBarVC.modalPresentationStyle = .fullScreen
-            tabBarVC.tabBar.backgroundColor = .white80a
-
-            
             let appDelegate = UIApplication.shared.delegate as! AppDelegate
-            appDelegate.window?.rootViewController = tabBarVC
+            appDelegate.window?.rootViewController = Holder.create(type: .tab) as! UITabBarController
             appDelegate.window?.makeKeyAndVisible()
             
         }else{
             self.window = UIWindow(frame: UIScreen.main.bounds)
-            let vc = OnboardingViewController()
-            
-            let loginNavigation = UINavigationController(rootViewController:  vc)
-            loginNavigation.modalPresentationStyle = .fullScreen
-            
             let appDelegate = UIApplication.shared.delegate as! AppDelegate
-            appDelegate.window?.rootViewController = loginNavigation
+            appDelegate.window?.rootViewController = Holder.create(type: .navigation) as! UINavigationController
             appDelegate.window?.makeKeyAndVisible()
     }}
 

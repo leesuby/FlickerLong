@@ -19,7 +19,7 @@ class AlbumViewController: UIViewController {
     
     var collectionView : UICollectionView!
     var albumView: AlbumView!
-    var listPhoto : [PhotoView] = []
+    var listPhoto : [PhotoSizeInfo] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,10 +39,16 @@ class AlbumViewController: UIViewController {
         
         
         viewModel = ProfileViewModel()
-        viewModel.getDetailAlbum(albumId: self.albumModel.id)
+        
+        getData()
         bind(with: viewModel)
-        
-        
+
+    }
+    
+    func getData(){
+        Repository.getDetailAlbum(albumId: self.albumModel.id) { result in
+            self.viewModel.publicData = result
+        }
     }
     
     func reloadDataCollectionView(){

@@ -16,7 +16,7 @@ class ProfileViewModel : ViewModel {
             self.bindtoView()
         }
     }
-    var publicData : [PhotoView]!{
+    var publicData : [PhotoSizeInfo]!{
         didSet{
             self.bindtoView()
         }
@@ -29,27 +29,27 @@ class ProfileViewModel : ViewModel {
     
     var bindtoView: (() -> ()) = {}
 
-    func getProfile(){
-        Repository.getProfileUser { result in
-            self.profileData = result
-        }
-    }
-    
-    func getPublicPhoto(){
-        Repository.getPublicPhoto { result in
-            self.publicData = result
-        }
-    }
-    
-    func getAlbumList(){
-        Repository.getAlbum { result in
-            self.albumList = result
-        }
-    }
-    
-    func getDetailAlbum(albumId: String){
-        Repository.getDetailAlbum(albumId: albumId) { result in
-            self.publicData = result
-        }
-    }
+//    func getProfile(){
+//        Repository.getProfileUser { result in
+//            self.profileData = result
+//        }
+//    }
+//
+//    func getPublicPhoto(){
+//        Repository.getPublicPhoto { result in
+//            self.publicData = result
+//        }
+//    }
+//
+//    func getAlbumList(){
+//        Repository.getAlbum { result in
+//            self.albumList = result
+//        }
+//    }
+//
+//    func getDetailAlbum(albumId: String){
+//        Repository.getDetailAlbum(albumId: albumId) { result in
+//            self.publicData = result
+//        }
+//    }
 }

@@ -35,7 +35,7 @@ class ProfileViewController: UIViewController, AlbumsCellDelegate {
         view.backgroundColor = .white
         
         viewModel = ProfileViewModel()
-        viewModel.getProfile()
+        getData()
 
         profileView = ProfileView(viewController: self)
         profileView.initView()
@@ -62,6 +62,11 @@ class ProfileViewController: UIViewController, AlbumsCellDelegate {
         }
     }
 
+    func getData(){
+        Repository.getProfileUser { result in
+            self.viewModel.profileData = result
+        }
+    }
 }
 
 extension ProfileViewController : UICollectionViewDelegate, UICollectionViewDelegateFlowLayout{

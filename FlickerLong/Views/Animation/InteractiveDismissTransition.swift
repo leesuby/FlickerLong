@@ -9,15 +9,11 @@ import Foundation
 import UIKit
 
 public class InteractiveDismissTransition: NSObject {
-    /// The from- and to- viewControllers can conform to the protocol in order to get updates and vend snapshotViews
     fileprivate let fromDelegate: ZoomingViewController
     fileprivate weak var toDelegate: ZoomingViewController?
 
-    /// The background animation is the "photo-detail background opacity goes to zero"
     fileprivate var backgroundAnimation: UIViewPropertyAnimator? = nil
 
-    // NOTE: To avoid writing tons of boilerplate that pulls these values out of
-    // the transitionContext, I'm just gonna cache them here.
     fileprivate var transitionContext: UIViewControllerContextTransitioning? = nil
     fileprivate var fromReferenceImageViewFrame: CGRect? = nil
     fileprivate var toReferenceImageViewFrame: CGRect? = nil
@@ -27,7 +23,6 @@ public class InteractiveDismissTransition: NSObject {
     fileprivate var fromImage : UIImageView? = nil
     fileprivate var toImage : UIImageView? = nil
 
-    /// The snapshotView that is animating between the two view controllers.
     fileprivate let transitionImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
@@ -43,16 +38,12 @@ public class InteractiveDismissTransition: NSObject {
         super.init()
     }
 
-    /// Called by the photo-detail screen, this function updates the state of
-    /// the interactive transition, based on the state of the gesture.
     func didPanWith(gestureRecognizer: UIPanGestureRecognizer) {
         let transitionContext = self.transitionContext!
         let transitionImageView = self.transitionImageView
         let translation = gestureRecognizer.translation(in: nil)
         let translationVertical = translation.y
-
-        // For a given vertical-drag, we calculate our percentage complete
-        // and how shrunk-down the transition-image should be.
+        
         let percentageComplete = self.percentageComplete(forVerticalDrag: translationVertical)
         let transitionImageScale = transitionImageScaleFor(percentageComplete: percentageComplete)
 
@@ -71,25 +62,18 @@ public class InteractiveDismissTransition: NSObject {
             self.backgroundAnimation?.fractionComplete = percentageComplete
 
         case .ended:
-            // Here, we decide whether to complete or cancel the transition.
-            let fingerIsMovingDownwards = gestureRecognizer.velocity(in: nil).y > 0
-            let transitionMadeSignificantProgress = percentageComplete > 0.1
-            let shouldComplete = fingerIsMovingDownwards && transitionMadeSignificantProgress
-            self.completeTransition(didCancel: !shouldComplete)
+            self.completeTransition(didCancel: false)
         @unknown default:
             break
         }
     }
 
     private func completeTransition(didCancel: Bool) {
-        // If the gesture was cancelled, we reverse the "fade out the photo-detail background" animation.
         self.backgroundAnimation?.isReversed = didCancel
 
         let transitionContext = self.transitionContext!
         let backgroundAnimation = self.backgroundAnimation!
 
-        // The cancel and complete animations have different timing values.
-        // I dialed these in on-device using SwiftTweaks.
         let completionDuration: Double
         let completionDamping: CGFloat
         if didCancel {
@@ -100,25 +84,15 @@ public class InteractiveDismissTransition: NSObject {
             completionDamping = 0.90
         }
 
-        // The transition-image needs to animate into its final place.
-        // That's either:
-        // - its original spot on the photo-detail screen (if the transition was cancelled),
-        // - or its place in the photo-grid (if the transition completed).
         let foregroundAnimation = UIViewPropertyAnimator(duration: completionDuration, dampingRatio: completionDamping) {
-            // Reset our scale-transform on the imageview
-            self.transitionImageView.transform = CGAffineTransform.identity
 
-            // NOTE: It's important that we ask the toDelegate *here*,
-            // because if the device has rotated,
-            // the toDelegate needs a chance to update its layout
-            // before asking for the frame.
+            self.transitionImageView.transform = CGAffineTransform.identity
             self.transitionImageView.frame = didCancel
                 ? self.fromReferenceImageViewFrame!
             : self.toImage?.frame ?? self.toReferenceImageViewFrame!
         }
 
-        // When the transition-image has moved into place, the animation completes,
-        // and we close out the transition itself.
+
         foregroundAnimation.addCompletion { [weak self] (position) in
             self?.transitionImageView.removeFromSuperview()
             self?.transitionImageView.image = nil
@@ -201,7 +175,7 @@ extension InteractiveDismissTransition: UIViewControllerInteractiveTransitioning
 
         self.fromVC = fromVC
         self.toVC = toVC
-//        fromVC.transitionController = self
+        //fromVC.transitionController = self
 
         self.fromImage?.isHidden = true
         self.toImage?.isHidden = true

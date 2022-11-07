@@ -25,6 +25,7 @@ class OnboardingViewController: UIViewController {
         let textAttributes = [NSAttributedString.Key.foregroundColor:UIColor.black]
         navigationController?.navigationBar.titleTextAttributes = textAttributes
         navigationController?.navigationBar.backgroundColor = .white
+        
         //Set VIEW
         onboardingView = OnboardingView(view: self.view)
         onboardingView.delegate = self
@@ -43,37 +44,7 @@ extension OnboardingViewController : OnboardingViewDelegate{
     func getStartTapped() {
         navigationController?.isNavigationBarHidden = false
         OAuthAuthorization.authorize(baseViewController: self, webViewController: loginViewController) {
-            let tabBarVC = UITabBarController()
-            
-            //ViewController
-            let homeVC = HomeViewController()
-            let uploadVC = UploadViewController()
-            let profileVC = ProfileViewController()
-            
-            homeVC.title = "Home"
-            uploadVC.title = "Upload"
-            profileVC.title = "Profile"
-            
-            //Navigation Controller
-            let navHome = UINavigationController(rootViewController: homeVC)
-            let navUpload = UINavigationController(rootViewController: uploadVC)
-            let navProfile = UINavigationController(rootViewController: profileVC)
-        
-            tabBarVC.setViewControllers([navHome, navUpload, navProfile], animated: true)
-            
-            guard let items = tabBarVC.tabBar.items else{
-                return
-            }
-            
-            let imagesTabBar = ["HomeSymbol","UploadSymbol","ProfileSymbol"]
-            
-            for i in 0..<items.count {
-                items[i].image = UIImage(named: imagesTabBar[i])
-            }
-            
-            tabBarVC.modalPresentationStyle = .fullScreen
-            tabBarVC.tabBar.backgroundColor = .white80a
-            self.present(tabBarVC, animated: true)
+            self.present(Holder.create(type: .tab) as! UITabBarController, animated: true)
         }
     }
 }

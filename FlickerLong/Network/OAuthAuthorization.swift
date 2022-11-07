@@ -43,7 +43,6 @@ class OAuthAuthorization {
                     Constant.UserSession.userOAuthToken = credential.oauthToken
                     Constant.UserSession.userOAuthSecret = credential.oauthTokenSecret
                     Constant.setContext()
-                    print(parameters["user_nsid"]!)
                     completion()
         
                 case .failure(let error):

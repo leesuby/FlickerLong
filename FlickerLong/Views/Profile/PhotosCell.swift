@@ -15,11 +15,7 @@ class PhotosCell: UICollectionViewCell, ModeCollectionViewDelegate {
         case .fit:
             photosController.modePhotos = .fit
         }
-        
-        
         self.photosCollectionView.reloadData()
-        
-        
     }
     
     var viewModel: ProfileViewModel!
@@ -34,8 +30,10 @@ class PhotosCell: UICollectionViewCell, ModeCollectionViewDelegate {
     private var photosCollectionView : UICollectionView!
     private var photosController : PhotoCollectionView!
     private var photosLayout : UICollectionViewFlowLayout!
-    private var listPictures : [PhotoView] = []
+    private var listPictures : [PhotoSizeInfo] = []
     private var widthView : CGFloat!
+    let activityIndicator = UIActivityIndicatorView()
+    
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -45,7 +43,7 @@ class PhotosCell: UICollectionViewCell, ModeCollectionViewDelegate {
         
         widthView = frame.size.width
         viewModel = ProfileViewModel()
-        viewModel.getPublicPhoto()
+        getData()
         bind(with: viewModel)
         
     }
@@ -66,6 +64,7 @@ class PhotosCell: UICollectionViewCell, ModeCollectionViewDelegate {
         
         photosController = PhotoCollectionView()
         photosController.modePhotos = .dynamic
+        photosController.indicator = activityIndicator
         photosLayout = UICollectionViewFlowLayout()
         photosLayout.scrollDirection = .vertical
         photosLayout.minimumLineSpacing = 6
@@ -75,6 +74,9 @@ class PhotosCell: UICollectionViewCell, ModeCollectionViewDelegate {
         photosCollectionView.delegate = photosController
         photosCollectionView.dataSource = photosController
         photosCollectionView.register(PopularCell.self, forCellWithReuseIdentifier: "photosCell")
+        
+        activityIndicator.color = .darkGray
+        activityIndicator.transform = CGAffineTransform(scaleX: 3, y: 3)
     }
     
     func initConstraint(){
@@ -91,6 +93,18 @@ class PhotosCell: UICollectionViewCell, ModeCollectionViewDelegate {
         photosCollectionView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
         photosCollectionView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
         photosCollectionView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+        
+        photosCollectionView.addSubview(activityIndicator)
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        activityIndicator.topAnchor.constraint(equalTo: photosCollectionView.topAnchor).isActive = true
+        activityIndicator.centerXAnchor.constraint(equalTo: photosCollectionView.centerXAnchor).isActive = true
+        activityIndicator.centerYAnchor.constraint(equalTo: photosCollectionView.centerYAnchor).isActive = true
+    }
+    
+    func getData(){
+        Repository.getPublicPhoto { result in
+            self.viewModel.publicData = result
+        }
         
     }
     
@@ -153,10 +167,17 @@ class ModeCollectionView : NSObject, UICollectionViewDelegate, UICollectionViewD
 }
 
 class PhotoCollectionView : NSObject, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
-    var datasource : [PhotoView] = []
+    var datasource : [PhotoSizeInfo] = []
     var modePhotos : ModePhotos!
+    var indicator : UIActivityIndicatorView!
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if datasource.count == 0{
+            indicator.startAnimating()
+        }
+        else{
+            indicator.stopAnimating()
+        }
         return datasource.count
     }
     

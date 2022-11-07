@@ -183,3 +183,89 @@ extension UITextView{
 }
 
 
+
+extension UIImageView {
+    var contentClippingRect: CGRect {
+        guard let image = image else { return bounds }
+        guard contentMode == .scaleAspectFit else { return bounds }
+        guard image.size.width > 0 && image.size.height > 0 else { return bounds }
+
+        let scale: CGFloat
+        if image.size.width > image.size.height {
+            scale = bounds.width / image.size.width
+        } else {
+            scale = bounds.height / image.size.height
+        }
+
+        let size = CGSize(width: image.size.width * scale, height: image.size.height * scale)
+        let x = (bounds.width - size.width) / 2.0
+        let y = (bounds.height - size.height) / 2.0
+
+        return CGRect(x: x, y: y, width: size.width, height: size.height)
+    }
+}
+
+enum HolderType{
+    case tab
+    case navigation
+}
+
+class Holder{
+    static func create(type : HolderType) -> Any{
+        switch type{
+        case .tab:
+            let tabBarVC = UITabBarController()
+            //ViewController
+            if #available(iOS 13.0, *) {
+                let tabBarAppearance: UITabBarAppearance = UITabBarAppearance()
+                tabBarAppearance.configureWithDefaultBackground()
+                tabBarAppearance.backgroundColor = UIColor.white
+                UITabBar.appearance().standardAppearance = tabBarAppearance
+
+                if #available(iOS 15.0, *) {
+                    UITabBar.appearance().scrollEdgeAppearance = tabBarAppearance
+                }
+            }
+            
+            let homeVC = HomeViewController()
+            let uploadVC = UploadViewController()
+            let profileVC = ProfileViewController()
+            
+            homeVC.title = "Home"
+            uploadVC.title = "Upload"
+            profileVC.title = "Profile"
+            
+            //Navigation Controller
+            let navHome = UINavigationController(rootViewController: homeVC)
+            let navUpload = UINavigationController(rootViewController: uploadVC)
+            let navProfile = UINavigationController(rootViewController: profileVC)
+            
+            tabBarVC.setViewControllers([navHome, navUpload, navProfile], animated: true)
+            
+            guard let items = tabBarVC.tabBar.items else{
+                return UITabBarController()
+            }
+            
+            let imagesTabBar = ["HomeSymbol","UploadSymbol","ProfileSymbol"]
+            
+            for i in 0..<items.count {
+                items[i].image = UIImage(named: imagesTabBar[i])
+            }
+            
+            tabBarVC.modalPresentationStyle = .fullScreen
+            tabBarVC.tabBar.backgroundColor = .white80a
+            
+            return tabBarVC
+            
+        case .navigation:
+            let vc = OnboardingViewController()
+            
+            let loginNavigation = UINavigationController(rootViewController:  vc)
+            loginNavigation.modalPresentationStyle = .fullScreen
+            return loginNavigation
+            
+        }
+        
+
+    }
+}
