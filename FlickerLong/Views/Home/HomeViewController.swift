@@ -29,7 +29,7 @@ class HomeViewController: UIViewController, View{
     private var flagInit : Bool = true
     private var pageImage : Int = 1
     let refreshControl = UIRefreshControl()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.viewModel = HomeViewModel()

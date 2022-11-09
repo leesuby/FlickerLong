@@ -97,37 +97,45 @@ class Repository : NSObject, OFFlickrAPIRequestDelegate {
                 return
             }
             
+            let concurrentQueue = DispatchQueue(label: "publicPhotoQueue", attributes: .concurrent)
+            
             var downloadedPicture : Int = 0
             var dataListPicture : [PhotoSizeInfo] = []
             
             downloadedPicture = photos.count
             for photo in photos{
                 
-                DispatchQueue.global().async {
-                    
+                concurrentQueue.async {
                     guard let urlImage = URL( string:"https://live.staticflickr.com/\(String(describing: photo.server!))/\(String(describing: photo.id!))_\(String(describing: photo.secret!))_b.jpg") else{
                         
-                        downloadedPicture -= 1
-                        
-                        if(downloadedPicture == 0){
-                            completion(dataListPicture)
+                        concurrentQueue.async(flags: .barrier){
+                            downloadedPicture -= 1
+                            
+                            if(downloadedPicture == 0){
+                                completion(dataListPicture)
+                            }
+                            
                         }
                         return
                     }
                     
                     let photoView = PhotoSizeInfo(url: urlImage)
                     
-                    dataListPicture.append(photoView)
-                    
-                    downloadedPicture -= 1
-                   
-                    if(downloadedPicture == 0){
-                        completion(dataListPicture)
+                    concurrentQueue.async(flags: .barrier) {
+                        dataListPicture.append(photoView)
+                        
+                        downloadedPicture -= 1
+                       
+                        if(downloadedPicture == 0){
+                            completion(dataListPicture)
+                        }
                     }
+                    
                 }
             }
         }
     }
+
     
     //get album
     static func getAlbum(completion: @escaping(([AlbumModel]) -> ())){

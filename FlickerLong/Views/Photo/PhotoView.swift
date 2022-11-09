@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class PhotoViewUI{
+class PhotoView{
     var viewController : UIViewController
     var view : UIView!
     var imageView : UIImageView!

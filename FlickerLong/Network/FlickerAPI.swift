@@ -55,7 +55,6 @@ class FlickerAPI<T : Codable>{
     static func getDataFlicker(on endPoint : EndPoint, with request: RequestData, completion :@escaping(T) -> ()){
         
         let baseURL : String = endPoint.getPath(request: request)
-        print(baseURL)
         
         URLSession.shared.dataTask(with: URL(string: baseURL)!) { (data, urlResponse, error) in
             if let data = data {
@@ -63,7 +62,6 @@ class FlickerAPI<T : Codable>{
                 do{
                     let empData = try jsonDecoder.decode(T.self, from: data)
                     completion(empData)
-                    
                 }catch let DecodingError.dataCorrupted(context) {
                     print(context)
                 } catch let DecodingError.keyNotFound(key, context) {
@@ -93,7 +91,6 @@ class FlickerAPI<T : Codable>{
                 do{
                     let empData = try jsonDecoder.decode([T].self, from: data)
                     completion(empData)
-                    
                 }catch let DecodingError.dataCorrupted(context) {
                     print(context)
                 } catch let DecodingError.keyNotFound(key, context) {

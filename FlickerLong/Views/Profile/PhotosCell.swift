@@ -191,6 +191,8 @@ class PhotoCollectionView : NSObject, UICollectionViewDelegate, UICollectionView
         return cell
     }
     
+    
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         switch(modePhotos){
         case .dynamic:
@@ -208,5 +210,6 @@ class PhotoCollectionView : NSObject, UICollectionViewDelegate, UICollectionView
         }
         
     }
+    
     
 }

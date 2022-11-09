@@ -9,13 +9,13 @@ import UIKit
 
 class PhotoViewController: UIViewController {
     
-    private var photoView : PhotoViewUI!
+    private var photoView : PhotoView!
     var image : UIImage!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        photoView = PhotoViewUI(vc: self, image: image)
+        photoView = PhotoView(vc: self, image: image)
 
         // Do any additional setup after loading the view.
         configureDismissGesture()

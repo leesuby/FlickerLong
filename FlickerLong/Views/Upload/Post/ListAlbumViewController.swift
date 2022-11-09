@@ -47,6 +47,7 @@ extension ListAlbumViewController : UICollectionViewDelegate, UICollectionViewDa
         
         if let albumCell = collectionView.dequeueReusableCell(withReuseIdentifier: "albumsCell", for: indexPath) as? AlbumsCell{
             albumCell.delegate = self
+            albumCell.getData()
             cell = albumCell
         }
         

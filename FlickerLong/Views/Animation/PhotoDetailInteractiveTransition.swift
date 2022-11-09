@@ -160,7 +160,6 @@ extension PhotoDetailInteractiveDismissTransition: UIViewControllerInteractiveTr
         assert(maybeBackgroundImageView != nil, "Can't find ImageView in backgroundVC")
         assert(maybeForegroundImageView != nil, "Can't find ImageView in foregroundVC")
         
-        let fromeImage = maybeBackgroundImageView
         let toImage = maybeForegroundImageView
         
         self.fromVC = fromVC

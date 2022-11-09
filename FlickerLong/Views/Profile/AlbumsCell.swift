@@ -40,8 +40,8 @@ class AlbumsCell: UICollectionViewCell {
         albumCollectionView.register(AlbumCell.self, forCellWithReuseIdentifier: "albumCell")
         
         viewModel = ProfileViewModel()
-        getData()
         bind(with: viewModel)
+        
     }
 
     func initConstraint(){
@@ -54,11 +54,10 @@ class AlbumsCell: UICollectionViewCell {
     }
     
     func getData(){
-        Repository.getAlbum { result in
+        Repository.getAlbum { [self] result in
             self.viewModel.albumList = result
         }
     }
-    
     func reloadDataCollectionView(){
         self.albumList = viewModel.albumList
         DispatchQueue.main.async {

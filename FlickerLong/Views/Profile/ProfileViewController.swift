@@ -14,7 +14,6 @@ enum MenuOption : Int {
 
 class ProfileViewController: UIViewController, AlbumsCellDelegate {
     func albumClicked(albumModel: AlbumModel) {
-     
         let vc = AlbumViewController()
         vc.albumModel = albumModel
         navigationController?.pushViewController(vc, animated: true)
@@ -29,13 +28,13 @@ class ProfileViewController: UIViewController, AlbumsCellDelegate {
     
     private var profileView: ProfileView!
     var collectionView : UICollectionView!
+    let refreshControl = UIRefreshControl()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         
         viewModel = ProfileViewModel()
-        getData()
 
         profileView = ProfileView(viewController: self)
         profileView.initView()
@@ -49,6 +48,15 @@ class ProfileViewController: UIViewController, AlbumsCellDelegate {
         collectionView.register(AlbumsCell.self, forCellWithReuseIdentifier: "albumsCell")
         collectionView.isPagingEnabled = true
         
+        refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
+        refreshControl.addTarget(self, action: #selector(self.refresh(_:)), for: .valueChanged)
+        collectionView.addSubview(refreshControl)
+        
+    }
+    
+    //Pull to refresh
+    @objc func refresh(_ sender: AnyObject) {
+        collectionView.reloadData()
     }
     
     override func viewWillLayoutSubviews() {
@@ -60,6 +68,7 @@ class ProfileViewController: UIViewController, AlbumsCellDelegate {
         if(tabBarController?.tabBar.isHidden == true){
             tabBarController?.tabBar.isHidden = false
         }
+        getData()
     }
 
     func getData(){
@@ -80,11 +89,24 @@ extension ProfileViewController : UICollectionViewDelegate, UICollectionViewDele
     }
     
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-        profileView.menuView.collectionView.selectItem(at: IndexPath(item: Int((targetContentOffset.pointee.x / view.frame.size.width)), section: 0), animated: true, scrollPosition: .left)
+        let item : Int = Int((targetContentOffset.pointee.x / view.frame.size.width))
+        if(item == 1){
+            if let cell = collectionView.cellForItem(at: IndexPath(item: 1, section: 0)) as? AlbumsCell{
+                cell.getData()
+            }
+        }
+        profileView.menuView.collectionView.selectItem(at: IndexPath(item: item, section: 0), animated: true, scrollPosition: .left)
+    
     }
     
     func scrollToItem(item: Int){
+        if(item == 1){
+            if let cell = collectionView.cellForItem(at: IndexPath(item: 1, section: 0)) as? AlbumsCell{
+                cell.getData()
+            }
+        }
         collectionView.selectItem(at: IndexPath(item: item, section: 0), animated: true, scrollPosition: .left)
+        
     }
 }
 
@@ -97,7 +119,9 @@ extension ProfileViewController : UICollectionViewDataSource{
         case .album:
             if let albumCell = collectionView.dequeueReusableCell(withReuseIdentifier: "albumsCell", for: indexPath) as? AlbumsCell{
                 albumCell.delegate = self
+                albumCell.getData()
                 cell = albumCell
+                
             }
         case .photos:
             if let photoCell = collectionView.dequeueReusableCell(withReuseIdentifier: "photosCell", for: indexPath) as? PhotosCell{

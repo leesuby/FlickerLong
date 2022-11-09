@@ -43,11 +43,14 @@ class PostViewController: UIViewController, ListAlbumViewControllerDelegate, OFF
         let title : String = (self.postView.title.text == "" ? "No Title" : self.postView.title.text)!
         let description : String = (self.postView.description.text == "" ? "No Description" : self.postView.description.text)!
         
-        repo.uploadImage(listImage: listImage, title: title, description: description)
-        DispatchQueue.main.async {
-            self.navigationController?.popToRootViewController(animated: true)
-            self.tabBarController?.selectedIndex = 2
-        }
+        self.navigationController?.setViewControllers([UploadViewController()], animated: true)
+        self.tabBarController?.selectedIndex = 2
+
+    
+        self.repo.uploadImage(listImage: self.listImage, title: title, description: description)
+        
+    
+    
         
     }
     
