@@ -23,6 +23,8 @@ class HomeViewController: UIViewController, View{
     private var delegateNav : ZoomTransitioningDelgate = ZoomTransitioningDelgate()
     private var homeLoader : HomeLoader!
     private var typeData : TypeData!
+    private var listPictures : [PhotoSizeInfo] = []
+    private var listCorePicture : [PhotoCore] = []
     private var flagPaging : Bool = false
     private var flagInit : Bool = true
     private var pageImage : Int = 1
@@ -70,19 +72,24 @@ class HomeViewController: UIViewController, View{
         flagInit = true
         pageImage = 1
         self.viewModel = HomeViewModel()
-        self.homeLoader.listPictures = []
+        listPictures = []
         bind(with: self.viewModel)
         getData()
        
     }
     
     func getData(){
-        homeLoader.getData(page: pageImage) { [self] type in
+        homeLoader.getData(page: pageImage) { [self] result, type in
             typeData = type
             DispatchQueue.main.async { [self] in
-    
+                switch type{
+                case .online:
+                    listPictures = result as! [PhotoSizeInfo]
+                case .offline:
+                    listCorePicture = result as! [PhotoCore]
+                }
                 collectionView.reloadData()
-               
+                
                 if(refreshControl.isRefreshing){
                     refreshControl.endRefreshing()
                 }
@@ -122,11 +129,12 @@ extension HomeViewController : UICollectionViewDataSource{
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         var cell = UICollectionViewCell()
         if let popularCell = self.collectionView.dequeueReusableCell(withReuseIdentifier: "popular", for: indexPath) as? PopularCell{
+
             switch typeData{
             case .online:
-                popularCell.config(photo: self.homeLoader.listPictures[indexPath.row])
+                popularCell.config(photo: self.listPictures[indexPath.row])
             case .offline:
-                popularCell.config(photo: self.homeLoader.listCorePicture[indexPath.row])
+                popularCell.config(photo: self.listCorePicture[indexPath.row])
             case .none:
                 print("None config popular Cell")
             }
@@ -140,12 +148,13 @@ extension HomeViewController : UICollectionViewDataSource{
         let numPicture : Int!
         switch typeData{
         case .offline:
-            numPicture = self.homeLoader.listCorePicture.count
+            numPicture = listCorePicture.count
         case .online:
-            numPicture = self.homeLoader.listPictures.count
+            numPicture = listPictures.count
         case .none:
             numPicture = 0
         }
+
         
         if numPicture == 0{
             homeView.startLoading()
@@ -176,9 +185,9 @@ extension HomeViewController : UICollectionViewDelegate , UICollectionViewDelega
         let photoWidth : CGFloat = {
             switch typeData{
             case .offline:
-                return self.homeLoader.listCorePicture[indexPath.item].scaleWidth
+                return listCorePicture[indexPath.item].scaleWidth
             case .online:
-                return self.homeLoader.listPictures[indexPath.item].scaleWidth
+                return listPictures[indexPath.item].scaleWidth
             case .none:
                 return 0
             }

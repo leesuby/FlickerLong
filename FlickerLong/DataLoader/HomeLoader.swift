@@ -15,43 +15,31 @@ class HomeLoader{
     private let NUMBER_IMAGES_PER_PAGE = 20
     private var isInit : Bool = true
     private var widthHome: CGFloat
-    var listPictures : [PhotoSizeInfo] = []
-    var listCorePicture : [PhotoCore] = []
-    let blockQueue = DispatchQueue(label: "blockQueue",attributes: .concurrent)
     init(widthHome: CGFloat) {
         self.widthHome = widthHome
     }
     
-    func getData(page: Int, completion : @escaping (TypeData) -> (Void)){
+    func getData(page: Int, completion : @escaping ([AnyObject], TypeData) -> (Void)){
         if(!NetworkStatus.shared.isConnected){
             fetchData(completion: completion)
         }
         else{
             Repository.getPopularDataUnsplash(page: page) { [self] result in
-                blockQueue.async {
-                    let listSizedImage : [PhotoSizeInfo] = Helper.calculateDynamicLayout(sliceArray: result[0..<result.count], width: self.widthHome)
-                    
-                    if(self.isInit){
-                        let listPhotoCore = self.convertToCoreData(listPhoto: listSizedImage)
-                        self.deleteData(numberOfImage: listPhotoCore.count)
-                        self.saveData(numberOfImage: listPhotoCore.count)
-                    }
-                    
-                    self.blockQueue.async(flags: .barrier) {
-                        self.listPictures.append(contentsOf: listSizedImage)
-                        completion(.online)
-                    }
+                var listSizedImage : [AnyObject] = Helper.calculateDynamicLayout(sliceArray: result[0..<result.count], width: self.widthHome)
+                if(self.isInit){
+                    let listCoreData = self.convertToCoreData(listPhoto: listSizedImage as! [PhotoSizeInfo])
+                    deleteData(numberOfImage: listSizedImage.count)
+                    saveData(numberOfImage: listSizedImage.count)
                 }
+                completion(listSizedImage, .online)
                 
             }
         }
     }
     
-    func fetchData(completion : @escaping (TypeData) -> (Void)){
+    func fetchData(completion : @escaping ([PhotoCore], TypeData) -> (Void)){
         Repository.coreDataManipulation(operation: .fetch, PhotoCore.self) { data in
-            self.listCorePicture = data as! [PhotoCore]
-            completion(.offline)
-            
+            completion(data as! [PhotoCore], .offline)
         }
     }
     
