@@ -42,6 +42,7 @@
 		E74543542910FBDF002CE989 /* ProfileCore+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = E745434E2910FBDF002CE989 /* ProfileCore+CoreDataProperties.swift */; };
 		E74543552910FBDF002CE989 /* PhotoCore+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = E745434F2910FBDF002CE989 /* PhotoCore+CoreDataClass.swift */; };
 		E745435829111493002CE989 /* NetworkStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = E745435729111493002CE989 /* NetworkStatus.swift */; };
+		E75A9A6D291CAA4B006C6825 /* HomeLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75A9A6C291CAA4B006C6825 /* HomeLoader.swift */; };
 		E76C91A02913719E00DAC8BB /* PhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76C919F2913719E00DAC8BB /* PhotoViewController.swift */; };
 		E76C91A82913748E00DAC8BB /* PhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76C91A72913748E00DAC8BB /* PhotoView.swift */; };
 		E76C91AB291399E900DAC8BB /* ZoomTransitionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76C91AA291399E900DAC8BB /* ZoomTransitionDelegate.swift */; };
@@ -238,6 +239,7 @@
 		E745434E2910FBDF002CE989 /* ProfileCore+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ProfileCore+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		E745434F2910FBDF002CE989 /* PhotoCore+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PhotoCore+CoreDataClass.swift"; sourceTree = "<group>"; };
 		E745435729111493002CE989 /* NetworkStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkStatus.swift; sourceTree = "<group>"; };
+		E75A9A6C291CAA4B006C6825 /* HomeLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeLoader.swift; sourceTree = "<group>"; };
 		E76C919F2913719E00DAC8BB /* PhotoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoViewController.swift; sourceTree = "<group>"; };
 		E76C91A72913748E00DAC8BB /* PhotoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoView.swift; sourceTree = "<group>"; };
 		E76C91AA291399E900DAC8BB /* ZoomTransitionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomTransitionDelegate.swift; sourceTree = "<group>"; };
@@ -408,6 +410,14 @@
 			path = Photo;
 			sourceTree = "<group>";
 		};
+		E75A9A65291BBD45006C6825 /* DataLoader */ = {
+			isa = PBXGroup;
+			children = (
+				E75A9A6C291CAA4B006C6825 /* HomeLoader.swift */,
+			);
+			path = DataLoader;
+			sourceTree = "<group>";
+		};
 		E76C91A9291399D900DAC8BB /* Animation */ = {
 			isa = PBXGroup;
 			children = (
@@ -449,6 +459,7 @@
 				E7708DE128F5483700E20336 /* Repository */,
 				E7708DDE28F5480400E20336 /* Models */,
 				E7708DDF28F5480E00E20336 /* ViewModels */,
+				E75A9A65291BBD45006C6825 /* DataLoader */,
 				E7708DE028F5483100E20336 /* Views */,
 				E7708DD328F543C200E20336 /* Assets.xcassets */,
 				E7708DD528F543C200E20336 /* LaunchScreen.storyboard */,
@@ -1007,6 +1018,7 @@
 				E77A497228F93CA100925FD0 /* UploadViewController.swift in Sources */,
 				E74542C22906A4DA002CE989 /* AlbumsCell.swift in Sources */,
 				E7BEBC1E29024C2E0026E11B /* Urls.swift in Sources */,
+				E75A9A6D291CAA4B006C6825 /* HomeLoader.swift in Sources */,
 				E7BA74BE28F9216600AEEC81 /* Repository.swift in Sources */,
 				E7BA74BC28F7F4AC00AEEC81 /* PhotoModel.swift in Sources */,
 				E74542C029069F97002CE989 /* AlbumCell.swift in Sources */,

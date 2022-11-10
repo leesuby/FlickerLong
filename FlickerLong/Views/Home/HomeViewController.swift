@@ -9,12 +9,10 @@ import UIKit
 import CoreData
 
 class HomeViewController: UIViewController, View{
-    private let NUMBER_IMAGES_PER_PAGE = 20
     typealias viewModel = HomeViewModel
     var viewModel: HomeViewModel!
     func bind(with vm: HomeViewModel) {
         self.viewModel.bindToView = {
-            self.reloadDataCollectionView()
         }
     }
     
@@ -23,8 +21,8 @@ class HomeViewController: UIViewController, View{
     var collectionView : UICollectionView!
     private var selectedIndex : IndexPath?
     private var delegateNav : ZoomTransitioningDelgate = ZoomTransitioningDelgate()
-    private var listPictures : [PhotoSizeInfo] = []
-    private var listCorePicture : [PhotoCore] = []
+    private var homeLoader : HomeLoader!
+    private var typeData : TypeData!
     private var flagPaging : Bool = false
     private var flagInit : Bool = true
     private var pageImage : Int = 1
@@ -47,6 +45,9 @@ class HomeViewController: UIViewController, View{
         
         //Bind VIEWMODEL
         bind(with: self.viewModel)
+        
+        //Load Data
+        homeLoader = HomeLoader(widthHome: self.widthView)
         getData()
         
         refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
@@ -69,27 +70,19 @@ class HomeViewController: UIViewController, View{
         flagInit = true
         pageImage = 1
         self.viewModel = HomeViewModel()
+        self.homeLoader.listPictures = []
         bind(with: self.viewModel)
         getData()
        
     }
     
-    //Reload data when ViewModel changes
-    func reloadDataCollectionView(){
-        DispatchQueue.global().async { [self] in
-            listPictures = self.viewModel.listPicture
-            listPictures = Helper.calculateDynamicLayout(sliceArray: listPictures[..<listPictures.count], width: widthView)
-
-            listCorePicture = convertToCoreData()
-            
-            if(NetworkStatus.shared.isConnected){
-                deleteData()
-                saveData()
-            }
-            
+    func getData(){
+        homeLoader.getData(page: pageImage) { [self] type in
+            typeData = type
             DispatchQueue.main.async { [self] in
+    
                 collectionView.reloadData()
-                
+               
                 if(refreshControl.isRefreshing){
                     refreshControl.endRefreshing()
                 }
@@ -101,60 +94,6 @@ class HomeViewController: UIViewController, View{
         }
     }
     
-    func getData(){
-        if(!NetworkStatus.shared.isConnected){
-            fetchData()
-        }
-        else{
-            Repository.getPopularDataUnsplash(page: pageImage) { result in
-                self.viewModel.listPicture.append(contentsOf: result)
-            }
-        }
-    }
-    
-    func convertToCoreData() -> [PhotoCore]{
-        var tmpArray : [PhotoCore] = []
-        for picture in listPictures{
-            let photo = PhotoCore(context: CoreDatabase.context)
-            
-            photo.url = picture.url.string
-            photo.scaleWidth = picture.scaleWidth
-            photo.scaleHeight = picture.scaleWidth
-            photo.field = "Popular"
-            
-            if(listPictures.count <= NUMBER_IMAGES_PER_PAGE){
-                do {
-                    photo.data = try Data(contentsOf: picture.url)}
-                catch{
-                    photo.data = Data()
-                }}
-            
-            tmpArray.append(photo)
-            
-        }
-        return tmpArray
-    }
-    
-    
-    func fetchData(){
-        Repository.coreDataManipulation(operation: .fetch, PhotoCore.self) { data in
-            self.listCorePicture = data as! [PhotoCore]
-            self.collectionView.reloadData()
-        }
-    }
-    
-    func deleteData(){
-        if(listPictures.count <= NUMBER_IMAGES_PER_PAGE){
-            Repository.coreDataManipulation(operation: .delete, PhotoCore.self)
-        }
-       
-    }
-    
-    func saveData(){
-        if(listPictures.count <= NUMBER_IMAGES_PER_PAGE){
-            Repository.coreDataManipulation(operation: .save, PhotoCore.self)
-        }
-    }
     
 }
 
@@ -183,22 +122,39 @@ extension HomeViewController : UICollectionViewDataSource{
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         var cell = UICollectionViewCell()
         if let popularCell = self.collectionView.dequeueReusableCell(withReuseIdentifier: "popular", for: indexPath) as? PopularCell{
+            switch typeData{
+            case .online:
+                popularCell.config(photo: self.homeLoader.listPictures[indexPath.row])
+            case .offline:
+                popularCell.config(photo: self.homeLoader.listCorePicture[indexPath.row])
+            case .none:
+                print("None config popular Cell")
+            }
             
-            popularCell.config(photo: self.listCorePicture[indexPath.row])
             cell = popularCell
         }
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if listCorePicture.count == 0{
+        let numPicture : Int!
+        switch typeData{
+        case .offline:
+            numPicture = self.homeLoader.listCorePicture.count
+        case .online:
+            numPicture = self.homeLoader.listPictures.count
+        case .none:
+            numPicture = 0
+        }
+        
+        if numPicture == 0{
             homeView.startLoading()
         }
         else{
             homeView.stopLoading()
         }
         flagInit = false
-        return listCorePicture.count
+        return numPicture
     }
     
 }
@@ -208,13 +164,25 @@ extension HomeViewController : UICollectionViewDelegate , UICollectionViewDelega
         self.selectedIndex = indexPath
         let cell : PopularCell = collectionView.cellForItem(at: indexPath)! as! PopularCell
         let vc = PhotoViewController()
-        vc.image = cell.imageView.image
+        guard let image = cell.imageView.image else{
+            return
+        }
+        vc.image = image
         navigationController?.pushViewController(vc, animated: true)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        let photoWidth = listCorePicture[indexPath.item].scaleWidth
+        let photoWidth : CGFloat = {
+            switch typeData{
+            case .offline:
+                return self.homeLoader.listCorePicture[indexPath.item].scaleWidth
+            case .online:
+                return self.homeLoader.listPictures[indexPath.item].scaleWidth
+            case .none:
+                return 0
+            }
+        }()
         if(photoWidth == widthView){
             return CGSize(width: photoWidth, height: CGFloat(Constant.DynamicLayout.heightDynamic))
         }
