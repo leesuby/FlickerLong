@@ -19,19 +19,21 @@ class HomeLoader{
         self.widthHome = widthHome
     }
     
-    func getData(page: Int, completion : @escaping ([AnyObject], TypeData) -> (Void)){
+    func getData(listData: [PhotoSizeInfo],page: Int, completion : @escaping ([AnyObject], TypeData) -> (Void)){
         if(!NetworkStatus.shared.isConnected){
             fetchData(completion: completion)
         }
         else{
             Repository.getPopularDataUnsplash(page: page) { [self] result in
-                var listSizedImage : [AnyObject] = Helper.calculateDynamicLayout(sliceArray: result[0..<result.count], width: self.widthHome)
+                let listSizedImage : [PhotoSizeInfo] = Helper.calculateDynamicLayout(sliceArray: result[0..<result.count], width: self.widthHome)
                 if(self.isInit){
-                    let listCoreData = self.convertToCoreData(listPhoto: listSizedImage as! [PhotoSizeInfo])
+                    _ = self.convertToCoreData(listPhoto: listSizedImage)
                     deleteData(numberOfImage: listSizedImage.count)
                     saveData(numberOfImage: listSizedImage.count)
                 }
-                completion(listSizedImage, .online)
+                var finalList = listData
+                finalList.append(contentsOf: listSizedImage)
+                completion(finalList, .online)
                 
             }
         }

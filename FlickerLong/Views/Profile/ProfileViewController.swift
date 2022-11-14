@@ -41,6 +41,7 @@ class ProfileViewController: UIViewController, AlbumsCellDelegate {
         profileView.initConstraint()
         
         bind(with: viewModel)
+        getData()
     
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -59,7 +60,7 @@ class ProfileViewController: UIViewController, AlbumsCellDelegate {
         collectionView.reloadData()
     }
     
-    override func viewWillLayoutSubviews() {
+    override func viewDidLayoutSubviews() {
         profileView.layoutSubView()
     }
     

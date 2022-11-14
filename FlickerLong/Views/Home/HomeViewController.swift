@@ -7,8 +7,32 @@
 
 import UIKit
 import CoreData
+let NUMBER_OF_SKELETON = 20
 
 class HomeViewController: UIViewController, View{
+    private var listSkeleton: [Double] = {
+        var list : [Double] = []
+        var base : Double = 1  // 100% width
+        
+        for i in 0..<NUMBER_OF_SKELETON{
+            if(i == NUMBER_OF_SKELETON - 1){
+                list.append(base)
+                break
+            }
+            let widthRatio = Double.random(in: 0.25...base)
+            
+            if(base - widthRatio < 0.25){
+                list.append(base)
+                base = 1
+            }else{
+                base = base - widthRatio
+                list.append(widthRatio)
+            }
+        }
+        return list
+    }()
+    
+    
     typealias viewModel = HomeViewModel
     var viewModel: HomeViewModel!
     func bind(with vm: HomeViewModel) {
@@ -16,29 +40,25 @@ class HomeViewController: UIViewController, View{
         }
     }
     
-    private var homeView : HomeView!
-    private var widthView : CGFloat!
     var collectionView : UICollectionView!
+    private var homeView : HomeView?
     private var selectedIndex : IndexPath?
     private var delegateNav : ZoomTransitioningDelgate = ZoomTransitioningDelgate()
-    private var homeLoader : HomeLoader!
-    private var typeData : TypeData!
+    private var homeLoader : HomeLoader?
+    private var typeData : TypeData? = nil
     private var listPictures : [PhotoSizeInfo] = []
     private var listCorePicture : [PhotoCore] = []
     private var flagPaging : Bool = false
     private var flagInit : Bool = true
     private var pageImage : Int = 1
     let refreshControl = UIRefreshControl()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.viewModel = HomeViewModel()
-        self.widthView = self.view.frame.size.width
         
         //Set VIEW
-        homeView = HomeView(viewController: self)
-        homeView.initView()
-        homeView.initConstraint()
+        homeView = HomeView(vc: self)
         
         //Set COLLECTIONVIEW
         collectionView.delegate = self
@@ -47,10 +67,6 @@ class HomeViewController: UIViewController, View{
         
         //Bind VIEWMODEL
         bind(with: self.viewModel)
-        
-        //Load Data
-        homeLoader = HomeLoader(widthHome: self.widthView)
-        getData()
         
         refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
         refreshControl.addTarget(self, action: #selector(self.refresh(_:)), for: .valueChanged)
@@ -66,6 +82,18 @@ class HomeViewController: UIViewController, View{
         
     }
     
+    override func viewDidLayoutSubviews() {
+        var widthView = self.view.frame.size.width
+        
+        widthView
+        if(flagInit){
+            //Load Data
+            homeLoader = HomeLoader(widthHome: self.view.frame.size.width)
+            getData()
+            
+        }
+    }
+    
     //Pull to refresh
     @objc func refresh(_ sender: AnyObject) {
         flagPaging = false
@@ -75,13 +103,13 @@ class HomeViewController: UIViewController, View{
         listPictures = []
         bind(with: self.viewModel)
         getData()
-       
+        
     }
     
     func getData(){
-        homeLoader.getData(page: pageImage) { [self] result, type in
-            typeData = type
+        homeLoader?.getData(listData: listPictures,page: pageImage) { [self] result, type in
             DispatchQueue.main.async { [self] in
+                typeData = type
                 switch type{
                 case .online:
                     listPictures = result as! [PhotoSizeInfo]
@@ -129,14 +157,14 @@ extension HomeViewController : UICollectionViewDataSource{
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         var cell = UICollectionViewCell()
         if let popularCell = self.collectionView.dequeueReusableCell(withReuseIdentifier: "popular", for: indexPath) as? PopularCell{
-
+            
             switch typeData{
             case .online:
                 popularCell.config(photo: self.listPictures[indexPath.row])
             case .offline:
                 popularCell.config(photo: self.listCorePicture[indexPath.row])
             case .none:
-                print("None config popular Cell")
+                popularCell.configSkeleton()
             }
             
             cell = popularCell
@@ -152,16 +180,9 @@ extension HomeViewController : UICollectionViewDataSource{
         case .online:
             numPicture = listPictures.count
         case .none:
-            numPicture = 0
+            numPicture = listSkeleton.count
         }
-
         
-        if numPicture == 0{
-            homeView.startLoading()
-        }
-        else{
-            homeView.stopLoading()
-        }
         flagInit = false
         return numPicture
     }
@@ -189,10 +210,10 @@ extension HomeViewController : UICollectionViewDelegate , UICollectionViewDelega
             case .online:
                 return listPictures[indexPath.item].scaleWidth
             case .none:
-                return 0
+                return listSkeleton[indexPath.item] * collectionView.frame.size.width
             }
         }()
-        if(photoWidth == widthView){
+        if(photoWidth == self.view.frame.size.width){
             return CGSize(width: photoWidth, height: CGFloat(Constant.DynamicLayout.heightDynamic))
         }
         else{
@@ -222,12 +243,12 @@ extension HomeViewController: PhotoDetailTransitionAnimatorDelegate {
         guard let lastSelected = self.selectedIndex else { return }
         self.collectionView.cellForItem(at: lastSelected)?.isHidden = true
     }
-
+    
     func transitionDidEnd() {
         guard let lastSelected = self.selectedIndex else { return }
         self.collectionView.cellForItem(at: lastSelected)?.isHidden = false
     }
-
+    
     func referenceImage() -> UIImage? {
         guard
             let lastSelected = self.selectedIndex,
@@ -235,10 +256,10 @@ extension HomeViewController: PhotoDetailTransitionAnimatorDelegate {
         else {
             return nil
         }
-
+        
         return cell.imageView.image
     }
-
+    
     func imageFrame() -> CGRect? {
         guard
             let lastSelected = self.selectedIndex,
@@ -246,7 +267,7 @@ extension HomeViewController: PhotoDetailTransitionAnimatorDelegate {
         else {
             return nil
         }
-
+        
         return self.collectionView.convert(cell.frame, to: self.view)
     }
 }

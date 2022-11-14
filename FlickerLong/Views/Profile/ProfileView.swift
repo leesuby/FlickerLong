@@ -16,6 +16,7 @@ class ProfileView : MenuViewDelegate{
     private var viewController : ProfileViewController!
     private var view : UIView!
     private var profileCollectionView: UICollectionView!
+    private var isInit : Bool = true
     
     init(viewController: ProfileViewController!) {
         self.viewController = viewController
@@ -31,7 +32,6 @@ class ProfileView : MenuViewDelegate{
     var numberOfPhotos : UILabel!
     var settingButton : UIButton!
     var menuView: MenuView!
-    
     
     func initView(){
         coverView = UIView()
@@ -125,12 +125,14 @@ class ProfileView : MenuViewDelegate{
         userView.addSubview(userName)
         userName.translatesAutoresizingMaskIntoConstraints = false
         userName.topAnchor.constraint(equalTo: avatar.bottomAnchor, constant: Constant.padding).isActive = true
-        userName.widthAnchor.constraint(equalTo: coverView.widthAnchor).isActive = true
+        userName.widthAnchor.constraint(equalTo: userView.widthAnchor).isActive = true
+        userName.heightAnchor.constraint(equalToConstant: 25).isActive = true
         
         userView.addSubview(numberOfPhotos)
         numberOfPhotos.translatesAutoresizingMaskIntoConstraints = false
         numberOfPhotos.topAnchor.constraint(equalTo: userName.bottomAnchor, constant: 5).isActive = true
         numberOfPhotos.widthAnchor.constraint(equalTo: coverView.widthAnchor).isActive = true
+        numberOfPhotos.heightAnchor.constraint(equalToConstant: 25).isActive = true
         
         coverView.addSubview(settingButton)
         settingButton.translatesAutoresizingMaskIntoConstraints = false
@@ -155,24 +157,32 @@ class ProfileView : MenuViewDelegate{
         profileCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
     }
     
-    
-    
     func setData(urlImage: URL, userName: String, uploadedPhoto: Int){
         
         DispatchQueue.global().async {
             let data = try? Data(contentsOf: URL(string: "https://avatars.githubusercontent.com/u/163410?v=4")!)
           
             DispatchQueue.main.async {
+                self.userName.isSkeletonLoading = false
+                self.avatar.isSkeletonLoading = false
+                self.numberOfPhotos.isSkeletonLoading = false
                 self.avatar.image = UIImage(data: data!)
                 self.userName.text = userName
                 self.numberOfPhotos.text = "\(uploadedPhoto) photos uploaded"
+                self.isInit = false
             }
         }
         
     }
     
     func layoutSubView(){
-        avatar.layer.cornerRadius = avatar.frame.size.height / 2
+        if(isInit){
+            avatar.layer.cornerRadius = avatar.frame.size.height / 2
+            
+            userName.isSkeletonLoading = true
+            avatar.isSkeletonLoading = true
+            numberOfPhotos.isSkeletonLoading = true
+        }
     }
     
 }
