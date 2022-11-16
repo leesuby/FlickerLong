@@ -41,6 +41,8 @@ class HomeViewController: UIViewController, View{
     }
     
     var collectionView : UICollectionView!
+    var modeCollectionView : UICollectionView!
+    private var modeCollectionViewController : ModeCollectionViewController = ModeCollectionViewController()
     private var homeView : HomeView?
     private var selectedIndex : IndexPath?
     private var delegateNav : ZoomTransitioningDelgate = ZoomTransitioningDelgate()
@@ -51,6 +53,7 @@ class HomeViewController: UIViewController, View{
     private var flagPaging : Bool = false
     private var flagInit : Bool = true
     private var pageImage : Int = 1
+    var widthView : CGFloat?
     let refreshControl = UIRefreshControl()
     
     override func viewDidLoad() {
@@ -64,6 +67,11 @@ class HomeViewController: UIViewController, View{
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.register(PopularCell.self, forCellWithReuseIdentifier: "popular")
+        
+        modeCollectionView.delegate = modeCollectionViewController
+        modeCollectionView.dataSource = modeCollectionViewController
+        modeCollectionView.register(ModeCell.self, forCellWithReuseIdentifier: ModeCell.identifier)
+        modeCollectionViewController.delegate = self
         
         //Bind VIEWMODEL
         bind(with: self.viewModel)
@@ -83,12 +91,10 @@ class HomeViewController: UIViewController, View{
     }
     
     override func viewDidLayoutSubviews() {
-        var widthView = self.view.frame.size.width
-        
-        widthView
         if(flagInit){
+            widthView = self.view.frame.size.width
             //Load Data
-            homeLoader = HomeLoader(widthHome: self.view.frame.size.width)
+            homeLoader = HomeLoader(widthHome: widthView!)
             getData()
             
         }
@@ -96,12 +102,16 @@ class HomeViewController: UIViewController, View{
     
     //Pull to refresh
     @objc func refresh(_ sender: AnyObject) {
+       
         flagPaging = false
         flagInit = true
         pageImage = 1
         self.viewModel = HomeViewModel()
         listPictures = []
-        bind(with: self.viewModel)
+        if let layout = collectionView?.collectionViewLayout as? UnsplashLayout {
+            layout.resetLayout()
+        }
+
         getData()
         
     }
@@ -110,12 +120,21 @@ class HomeViewController: UIViewController, View{
         homeLoader?.getData(listData: listPictures,page: pageImage) { [self] result, type in
             DispatchQueue.main.async { [self] in
                 typeData = type
+                
                 switch type{
                 case .online:
                     listPictures = result as! [PhotoSizeInfo]
+                    if collectionView?.collectionViewLayout is UnsplashLayout {
+                        self.viewModel.convertToUnsplashLayout(listPhoto: listPictures, width: widthView ?? 0) { result in
+                            self.listPictures = result
+                        }
+                    }
                 case .offline:
                     listCorePicture = result as! [PhotoCore]
                 }
+                
+                
+                
                 collectionView.reloadData()
                 
                 if(refreshControl.isRefreshing){
@@ -151,6 +170,39 @@ extension HomeViewController : ZoomingViewController{
     }
 }
 
+extension HomeViewController: PhotoDetailTransitionAnimatorDelegate {
+    func transitionWillStart() {
+        guard let lastSelected = self.selectedIndex else { return }
+        self.collectionView.cellForItem(at: lastSelected)?.isHidden = true
+    }
+    
+    func transitionDidEnd() {
+        guard let lastSelected = self.selectedIndex else { return }
+        self.collectionView.cellForItem(at: lastSelected)?.isHidden = false
+    }
+    
+    func referenceImage() -> UIImage? {
+        guard
+            let lastSelected = self.selectedIndex,
+            let cell = self.collectionView.cellForItem(at: lastSelected) as? PopularCell
+        else {
+            return nil
+        }
+        
+        return cell.imageView.image
+    }
+    
+    func imageFrame() -> CGRect? {
+        guard
+            let lastSelected = self.selectedIndex,
+            let cell = self.collectionView.cellForItem(at: lastSelected)
+        else {
+            return nil
+        }
+        
+        return self.collectionView.convert(cell.frame, to: self.view)
+    }
+}
 
 // MARK: Setting for UICollectionView
 extension HomeViewController : UICollectionViewDataSource{
@@ -189,7 +241,7 @@ extension HomeViewController : UICollectionViewDataSource{
     
 }
 
-extension HomeViewController : UICollectionViewDelegate , UICollectionViewDelegateFlowLayout{
+extension HomeViewController : UICollectionViewDelegate{
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         self.selectedIndex = indexPath
         let cell : PopularCell = collectionView.cellForItem(at: indexPath)! as! PopularCell
@@ -199,26 +251,6 @@ extension HomeViewController : UICollectionViewDelegate , UICollectionViewDelega
         }
         vc.image = image
         navigationController?.pushViewController(vc, animated: true)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
-        let photoWidth : CGFloat = {
-            switch typeData{
-            case .offline:
-                return listCorePicture[indexPath.item].scaleWidth
-            case .online:
-                return listPictures[indexPath.item].scaleWidth
-            case .none:
-                return listSkeleton[indexPath.item] * collectionView.frame.size.width
-            }
-        }()
-        if(photoWidth == self.view.frame.size.width){
-            return CGSize(width: photoWidth, height: CGFloat(Constant.DynamicLayout.heightDynamic))
-        }
-        else{
-            return CGSize(width: photoWidth - Constant.DynamicLayout.spacing/2, height: CGFloat(Constant.DynamicLayout.heightDynamic))
-        }
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -231,43 +263,84 @@ extension HomeViewController : UICollectionViewDelegate , UICollectionViewDelega
                     self.flagPaging = true
                     self.pageImage += 1
                     getData()
+        
                 }
             }
         }
     }
 }
 
+extension HomeViewController : UnsplashLayoutDelegate{
+    func collectionView(_ collectionView: UICollectionView, heightForPhotoAtIndexPath indexPath: IndexPath) -> CGFloat {
+        
+        switch typeData{
+        case .offline:
+            return listCorePicture[indexPath.item].scaleHeight
+        case .online:
+            return listPictures[indexPath.item].scaleHeight ?? 0
+        case .none:
+            return listSkeleton[indexPath.item] * collectionView.frame.size.width
+        }
+        
+    }
+}
 
-extension HomeViewController: PhotoDetailTransitionAnimatorDelegate {
-    func transitionWillStart() {
-        guard let lastSelected = self.selectedIndex else { return }
-        self.collectionView.cellForItem(at: lastSelected)?.isHidden = true
+extension HomeViewController : UICollectionViewDelegateFlowLayout{
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        let photoWidth : CGFloat = {
+            switch typeData{
+            case .offline:
+                return listCorePicture[indexPath.item].scaleWidth
+            case .online:
+                return listPictures[indexPath.item].scaleWidth ?? 0
+            case .none:
+                return listSkeleton[indexPath.item] * collectionView.frame.size.width
+            }
+        }()
+        if(photoWidth == self.view.frame.size.width){
+            return CGSize(width: photoWidth, height: CGFloat(Constant.DynamicLayout.heightDynamic))
+        }
+        else{
+            return CGSize(width: photoWidth - Constant.DynamicLayout.spacing/2, height: CGFloat(Constant.DynamicLayout.heightDynamic))
+        }
     }
     
-    func transitionDidEnd() {
-        guard let lastSelected = self.selectedIndex else { return }
-        self.collectionView.cellForItem(at: lastSelected)?.isHidden = false
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return Constant.DynamicLayout.spacing
     }
     
-    func referenceImage() -> UIImage? {
-        guard
-            let lastSelected = self.selectedIndex,
-            let cell = self.collectionView.cellForItem(at: lastSelected) as? PopularCell
-        else {
-            return nil
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 0
+    }
+}
+
+extension HomeViewController : ModeCollectionViewDelegate{
+    func changeMode(mode: ModePhotos) {
+        if( !flagInit){
+            print(listPictures.count)
+            switch mode{
+            case .dynamic:
+                if collectionView.collectionViewLayout is UICollectionViewFlowLayout{
+                    return
+                }
+                collectionView.collectionViewLayout = UICollectionViewFlowLayout.init()
+                listPictures = Helper.calculateDynamicLayout(sliceArray: listPictures[0..<listPictures.count], width: self.view.frame.size.width)
+            case .fit:
+                if collectionView.collectionViewLayout is UnsplashLayout{
+                    return
+                }
+                collectionView.collectionViewLayout = UnsplashLayout()
+                if let layout = collectionView.collectionViewLayout as? UnsplashLayout {
+                    layout.delegate = self
+                    layout.resetLayout()
+                }
+                listPictures = Helper.calculateUnsplashLayout(sliceArray: listPictures[0..<listPictures.count], width: self.view.frame.size.width)
+            }
+            collectionView.reloadData()
+            collectionView.layoutIfNeeded()
         }
         
-        return cell.imageView.image
     }
-    
-    func imageFrame() -> CGRect? {
-        guard
-            let lastSelected = self.selectedIndex,
-            let cell = self.collectionView.cellForItem(at: lastSelected)
-        else {
-            return nil
-        }
-        
-        return self.collectionView.convert(cell.frame, to: self.view)
-    }
+
 }

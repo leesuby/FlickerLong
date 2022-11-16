@@ -11,7 +11,6 @@ import UIKit
 class PopularCell: UICollectionViewCell {
     var imageView : CacheImage!
     
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         initView()
@@ -50,6 +49,7 @@ class PopularCell: UICollectionViewCell {
             self.imageView.image = UIImage(data: photo.data ?? Data())
             }
     }
+    
     func configSkeleton(){
         imageView.realBound = bounds
         imageView.isSkeletonLoading = true
@@ -59,8 +59,7 @@ class PopularCell: UICollectionViewCell {
         imageView.isSkeletonLoading = false
     
     }
-    
-    
+
     
     required init?(coder: NSCoder) {
         fatalError("Error creating Popular Cell")

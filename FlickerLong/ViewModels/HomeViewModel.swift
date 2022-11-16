@@ -19,4 +19,7 @@ class HomeViewModel : ViewModel{
     }
     var bindToView :  (() -> ()) = {}
 
+    func convertToUnsplashLayout(listPhoto: [PhotoSizeInfo],width: CGFloat, completion : @escaping ([PhotoSizeInfo]) -> ()){
+        completion(Helper.calculateUnsplashLayout(sliceArray: listPhoto[0..<listPhoto.count], width: width))
+    }
 }

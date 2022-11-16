@@ -44,6 +44,8 @@
 		E745435829111493002CE989 /* NetworkStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = E745435729111493002CE989 /* NetworkStatus.swift */; };
 		E75A9A6D291CAA4B006C6825 /* HomeLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75A9A6C291CAA4B006C6825 /* HomeLoader.swift */; };
 		E75A9A952921EBF6006C6825 /* SkeletonLoading.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75A9A942921EBF6006C6825 /* SkeletonLoading.swift */; };
+		E75A9AA129236DAB006C6825 /* UnsplashLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75A9AA029236DAB006C6825 /* UnsplashLayout.swift */; };
+		E75A9AA429248B50006C6825 /* SkeletonCollectionViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75A9AA329248B50006C6825 /* SkeletonCollectionViewDataSource.swift */; };
 		E76C91A02913719E00DAC8BB /* PhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76C919F2913719E00DAC8BB /* PhotoViewController.swift */; };
 		E76C91A82913748E00DAC8BB /* PhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76C91A72913748E00DAC8BB /* PhotoView.swift */; };
 		E76C91AB291399E900DAC8BB /* ZoomTransitionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76C91AA291399E900DAC8BB /* ZoomTransitionDelegate.swift */; };
@@ -242,6 +244,8 @@
 		E745435729111493002CE989 /* NetworkStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkStatus.swift; sourceTree = "<group>"; };
 		E75A9A6C291CAA4B006C6825 /* HomeLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeLoader.swift; sourceTree = "<group>"; };
 		E75A9A942921EBF6006C6825 /* SkeletonLoading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkeletonLoading.swift; sourceTree = "<group>"; };
+		E75A9AA029236DAB006C6825 /* UnsplashLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsplashLayout.swift; sourceTree = "<group>"; };
+		E75A9AA329248B50006C6825 /* SkeletonCollectionViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkeletonCollectionViewDataSource.swift; sourceTree = "<group>"; };
 		E76C919F2913719E00DAC8BB /* PhotoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoViewController.swift; sourceTree = "<group>"; };
 		E76C91A72913748E00DAC8BB /* PhotoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoView.swift; sourceTree = "<group>"; };
 		E76C91AA291399E900DAC8BB /* ZoomTransitionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomTransitionDelegate.swift; sourceTree = "<group>"; };
@@ -420,6 +424,33 @@
 			path = DataLoader;
 			sourceTree = "<group>";
 		};
+		E75A9A9E29236D5D006C6825 /* Layout */ = {
+			isa = PBXGroup;
+			children = (
+				E75A9AA029236DAB006C6825 /* UnsplashLayout.swift */,
+			);
+			path = Layout;
+			sourceTree = "<group>";
+		};
+		E75A9A9F29236D68006C6825 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				E77A498028FA8A2900925FD0 /* CacheImage.swift */,
+				E77A498928FD310700925FD0 /* InformationView.swift */,
+				E77A49A928FFABDE00925FD0 /* LimitCharacterTextField.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		E75A9AA2292489FE006C6825 /* Skeleton */ = {
+			isa = PBXGroup;
+			children = (
+				E75A9A942921EBF6006C6825 /* SkeletonLoading.swift */,
+				E75A9AA329248B50006C6825 /* SkeletonCollectionViewDataSource.swift */,
+			);
+			path = Skeleton;
+			sourceTree = "<group>";
+		};
 		E76C91A9291399D900DAC8BB /* Animation */ = {
 			isa = PBXGroup;
 			children = (
@@ -493,10 +524,9 @@
 		E7708DE028F5483100E20336 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				E76C91A9291399D900DAC8BB /* Animation */,
+				E77A497928FA8A0E00925FD0 /* CustomView */,
 				E745436029136F0D002CE989 /* Photo */,
 				E74542D729091528002CE989 /* Album */,
-				E77A497928FA8A0E00925FD0 /* CustomView */,
 				E77A496F28F93C7300925FD0 /* Profile */,
 				E77A496828F93C6E00925FD0 /* Upload */,
 				E7BA749D28F6B99000AEEC81 /* Home */,
@@ -641,10 +671,10 @@
 		E77A497928FA8A0E00925FD0 /* CustomView */ = {
 			isa = PBXGroup;
 			children = (
-				E77A498028FA8A2900925FD0 /* CacheImage.swift */,
-				E77A498928FD310700925FD0 /* InformationView.swift */,
-				E77A49A928FFABDE00925FD0 /* LimitCharacterTextField.swift */,
-				E75A9A942921EBF6006C6825 /* SkeletonLoading.swift */,
+				E75A9AA2292489FE006C6825 /* Skeleton */,
+				E75A9A9F29236D68006C6825 /* View */,
+				E75A9A9E29236D5D006C6825 /* Layout */,
+				E76C91A9291399D900DAC8BB /* Animation */,
 			);
 			path = CustomView;
 			sourceTree = "<group>";
@@ -1036,6 +1066,7 @@
 				E7BEBBF0290133770026E11B /* ProfileViewModel.swift in Sources */,
 				E76C91A02913719E00DAC8BB /* PhotoViewController.swift in Sources */,
 				E7BA74A128F6B9CB00AEEC81 /* HomeView.swift in Sources */,
+				E75A9AA429248B50006C6825 /* SkeletonCollectionViewDataSource.swift in Sources */,
 				E74542BE29068AC0002CE989 /* ModeCell.swift in Sources */,
 				E7BEBBFD290149D80026E11B /* Photoss.swift in Sources */,
 				E7BA74AE28F7C6B800AEEC81 /* Photo.swift in Sources */,
@@ -1046,6 +1077,7 @@
 				E7BEBC1429024B4C0026E11B /* ProfileImage.swift in Sources */,
 				E77A49AC2900096A00925FD0 /* ProfileView.swift in Sources */,
 				E7BA749528F67D5A00AEEC81 /* LoginView.swift in Sources */,
+				E75A9AA129236DAB006C6825 /* UnsplashLayout.swift in Sources */,
 				E74542D62908EB03002CE989 /* CoverPhotos.swift in Sources */,
 				E76C91AE2914F09200DAC8BB /* InteractiveDismissTransition.swift in Sources */,
 				E74543522910FBDF002CE989 /* AlbumCore+CoreDataProperties.swift in Sources */,

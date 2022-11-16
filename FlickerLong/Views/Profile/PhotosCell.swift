@@ -26,7 +26,7 @@ class PhotosCell: UICollectionViewCell, ModeCollectionViewDelegate {
     }
     
     private var modeCollectionView : UICollectionView!
-    private var modeController : ModeCollectionView!
+    private var modeController : ModeCollectionViewController!
     private var photosCollectionView : UICollectionView!
     private var photosController : PhotoCollectionView!
     private var photosLayout : UICollectionViewFlowLayout!
@@ -49,7 +49,7 @@ class PhotosCell: UICollectionViewCell, ModeCollectionViewDelegate {
     }
     
     func initView(){
-        modeController = ModeCollectionView()
+        modeController = ModeCollectionViewController()
         modeController.delegate = self
         let modeLayout = UICollectionViewFlowLayout()
         modeLayout.scrollDirection = .horizontal
@@ -85,7 +85,7 @@ class PhotosCell: UICollectionViewCell, ModeCollectionViewDelegate {
         modeCollectionView.topAnchor.constraint(equalTo: topAnchor).isActive = true
         modeCollectionView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
         modeCollectionView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
-        modeCollectionView.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        modeCollectionView.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
         addSubview(photosCollectionView)
         photosCollectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -130,7 +130,7 @@ protocol ModeCollectionViewDelegate{
     func changeMode(mode : ModePhotos)
 }
 
-class ModeCollectionView : NSObject, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
+class ModeCollectionViewController : NSObject, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
     var delegate : ModeCollectionViewDelegate!
     
     //DATA SOURCE
@@ -151,7 +151,7 @@ class ModeCollectionView : NSObject, UICollectionViewDelegate, UICollectionViewD
     
     //FLOW LAYOUT
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 30, height: 30)
+        return CGSize(width: 38, height: 46)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {

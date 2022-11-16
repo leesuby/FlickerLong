@@ -35,6 +35,11 @@ class Constant{
         static var spacing: CGFloat = 6
     }
     
+    class UnsplashLayout{
+        static var column = 3
+        static var spacing: CGFloat = 6
+    }
+    
     class Logo {
         static var imageName = "LogoNoBackground"
         static var logoRotate : CGFloat = .pi / 42

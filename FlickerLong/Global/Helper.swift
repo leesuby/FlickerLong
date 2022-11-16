@@ -56,7 +56,7 @@ class Helper{
     static func calculateDynamicLayout(sliceArray : ArraySlice<PhotoSizeInfo>, width: CGFloat) -> [PhotoSizeInfo]{
         
         var data: [PhotoSizeInfo] = Array(sliceArray)
-        
+        print(data)
         var result: [PhotoSizeInfo] = []
         var tmpArray : [PhotoSizeInfo] = []
         
@@ -77,7 +77,7 @@ class Helper{
                 if(j + 1 == tmpArray.count){
                     
                     tmpPhoto.scaleWidth = widthView - totalWidth
-                    if(tmpPhoto.scaleWidth <= Constant.DynamicLayout.minimumWidth || (tmpPhoto.scaleWidth < (0.8 * trueScaleWidth) && trueScaleWidth < widthView)){
+                    if(tmpPhoto.scaleWidth! <= Constant.DynamicLayout.minimumWidth || (tmpPhoto.scaleWidth! < (0.8 * trueScaleWidth) && trueScaleWidth < widthView)){
                         tmpArray.removeLast()
                         tmpArray[tmpArray.count - 1].scaleWidth = widthView - totalWidthPrev
                     }
@@ -85,12 +85,12 @@ class Helper{
                 else{
                     tmpPhoto.scaleWidth = trueScaleWidth
                     totalWidthPrev = totalWidth
-                    if(tmpPhoto.scaleWidth <= Constant.DynamicLayout.minimumWidth){
+                    if(tmpPhoto.scaleWidth! <= Constant.DynamicLayout.minimumWidth){
                         tmpPhoto.scaleWidth = Constant.DynamicLayout.minimumWidth
                         totalWidth = Constant.DynamicLayout.minimumWidth + totalWidth
                     }
                     else{
-                        totalWidth = tmpPhoto.scaleWidth + totalWidth}
+                        totalWidth = tmpPhoto.scaleWidth! + totalWidth}
                 }
                 tmpPhoto.scaleHeight = Constant.DynamicLayout.heightDynamic
                 j+=1
@@ -113,6 +113,21 @@ class Helper{
         }
         
         return result
+    }
+    
+    //Function to calculate size for Unsplash DynamicLayout
+    static func calculateUnsplashLayout(sliceArray : ArraySlice<PhotoSizeInfo>, width: CGFloat) -> [PhotoSizeInfo]{
+        
+        var data: [PhotoSizeInfo] = Array(sliceArray)
+        
+        for photo in data{
+            let oginWidth = photo.width
+            let oginHeight = photo.height
+            let scaleWidth = width / CGFloat(Constant.UnsplashLayout.column)
+            photo.scaleHeight = (oginHeight * scaleWidth) / oginWidth
+        }
+        
+        return data
     }
     
     static func getDateStringFromUTC(time: Int) -> String {

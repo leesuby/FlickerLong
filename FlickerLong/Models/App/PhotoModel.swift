@@ -12,8 +12,8 @@ class PhotoSizeInfo {
     var url : URL
     var width : CGFloat
     var height: CGFloat
-    var scaleWidth: CGFloat!
-    var scaleHeight: CGFloat!
+    var scaleWidth: CGFloat?
+    var scaleHeight: CGFloat?
     
     init(url : URL){
         self.url = url

@@ -9,8 +9,6 @@ import Foundation
 import UIKit
 
 class HomeView {
-    let activityIndicator = UIActivityIndicatorView()
-    
     init(vc : HomeViewController){
         initView(vc: vc)
         initConstraint(vc: vc)
@@ -19,38 +17,30 @@ class HomeView {
     func initView(vc : HomeViewController){
         vc.view.backgroundColor = .white
         
-        let layout = UICollectionViewFlowLayout()
-        layout.minimumLineSpacing = Constant.DynamicLayout.spacing
-        layout.minimumInteritemSpacing = 0 
-        layout.scrollDirection = .vertical
-        vc.collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        vc.collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout.init())
         vc.collectionView.backgroundColor = .clear
         
-        activityIndicator.color = .darkGray
-        activityIndicator.transform = CGAffineTransform(scaleX: 3, y: 3)
+        vc.modeCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+        vc.modeCollectionView.backgroundColor = .clear
     }
     
     func initConstraint(vc : HomeViewController){
         let view: UIView = vc.view
+        
+        view.addSubview(vc.modeCollectionView)
+        vc.modeCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        vc.modeCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        vc.modeCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        vc.modeCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        vc.modeCollectionView.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        
         view.addSubview(vc.collectionView)
         vc.collectionView.translatesAutoresizingMaskIntoConstraints = false
-        vc.collectionView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        vc.collectionView.topAnchor.constraint(equalTo: vc.modeCollectionView.bottomAnchor).isActive = true
         vc.collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         vc.collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         vc.collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         
-        view.addSubview(activityIndicator)
-        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
-        activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        
     }
-    
-    func startLoading(){
-        activityIndicator.startAnimating()
-    }
-    
-    func stopLoading(){
-        activityIndicator.stopAnimating()
-    }
-    
 }

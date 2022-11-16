@@ -64,8 +64,8 @@ class HomeLoader{
             let photo = PhotoCore(context: CoreDatabase.context)
             
             photo.url = picture.url.string
-            photo.scaleWidth = picture.scaleWidth
-            photo.scaleHeight = picture.scaleWidth
+            photo.scaleWidth = picture.scaleWidth ?? 0
+            photo.scaleHeight = picture.scaleWidth ?? 0
             photo.field = "Popular"
             
             if(listPhoto.count <= NUMBER_IMAGES_PER_PAGE){

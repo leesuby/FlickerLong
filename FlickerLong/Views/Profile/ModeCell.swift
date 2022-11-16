@@ -13,6 +13,7 @@ enum ModePhotos: Int{
 }
 
 class ModeCell: UICollectionViewCell {
+    static var identifier = "modeCell"
     private var imageView : CacheImage!
     
     override var isHighlighted: Bool{
@@ -35,7 +36,7 @@ class ModeCell: UICollectionViewCell {
     
     func initView(){
         imageView = CacheImage(frame: .zero)
-        imageView.contentMode = .scaleAspectFill
+        imageView.contentMode = .scaleToFill
         imageView.clipsToBounds = true
         imageView.tintColor = .lightGray
     }
@@ -43,7 +44,7 @@ class ModeCell: UICollectionViewCell {
     func initConstraint(){
         contentView.addSubview(imageView)
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
+        imageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 5).isActive = true
         imageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
         imageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
         imageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
@@ -53,9 +54,9 @@ class ModeCell: UICollectionViewCell {
     func config(with mode: ModePhotos){
         switch(mode){
         case .dynamic:
-            imageView.image = UIImage(named: "DynamicSymbol")?.withRenderingMode(.alwaysTemplate)
+            imageView.image = UIImage(named: "DynamicLayout")
         case .fit:
-            imageView.image = UIImage(named: "FitSymbol")?.withRenderingMode(.alwaysTemplate)
+            imageView.image = UIImage(named: "UnsplashLayout")
         }
         
     }
