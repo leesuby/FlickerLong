@@ -45,7 +45,7 @@
 		E75A9A6D291CAA4B006C6825 /* HomeLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75A9A6C291CAA4B006C6825 /* HomeLoader.swift */; };
 		E75A9A952921EBF6006C6825 /* SkeletonLoading.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75A9A942921EBF6006C6825 /* SkeletonLoading.swift */; };
 		E75A9AA129236DAB006C6825 /* UnsplashLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75A9AA029236DAB006C6825 /* UnsplashLayout.swift */; };
-		E75A9AA429248B50006C6825 /* SkeletonCollectionViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75A9AA329248B50006C6825 /* SkeletonCollectionViewDataSource.swift */; };
+		E75A9AA62924C7E1006C6825 /* SkeletonCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75A9AA52924C7E1006C6825 /* SkeletonCollectionView.swift */; };
 		E76C91A02913719E00DAC8BB /* PhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76C919F2913719E00DAC8BB /* PhotoViewController.swift */; };
 		E76C91A82913748E00DAC8BB /* PhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76C91A72913748E00DAC8BB /* PhotoView.swift */; };
 		E76C91AB291399E900DAC8BB /* ZoomTransitionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76C91AA291399E900DAC8BB /* ZoomTransitionDelegate.swift */; };
@@ -245,7 +245,7 @@
 		E75A9A6C291CAA4B006C6825 /* HomeLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeLoader.swift; sourceTree = "<group>"; };
 		E75A9A942921EBF6006C6825 /* SkeletonLoading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkeletonLoading.swift; sourceTree = "<group>"; };
 		E75A9AA029236DAB006C6825 /* UnsplashLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsplashLayout.swift; sourceTree = "<group>"; };
-		E75A9AA329248B50006C6825 /* SkeletonCollectionViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkeletonCollectionViewDataSource.swift; sourceTree = "<group>"; };
+		E75A9AA52924C7E1006C6825 /* SkeletonCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkeletonCollectionView.swift; sourceTree = "<group>"; };
 		E76C919F2913719E00DAC8BB /* PhotoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoViewController.swift; sourceTree = "<group>"; };
 		E76C91A72913748E00DAC8BB /* PhotoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoView.swift; sourceTree = "<group>"; };
 		E76C91AA291399E900DAC8BB /* ZoomTransitionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomTransitionDelegate.swift; sourceTree = "<group>"; };
@@ -446,7 +446,7 @@
 			isa = PBXGroup;
 			children = (
 				E75A9A942921EBF6006C6825 /* SkeletonLoading.swift */,
-				E75A9AA329248B50006C6825 /* SkeletonCollectionViewDataSource.swift */,
+				E75A9AA52924C7E1006C6825 /* SkeletonCollectionView.swift */,
 			);
 			path = Skeleton;
 			sourceTree = "<group>";
@@ -1066,7 +1066,6 @@
 				E7BEBBF0290133770026E11B /* ProfileViewModel.swift in Sources */,
 				E76C91A02913719E00DAC8BB /* PhotoViewController.swift in Sources */,
 				E7BA74A128F6B9CB00AEEC81 /* HomeView.swift in Sources */,
-				E75A9AA429248B50006C6825 /* SkeletonCollectionViewDataSource.swift in Sources */,
 				E74542BE29068AC0002CE989 /* ModeCell.swift in Sources */,
 				E7BEBBFD290149D80026E11B /* Photoss.swift in Sources */,
 				E7BA74AE28F7C6B800AEEC81 /* Photo.swift in Sources */,
@@ -1095,6 +1094,7 @@
 				E74542D22908E889002CE989 /* Gallery.swift in Sources */,
 				E77A499028FD635700925FD0 /* PickerImageCell.swift in Sources */,
 				E7BEBC0E29024AE00026E11B /* Sponsorship.swift in Sources */,
+				E75A9AA62924C7E1006C6825 /* SkeletonCollectionView.swift in Sources */,
 				E7BA74A528F6C21400AEEC81 /* PopularCell.swift in Sources */,
 				E74542BA29064902002CE989 /* MenuCell.swift in Sources */,
 				E7BEBC0A29024A730026E11B /* ImageElement.swift in Sources */,

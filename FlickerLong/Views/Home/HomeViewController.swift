@@ -7,31 +7,8 @@
 
 import UIKit
 import CoreData
-let NUMBER_OF_SKELETON = 20
 
 class HomeViewController: UIViewController, View{
-    private var listSkeleton: [Double] = {
-        var list : [Double] = []
-        var base : Double = 1  // 100% width
-        
-        for i in 0..<NUMBER_OF_SKELETON{
-            if(i == NUMBER_OF_SKELETON - 1){
-                list.append(base)
-                break
-            }
-            let widthRatio = Double.random(in: 0.25...base)
-            
-            if(base - widthRatio < 0.25){
-                list.append(base)
-                base = 1
-            }else{
-                base = base - widthRatio
-                list.append(widthRatio)
-            }
-        }
-        return list
-    }()
-    
     
     typealias viewModel = HomeViewModel
     var viewModel: HomeViewModel!
@@ -67,6 +44,7 @@ class HomeViewController: UIViewController, View{
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.register(PopularCell.self, forCellWithReuseIdentifier: "popular")
+        collectionView.skeletonAmount = 20
         
         modeCollectionView.delegate = modeCollectionViewController
         modeCollectionView.dataSource = modeCollectionViewController
@@ -133,10 +111,6 @@ class HomeViewController: UIViewController, View{
                     listCorePicture = result as! [PhotoCore]
                 }
                 
-                
-                
-                collectionView.reloadData()
-                
                 if(refreshControl.isRefreshing){
                     refreshControl.endRefreshing()
                 }
@@ -144,6 +118,7 @@ class HomeViewController: UIViewController, View{
                 {
                     flagPaging = false
                 }
+                collectionView.reloadData()
             }
         }
     }
@@ -232,7 +207,7 @@ extension HomeViewController : UICollectionViewDataSource{
         case .online:
             numPicture = listPictures.count
         case .none:
-            numPicture = listSkeleton.count
+            numPicture = collectionView.skeletonAmount
         }
         
         flagInit = false
@@ -272,14 +247,13 @@ extension HomeViewController : UICollectionViewDelegate{
 
 extension HomeViewController : UnsplashLayoutDelegate{
     func collectionView(_ collectionView: UICollectionView, heightForPhotoAtIndexPath indexPath: IndexPath) -> CGFloat {
-        
         switch typeData{
         case .offline:
             return listCorePicture[indexPath.item].scaleHeight
         case .online:
             return listPictures[indexPath.item].scaleHeight ?? 0
         case .none:
-            return listSkeleton[indexPath.item] * collectionView.frame.size.width
+            return collectionView.listSkeleton[indexPath.item] * collectionView.frame.size.width
         }
         
     }
@@ -295,7 +269,7 @@ extension HomeViewController : UICollectionViewDelegateFlowLayout{
             case .online:
                 return listPictures[indexPath.item].scaleWidth ?? 0
             case .none:
-                return listSkeleton[indexPath.item] * collectionView.frame.size.width
+                return collectionView.listSkeleton[indexPath.item] * collectionView.frame.size.width
             }
         }()
         if(photoWidth == self.view.frame.size.width){
@@ -318,7 +292,7 @@ extension HomeViewController : UICollectionViewDelegateFlowLayout{
 extension HomeViewController : ModeCollectionViewDelegate{
     func changeMode(mode: ModePhotos) {
         if( !flagInit){
-            print(listPictures.count)
+        
             switch mode{
             case .dynamic:
                 if collectionView.collectionViewLayout is UICollectionViewFlowLayout{

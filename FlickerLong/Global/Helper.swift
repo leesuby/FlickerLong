@@ -56,7 +56,7 @@ class Helper{
     static func calculateDynamicLayout(sliceArray : ArraySlice<PhotoSizeInfo>, width: CGFloat) -> [PhotoSizeInfo]{
         
         var data: [PhotoSizeInfo] = Array(sliceArray)
-        print(data)
+        print(data.count)
         var result: [PhotoSizeInfo] = []
         var tmpArray : [PhotoSizeInfo] = []
         
@@ -104,14 +104,14 @@ class Helper{
                 result.append(contentsOf: tmpArray)
                 tmpArray = []
                 i = 0
-                
             }
             else{
                 tmpArray.append(photo)
                 i+=1
             }
         }
-        
+        print("aaaaaa")
+        print(result.count)
         return result
     }
     
